@@ -7,10 +7,11 @@ export interface NavMainItem {
   url: string
   icon: LucideIcon
   isActive?: boolean
-  items?: {
+  items?: Array<{
     title: string
     url: string
-  }[]
+    isActive?: boolean
+  }>
 }
 
 export interface NavProject {
@@ -33,4 +34,7 @@ export interface UserInfo {
 
 export interface AppSidebarLayoutProps extends ComponentProps<typeof Sidebar> {
   className?: string
+  navMain: NavMainItem[]
+  user: UserInfo
+  children: React.ReactNode
 }

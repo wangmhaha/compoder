@@ -1,6 +1,9 @@
 import type { Metadata } from "next"
 import localFont from "next/font/local"
 import { ThemeProvider } from "@/components/theme-provider"
+import { AppSidebarLayout } from "@/components/biz/AppSidebarLayout"
+import { mockData } from "@/components/biz/AppSidebarLayout/mock-data"
+import { routes } from "./route"
 import "./globals.css"
 
 const geistSans = localFont({
@@ -35,7 +38,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <AppSidebarLayout navMain={routes} user={mockData.user}>
+            {children}
+          </AppSidebarLayout>
         </ThemeProvider>
       </body>
     </html>

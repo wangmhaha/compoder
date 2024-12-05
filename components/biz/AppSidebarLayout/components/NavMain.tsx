@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 import {
   Collapsible,
@@ -31,11 +32,15 @@ export function NavMain({ items }: NavMainProps) {
         {items.map(item => (
           <Collapsible key={item.title} asChild defaultOpen={item.isActive}>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip={item.title}>
-                <a href={item.url}>
+              <SidebarMenuButton
+                asChild
+                tooltip={item.title}
+                data-active={item.isActive}
+              >
+                <Link href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
               {item.items?.length ? (
                 <>
@@ -49,10 +54,13 @@ export function NavMain({ items }: NavMainProps) {
                     <SidebarMenuSub>
                       {item.items?.map(subItem => (
                         <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild>
-                            <a href={subItem.url}>
+                          <SidebarMenuSubButton
+                            asChild
+                            data-active={subItem.isActive}
+                          >
+                            <Link href={subItem.url}>
                               <span>{subItem.title}</span>
-                            </a>
+                            </Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       ))}

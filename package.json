@@ -2,6 +2,7 @@
   "name": "compoder",
   "version": "0.1.0",
   "private": true,
+  "description": "Compoder: AI-Powered Component Coder - Your Stack, Your Style",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
