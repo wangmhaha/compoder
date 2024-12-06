@@ -1,3 +1,5 @@
+"use client"
+
 import { Settings2, SquareTerminal } from "lucide-react"
 
 export const routes = [

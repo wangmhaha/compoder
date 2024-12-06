@@ -1,40 +1,73 @@
 "use client"
 
 import * as React from "react"
-import { Moon, Sun } from "lucide-react"
+import { Moon, Sun, Monitor } from "lucide-react"
 import { useTheme } from "next-themes"
 
-import { Button } from "@/components/ui/button"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { ModeToggleProps } from "./interface"
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
-export function ModeToggle({ className }: ModeToggleProps) {
-  const { setTheme } = useTheme()
+export function ModeToggle() {
+  const { theme, setTheme } = useTheme()
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className={className}>
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <TooltipProvider delayDuration={0}>
+      <Tabs defaultValue={theme} onValueChange={setTheme}>
+        <TabsList className="border">
+          <TabsTrigger
+            value="light"
+            className="data-[state=active]:bg-background p-1"
+          >
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div>
+                  <Sun className="h-3.5 w-3.5" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" sideOffset={5}>
+                Light Mode
+              </TooltipContent>
+            </Tooltip>
+          </TabsTrigger>
+
+          <TabsTrigger
+            value="dark"
+            className="data-[state=active]:bg-background p-1"
+          >
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div>
+                  <Moon className="h-3.5 w-3.5" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" sideOffset={5}>
+                Dark Mode
+              </TooltipContent>
+            </Tooltip>
+          </TabsTrigger>
+
+          <TabsTrigger
+            value="system"
+            className="data-[state=active]:bg-background p-1"
+          >
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div>
+                  <Monitor className="h-3.5 w-3.5" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" sideOffset={5}>
+                System Mode
+              </TooltipContent>
+            </Tooltip>
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
+    </TooltipProvider>
   )
 }

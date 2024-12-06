@@ -1,0 +1,30 @@
+import type { Meta, StoryObj } from "@storybook/react"
+import { LoginForm } from "./index"
+
+const meta: Meta<typeof LoginForm> = {
+  title: "biz/LoginForm",
+  component: LoginForm,
+}
+
+export default meta
+type Story = StoryObj<typeof LoginForm>
+
+export const Default: Story = {
+  args: {
+    onSubmit: () => {
+      console.log("Login attempt:")
+    },
+    onGithubSignIn: () => {
+      console.log("Github sign in clicked")
+    },
+    userCount: 2000000,
+    loading: false,
+  },
+}
+
+export const Loading: Story = {
+  args: {
+    ...Default.args,
+    loading: true,
+  },
+}

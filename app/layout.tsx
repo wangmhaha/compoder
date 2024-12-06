@@ -3,7 +3,7 @@ import localFont from "next/font/local"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AppSidebarLayout } from "@/components/biz/AppSidebarLayout"
 import { mockData } from "@/components/biz/AppSidebarLayout/mock-data"
-import { routes } from "./route"
+import { routes } from "./routes"
 import "./globals.css"
 
 const geistSans = localFont({
