@@ -72,44 +72,9 @@ const config: Config = {
           "0%, 100%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
         },
-        "border-glow": {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.5" },
-        },
-        "light-left": {
-          "0%": {
-            transform: "translateX(-100%) rotate(12deg)",
-            opacity: "0",
-          },
-          "50%": {
-            transform: "translateX(1000%) rotate(12deg)",
-            opacity: "0.5",
-          },
-          "100%": {
-            transform: "translateX(2000%) rotate(12deg)",
-            opacity: "0",
-          },
-        },
-        "light-right": {
-          "0%": {
-            transform: "translateX(100%) rotate(-12deg)",
-            opacity: "0",
-          },
-          "50%": {
-            transform: "translateX(-1000%) rotate(-12deg)",
-            opacity: "0.5",
-          },
-          "100%": {
-            transform: "translateX(-2000%) rotate(-12deg)",
-            opacity: "0",
-          },
-        },
       },
       animation: {
         gradient: "gradient 15s ease infinite",
-        "border-glow": "border-glow 3s ease-in-out infinite",
-        "light-left": "light-left 10s ease-in-out infinite",
-        "light-right": "light-right 10s ease-in-out infinite",
       },
     },
   },

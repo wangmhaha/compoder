@@ -1,3 +1,5 @@
+"use client"
+
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { LoginFormProps } from "./interface"
@@ -22,30 +24,18 @@ const LoginForm = ({
           className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-secondary/20 
           animate-gradient bg-[length:200%_200%]"
         />
-        <div className="absolute -left-48 top-0 h-[600px] w-24 bg-primary/10 rotate-12 blur-3xl animate-light-left" />
-        <div className="absolute -right-48 bottom-0 h-[600px] w-24 bg-secondary/10 -rotate-12 blur-3xl animate-light-right" />
       </div>
 
       <Card
         className="w-[420px] p-8 space-y-8 relative
         bg-background/70 backdrop-blur-sm border-[1.5px] border-border/40
         before:absolute before:inset-0 before:-z-10 before:p-1
-        before:bg-gradient-to-r before:from-primary/20 before:via-secondary/20 before:to-primary/20
-        before:rounded-[inherit] before:animate-border-glow
         after:absolute after:inset-0 after:-z-10
-        after:bg-background/80 after:rounded-[inherit]
-        hover:before:shadow-[0_0_20px_2px_rgba(var(--primary-rgb),0.2)]
-        transition-all duration-500
-        [&>*:first-child]:before:content-[''] [&>*:first-child]:before:absolute 
-        [&>*:first-child]:before:top-0 [&>*:first-child]:before:right-0
-        [&>*:first-child]:before:w-24 [&>*:first-child]:before:h-24
-        [&>*:first-child]:before:bg-violet-500/10
-        [&>*:first-child]:before:blur-2xl [&>*:first-child]:before:-translate-y-1/2
-        [&>*:first-child]:before:translate-x-1/4"
+        after:bg-background/80 after:rounded-[inherit]"
       >
         <div className="text-center space-y-3">
-          <div className="w-12 h-12 bg-primary/15 rounded-2xl mx-auto flex items-center justify-center transform hover:scale-105 transition-transform duration-200">
-            <Logo width={46} height={46} />
+          <div className="w-18 h-18 rounded-2xl mx-auto flex items-center justify-center transform hover:scale-105 transition-transform duration-200">
+            <Logo width={72} height={72} />
           </div>
           <h2 className="text-3xl font-bold tracking-tight">Compoder</h2>
           <p className="text-base text-muted-foreground/90">
@@ -92,17 +82,16 @@ const LoginForm = ({
           )}
         </div>
 
-        <div className="grid grid-cols-5 gap-3 px-4 pt-4">
+        <div className="grid grid-cols-5 gap-4 px-4 pt-4 place-items-center">
           {techIcons.map((tech, index) => (
             <div
               key={index}
-              className={`w-10 h-10 rounded-xl 
-                bg-background/80 border border-border/30
+              className={`w-6 h-6 rounded-xl
+                bg-background/80
                 flex items-center justify-center
                 transform ${tech.rotate} hover:rotate-0
                 hover:scale-110 transition-all duration-200
-                hover:shadow-lg hover:border-primary/30
-                hover:bg-background/95 cursor-pointer`}
+                hover:shadow-lg hover:bg-background/95 cursor-pointer`}
               title={tech.name}
             >
               {tech.icon}
