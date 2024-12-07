@@ -22,9 +22,10 @@ import { ModeToggle } from "../../ModeToggle/ModeToggle"
 
 interface NavUserProps {
   user: UserInfo
+  onLogout: () => void
 }
 
-export function NavUser({ user }: NavUserProps) {
+export function NavUser({ user, onLogout }: NavUserProps) {
   const { isMobile } = useSidebar()
 
   return (
@@ -70,7 +71,10 @@ export function NavUser({ user }: NavUserProps) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer">
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => onLogout()}
+            >
               <LogOut />
               Log out
             </DropdownMenuItem>

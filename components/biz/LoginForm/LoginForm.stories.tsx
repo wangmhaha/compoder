@@ -17,7 +17,6 @@ export const Default: Story = {
     onGithubSignIn: () => {
       console.log("Github sign in clicked")
     },
-    userCount: 2000000,
     loading: false,
   },
 }

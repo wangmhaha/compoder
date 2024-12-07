@@ -54,7 +54,11 @@ const StoryWrapper = ({
   }))
 
   return (
-    <AppSidebarLayout navMain={navMainWithActive} user={user}>
+    <AppSidebarLayout
+      navMain={navMainWithActive}
+      user={user}
+      onLogout={() => {}}
+    >
       {children}
     </AppSidebarLayout>
   )

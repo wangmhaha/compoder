@@ -1,5 +1,14 @@
 import mongoose from "mongoose"
+import { MongoClient } from "mongodb"
 import { env } from "@/lib/env"
+
+if (!global.mongoClientPromise) {
+  const client = new MongoClient(env.MONGODB_URI)
+  global.mongoClientPromise = client.connect()
+}
+
+export const clientPromise = global.mongoClientPromise
+
 /**
  * connect MongoDB and init data
  */

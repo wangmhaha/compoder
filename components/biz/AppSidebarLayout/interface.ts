@@ -36,5 +36,6 @@ export interface AppSidebarLayoutProps extends ComponentProps<typeof Sidebar> {
   className?: string
   navMain: NavMainItem[]
   user: UserInfo
+  onLogout: () => void
   children: React.ReactNode
 }

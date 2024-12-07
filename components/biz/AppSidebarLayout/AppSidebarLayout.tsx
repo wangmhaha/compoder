@@ -22,6 +22,7 @@ import { Logo } from "@/components/biz/Logo"
 export function AppSidebarLayout({
   navMain,
   user,
+  onLogout,
   children,
   ...props
 }: AppSidebarLayoutProps) {
@@ -53,7 +54,7 @@ export function AppSidebarLayout({
           <NavMain items={navMain} />
         </SidebarContent>
         <SidebarFooter>
-          <NavUser user={user} />
+          <NavUser user={user} onLogout={onLogout} />
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
