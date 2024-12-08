@@ -1,5 +1,3 @@
-export type ThemeType = "light" | "dark"
-
 export interface ComponentItem {
   id: string
   title: string
