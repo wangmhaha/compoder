@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { ComponentCodeList } from "./ComponentCodeList"
 import { ComponentItem } from "./interface"
+import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
 
 const meta = {
   title: "Biz/ComponentCodeList",
@@ -14,7 +16,7 @@ const mockItems = [
   {
     id: "1",
     title: "CSS Theme Switch",
-    description: "A beautiful theme switch component with smooth transitions",
+    description: "A beautiful",
   },
   {
     id: "2",
@@ -64,5 +66,67 @@ export const TwoItems: Story = {
     items: mockItems.slice(0, 2),
     onEditClick: id => console.log("Edit clicked:", id),
     onDeleteClick: id => console.log("Delete clicked:", id),
+  },
+}
+
+export const AnimatedAddition: Story = {
+  render: function AnimatedAdditionStory() {
+    const [items, setItems] = useState<ComponentItem[]>(mockItems)
+
+    useEffect(() => {
+      // Add a new item after 1.5 seconds
+      const timer = setTimeout(() => {
+        setItems(prevItems => [
+          {
+            id: "new-1",
+            title: "New Component",
+            description: "This component just flew in!",
+          },
+          ...prevItems,
+        ])
+      }, 1500)
+
+      return () => clearTimeout(timer)
+    }, [])
+
+    return (
+      <ComponentCodeList
+        items={items}
+        onEditClick={id => console.log("Edit clicked:", id)}
+        onDeleteClick={id => console.log("Delete clicked:", id)}
+      />
+    )
+  },
+}
+
+export const ClickToAddCard: Story = {
+  render: function ClickToAddCardStory() {
+    const [items, setItems] = useState<ComponentItem[]>(mockItems)
+
+    const handleAddCard = () => {
+      const newCard = {
+        id: `new-${Date.now()}`,
+        title: "New Component",
+        description: "This component just flew in from where you clicked!",
+      }
+
+      setItems(prevItems => [newCard, ...prevItems])
+    }
+
+    return (
+      <div className="space-y-4">
+        <div className="flex justify-between items-center mb-[1000px]">
+          <h3 className="text-lg font-medium">
+            Click anywhere to add a new card
+          </h3>
+          <Button onClick={handleAddCard}>Add Card</Button>
+        </div>
+        <ComponentCodeList
+          items={items}
+          onEditClick={id => console.log("Edit clicked:", id)}
+          onDeleteClick={id => console.log("Delete clicked:", id)}
+        />
+      </div>
+    )
   },
 }
