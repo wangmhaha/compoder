@@ -44,6 +44,10 @@ const CodegenSchema = new mongoose.Schema<Codegen>(
       type: String,
       required: true,
     },
+    description: {
+      type: String,
+      required: true,
+    },
     fullStack: {
       type: String,
       enum: ["React", "Vue"],

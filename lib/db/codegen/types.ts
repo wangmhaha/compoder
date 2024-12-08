@@ -16,6 +16,7 @@ export interface CodegenRule {
 
 export interface Codegen {
   title: string
+  description: string
   fullStack: "React" | "Vue"
   guides: string[]
   model: string
