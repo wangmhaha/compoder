@@ -1,22 +1,22 @@
 import { StackType } from "../CodegenList/interface"
 
 export interface CodegenFilterContainerProps {
-  /** 是否有更多数据 */
+  /** Whether there is more data */
   hasMore?: boolean
-  /** 是否正在加载 */
+  /** Whether it is loading */
   isLoading?: boolean
-  /** 当前选中的技术栈 */
+  /** Currently selected tech stack */
   selectedStack?: StackType | "all"
-  /** 搜索关键词 */
+  /** Search keyword */
   searchKeyword?: string
-  /** 技术栈变化回调 */
+  /** Tech stack change callback */
   onStackChange?: (stack: StackType | "all") => void
-  /** 搜索关键词变化回调 */
+  /** Search keyword change callback */
   onSearchChange?: (keyword: string) => void
-  /** 加载更多回调 */
+  /** Load more callback */
   onLoadMore?: () => void
-  /** 子组件 */
+  /** Child components */
   children: React.ReactNode
-  /** 自定义类名 */
+  /** Custom class name */
   className?: string
 }
