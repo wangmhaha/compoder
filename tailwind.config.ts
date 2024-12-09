@@ -67,6 +67,15 @@ const config: Config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      animation: {
+        gradient: "gradient 6s linear infinite",
+      },
+      keyframes: {
+        gradient: {
+          "0%": { backgroundPosition: "0% 0%" },
+          "100%": { backgroundPosition: "200% 0%" },
+        },
+      },
     },
   },
   plugins: [animate],
