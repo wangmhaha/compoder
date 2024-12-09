@@ -3,6 +3,7 @@ import { SessionProvider } from "@/components/provider/session-provider"
 import localFont from "next/font/local"
 import { ThemeProvider } from "@/components/provider/theme-provider"
 import "./globals.css"
+import { Toaster } from "@/components/ui/toaster"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -41,6 +42,7 @@ export default function RootLayout({
             {children}
           </ThemeProvider>
         </SessionProvider>
+        <Toaster />
       </body>
     </html>
   )

@@ -1,6 +1,7 @@
 import React from "react"
 import type { Preview } from "@storybook/react"
 import { ThemeProvider } from "next-themes"
+import { Toaster } from "../components/ui/toaster"
 import "../app/globals.css"
 
 import { withThemeByClassName } from "@storybook/addon-themes"
@@ -50,6 +51,7 @@ export const decorators = [
       disableTransitionOnChange
     >
       <Story />
+      <Toaster />
     </ThemeProvider>
   ),
   withThemeByClassName({

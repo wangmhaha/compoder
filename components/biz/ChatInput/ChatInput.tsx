@@ -23,13 +23,13 @@ const ChatInput = React.memo(
   }: ChatInputProps) => {
     const textareaRef = useRef<HTMLTextAreaElement>(null)
 
-    // 初始化 autosize
+    // Initialize autosize
     useEffect(() => {
       if (textareaRef.current) {
         autosize(textareaRef.current)
       }
 
-      // 清理函数
+      // Cleanup function
       return () => {
         if (textareaRef.current) {
           autosize.destroy(textareaRef.current)
@@ -37,7 +37,7 @@ const ChatInput = React.memo(
       }
     }, [])
 
-    // 当值改变时更新 autosize
+    // Update autosize when value changes
     useEffect(() => {
       if (textareaRef.current) {
         autosize.update(textareaRef.current)
@@ -48,7 +48,7 @@ const ChatInput = React.memo(
       (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (event.key === "Enter") {
           if (event.shiftKey) {
-            // 如果按住 Shift + Enter，则插入换行符
+            // Insert newline when Shift + Enter is pressed
             const target = event.target as HTMLTextAreaElement
             const start = target.selectionStart
             const end = target.selectionEnd
@@ -56,16 +56,16 @@ const ChatInput = React.memo(
               value.substring(0, start) + "\n" + value.substring(end)
             onChange?.(newValue)
 
-            // 防止默认的换行行为
+            // Prevent default newline behavior
             event.preventDefault()
 
-            // 在下一个事件循环中设置光标位置
+            // Set cursor position in next event loop
             setTimeout(() => {
               target.selectionStart = target.selectionEnd = start + 1
               autosize.update(target)
             }, 0)
           } else {
-            // 如果只按 Enter，则提交
+            // Submit when only Enter is pressed
             event.preventDefault()
             if (value.trim()) {
               onSubmit()
@@ -73,7 +73,7 @@ const ChatInput = React.memo(
               toast({
                 title: "Warning",
                 description: "Please input your message",
-                variant: "destructive",
+                variant: "default",
               })
             }
           }
@@ -96,7 +96,7 @@ const ChatInput = React.memo(
           <div
             className={cn("relative h-full w-full bg-background rounded-lg")}
           >
-            {/* 添加图片预览区域 */}
+            {/* Image preview area */}
             {images && images.length > 0 && (
               <div className="flex flex-wrap gap-1.5 p-2">
                 {images.map((image, index) => (
@@ -174,7 +174,7 @@ const ChatInput = React.memo(
                       toast({
                         title: "Warning",
                         description: "Please input your message",
-                        variant: "destructive",
+                        variant: "default",
                       })
                       return
                     }
