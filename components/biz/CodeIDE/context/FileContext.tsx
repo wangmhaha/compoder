@@ -12,11 +12,10 @@ interface FileContextType {
   updateFileContent: (fileId: string, content: string) => void
   resetChanges: () => void
   saveChanges: () => void
-  initialFiles: FileNode[]
+  originalFiles: FileNode[]
   unsavedFiles: Set<string>
   addUnsavedFile: (fileId: string) => void
   removeUnsavedFile: (fileId: string) => void
-  hasUnsavedFiles: () => boolean
 }
 
 const FileContext = createContext<FileContextType | undefined>(undefined)
@@ -94,7 +93,7 @@ export function FileProvider({
     toast({
       title: "Changes Reset",
       description: "Your changes have been reset to the last saved version.",
-      duration: 3000,
+      duration: 1000,
     })
   }
 
@@ -106,7 +105,7 @@ export function FileProvider({
     toast({
       title: "Changes Saved",
       description: "Your changes have been saved successfully.",
-      duration: 3000,
+      duration: 1000,
     })
   }
 
@@ -132,11 +131,10 @@ export function FileProvider({
         updateFileContent,
         resetChanges,
         saveChanges,
-        initialFiles,
+        originalFiles,
         unsavedFiles,
         addUnsavedFile,
         removeUnsavedFile,
-        hasUnsavedFiles: () => unsavedFiles.size > 0,
       }}
     >
       {children}

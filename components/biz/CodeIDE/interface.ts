@@ -31,6 +31,7 @@ export interface FileNode {
 export interface CodeIDEProps {
   data: FileNode[]
   readOnly?: boolean
+  onSave: (files: FileNode[]) => Promise<void> | void
 }
 
 export interface AppSidebarProps extends ComponentProps<typeof Sidebar> {

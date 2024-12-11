@@ -86,8 +86,44 @@ const sampleData: FileNode[] = [
   },
 ]
 
-export const Default: Story = {
+export const WithSaveHandler: Story = {
   args: {
     data: sampleData,
+    onSave: async (files: FileNode[]) => {
+      // 模拟异步保存操作
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      console.log("Files saved:", files)
+      // 这里你可以在控制台中查看保存的文件内容
+    },
+  },
+}
+
+export const WithSaveError: Story = {
+  args: {
+    data: sampleData,
+    onSave: async () => {
+      // 模拟保存失败的情况
+      await new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Failed to save")), 1000),
+      )
+    },
+  },
+}
+
+// 添加参数说明
+WithSaveHandler.parameters = {
+  docs: {
+    description: {
+      story:
+        "Demonstrates successful file saving with a delay to simulate API call.",
+    },
+  },
+}
+
+WithSaveError.parameters = {
+  docs: {
+    description: {
+      story: "Demonstrates error handling when save operation fails.",
+    },
   },
 }

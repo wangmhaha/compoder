@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -19,51 +18,35 @@ import { CodeIDEProps, FileNode } from "./interface"
 import { Editor } from "@monaco-editor/react"
 import { FileProvider, useFile } from "./context/FileContext"
 import { useEffect, useState, useRef } from "react"
-import { cn } from "@/lib/utils"
 import { useTheme } from "next-themes"
+import { BreadcrumbPopover } from "./components/BreadcrumbPopover"
+import { EditorToast } from "./components/EditorToast"
 
-function EditorToast({
-  visible,
-  onReset,
-  onSave,
-}: {
-  visible: boolean
-  onReset: () => void
-  onSave: () => void
-}) {
-  if (!visible) return null
+// Add this helper function before the CodeIDEContent component
+function getFilePath(
+  nodes: FileNode[],
+  targetId: string,
+  path: FileNode[] = [],
+): FileNode[] | null {
+  for (const node of nodes) {
+    // Try current path
+    if (node.id === targetId) {
+      return [...path, node]
+    }
 
-  return (
-    <div
-      className={cn(
-        "fixed md:absolute bottom-4 right-4 z-50",
-        "bg-background border rounded-lg shadow-lg",
-        "p-4 min-w-[300px] max-w-[calc(100%-2rem)]",
-        "mx-auto left-4 md:left-auto",
-      )}
-    >
-      <div className="flex flex-col gap-2">
-        <div className="flex justify-between items-center">
-          <h4 className="font-semibold">Unsaved Changes</h4>
-        </div>
-        <p className="text-sm text-muted-foreground">
-          You have unsaved changes in your files.
-        </p>
-        <div className="flex gap-2 justify-end mt-2">
-          <Button variant="outline" size="sm" onClick={onReset}>
-            Reset
-          </Button>
-          <Button size="sm" onClick={onSave}>
-            Save
-          </Button>
-        </div>
-      </div>
-    </div>
-  )
+    // If has children, recursively search
+    if (node.children) {
+      const foundPath = getFilePath(node.children, targetId, [...path, node])
+      if (foundPath) {
+        return foundPath
+      }
+    }
+  }
+  return null
 }
 
 // 创建一个内部组件来使用 useSidebar
-function CodeIDEContent({ readOnly }: CodeIDEProps) {
+function CodeIDEContent({ readOnly, onSave }: CodeIDEProps) {
   const { state, toggleSidebar } = useSidebar()
   const { theme } = useTheme()
   const {
@@ -71,13 +54,20 @@ function CodeIDEContent({ readOnly }: CodeIDEProps) {
     updateFileContent,
     resetChanges,
     saveChanges,
-    initialFiles,
+    originalFiles,
     addUnsavedFile,
     removeUnsavedFile,
     unsavedFiles,
+    files,
   } = useFile()
   const [showToast, setShowToast] = useState(false)
   const editorContainerRef = useRef<HTMLDivElement>(null)
+  const [isSaving, setIsSaving] = useState(false)
+
+  // Add this to compute the current file path
+  const currentFilePath = currentFile
+    ? getFilePath(originalFiles, currentFile.id)
+    : null
 
   // 修改检查文件是否有更改的辅助函数
   const findFileById = (
@@ -95,7 +85,7 @@ function CodeIDEContent({ readOnly }: CodeIDEProps) {
   }
 
   const checkForChanges = (fileId: string, newValue: string) => {
-    const initialFile = findFileById(initialFiles, fileId)
+    const initialFile = findFileById(originalFiles, fileId)
     return initialFile && initialFile.content !== newValue
   }
 
@@ -123,7 +113,24 @@ function CodeIDEContent({ readOnly }: CodeIDEProps) {
     }
   }, [unsavedFiles.size])
 
-  console.log("theme", theme)
+  useEffect(() => {
+    if (currentFile) {
+      console.log("Current file language:", currentFile.language)
+    }
+  }, [currentFile])
+
+  // 修改处理保存的逻辑
+  const handleSave = async () => {
+    setIsSaving(true)
+    try {
+      await onSave(files)
+      saveChanges() // 只有在外部 onSave 成功后才调用内部的 saveChanges
+    } catch (error) {
+      console.error("Failed to save:", error)
+    } finally {
+      setIsSaving(false)
+    }
+  }
 
   return (
     <div className="flex h-full w-full overflow-hidden">
@@ -145,17 +152,35 @@ function CodeIDEContent({ readOnly }: CodeIDEProps) {
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
             <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">components</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">ui</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>button.tsx</BreadcrumbPage>
-              </BreadcrumbItem>
+              {currentFilePath ? (
+                currentFilePath.map((node, index) => (
+                  <BreadcrumbItem key={node.id}>
+                    {index === currentFilePath.length - 1 ? (
+                      <BreadcrumbPage>{node.name}</BreadcrumbPage>
+                    ) : (
+                      <>
+                        <BreadcrumbPopover
+                          node={node}
+                          popoverNode={
+                            index === 0
+                              ? {
+                                  id: "originalFiles",
+                                  name: "root",
+                                  children: originalFiles,
+                                }
+                              : currentFilePath[index - 1]
+                          }
+                        />
+                        <BreadcrumbSeparator />
+                      </>
+                    )}
+                  </BreadcrumbItem>
+                ))
+              ) : (
+                <BreadcrumbItem>
+                  <BreadcrumbPage>No file selected</BreadcrumbPage>
+                </BreadcrumbItem>
+              )}
             </BreadcrumbList>
           </Breadcrumb>
         </header>
@@ -169,7 +194,7 @@ function CodeIDEContent({ readOnly }: CodeIDEProps) {
                 <Editor
                   height="100%"
                   width="100%"
-                  language={currentFile.language || "typescript"}
+                  language={currentFile.language ?? "typescript"}
                   value={currentFile.content}
                   theme={theme === "dark" ? "vs-dark" : "light"}
                   options={{
@@ -179,13 +204,26 @@ function CodeIDEContent({ readOnly }: CodeIDEProps) {
                     automaticLayout: true,
                     scrollBeyondLastLine: false,
                   }}
+                  beforeMount={monaco => {
+                    monaco.languages.typescript.typescriptDefaults.setCompilerOptions(
+                      {
+                        jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
+                        jsxFactory: "React.createElement",
+                        reactNamespace: "React",
+                        allowNonTsExtensions: true,
+                        allowJs: true,
+                        target: monaco.languages.typescript.ScriptTarget.Latest,
+                      },
+                    )
+                  }}
                   onChange={handleEditorChange}
                 />
               </div>
               <EditorToast
                 visible={showToast}
                 onReset={resetChanges}
-                onSave={saveChanges}
+                onSave={handleSave}
+                isSaving={isSaving}
               />
             </>
           ) : (
