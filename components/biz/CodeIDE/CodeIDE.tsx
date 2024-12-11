@@ -26,6 +26,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 // Helper function to get the file path for a given file ID
 function getFilePath(
@@ -135,7 +136,7 @@ function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
 
   return (
     <ResizablePanelGroup direction="horizontal">
-      <ResizablePanel defaultSize={60} minSize={30}>
+      <ResizablePanel defaultSize={50} minSize={30}>
         <div className="flex h-full w-full overflow-hidden">
           <AppSidebar />
           <SidebarInset className="flex flex-col w-full min-w-0">
@@ -153,39 +154,42 @@ function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
                 )}
               </Button>
               <Separator orientation="vertical" className="mr-2 h-4" />
-              <Breadcrumb>
-                <BreadcrumbList>
-                  {currentFilePath ? (
-                    currentFilePath.map((node, index) => (
-                      <BreadcrumbItem key={node.id}>
-                        {index === currentFilePath.length - 1 ? (
-                          <BreadcrumbPage>{node.name}</BreadcrumbPage>
-                        ) : (
-                          <>
-                            <BreadcrumbPopover
-                              node={node}
-                              popoverNode={
-                                index === 0
-                                  ? {
-                                      id: "originalFiles",
-                                      name: "root",
-                                      children: originalFiles,
-                                    }
-                                  : currentFilePath[index - 1]
-                              }
-                            />
-                            <BreadcrumbSeparator />
-                          </>
-                        )}
+              <ScrollArea className="w-[calc(100%-4rem)] h-full">
+                <Breadcrumb className="min-w-max pt-5">
+                  <BreadcrumbList>
+                    {currentFilePath ? (
+                      currentFilePath.map((node, index) => (
+                        <BreadcrumbItem key={node.id}>
+                          {index === currentFilePath.length - 1 ? (
+                            <BreadcrumbPage>{node.name}</BreadcrumbPage>
+                          ) : (
+                            <>
+                              <BreadcrumbPopover
+                                node={node}
+                                popoverNode={
+                                  index === 0
+                                    ? {
+                                        id: "originalFiles",
+                                        name: "root",
+                                        children: originalFiles,
+                                      }
+                                    : currentFilePath[index - 1]
+                                }
+                              />
+                              <BreadcrumbSeparator />
+                            </>
+                          )}
+                        </BreadcrumbItem>
+                      ))
+                    ) : (
+                      <BreadcrumbItem>
+                        <BreadcrumbPage>No file selected</BreadcrumbPage>
                       </BreadcrumbItem>
-                    ))
-                  ) : (
-                    <BreadcrumbItem>
-                      <BreadcrumbPage>No file selected</BreadcrumbPage>
-                    </BreadcrumbItem>
-                  )}
-                </BreadcrumbList>
-              </Breadcrumb>
+                    )}
+                  </BreadcrumbList>
+                </Breadcrumb>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
             </header>
             <div className="flex-1 min-h-0 w-full overflow-hidden">
               {currentFile ? (
@@ -241,7 +245,7 @@ function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
       {codeRenderer && (
         <>
           <ResizableHandle withHandle />
-          <ResizablePanel defaultSize={40} minSize={30}>
+          <ResizablePanel defaultSize={50} minSize={30}>
             <div className="h-full w-full overflow-auto">{codeRenderer}</div>
           </ResizablePanel>
         </>

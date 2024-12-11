@@ -54,8 +54,8 @@ export function FileTree({
           )}
           onClick={() => onFileClick(item)}
         >
-          <File className="h-4 w-4" />
-          <span>{item.name}</span>
+          <File className="h-4 w-4 shrink-0" />
+          <span className="truncate">{item.name}</span>
         </button>
       )
     }
@@ -68,8 +68,8 @@ export function FileTree({
         )}
         onClick={() => onFileClick(item)}
       >
-        <File className="h-4 w-4" />
-        <span>{item.name}</span>
+        <File className="h-4 w-4 shrink-0" />
+        <span className="truncate">{item.name}</span>
       </button>
     )
   }
@@ -95,9 +95,9 @@ export function FileTree({
               ),
         )}
       >
-        <ChevronRight className="h-4 w-4 transition-transform" />
-        <Folder className="h-4 w-4" />
-        <span>{item.name}</span>
+        <ChevronRight className="h-4 w-4 shrink-0 transition-transform" />
+        <Folder className="h-4 w-4 shrink-0" />
+        <span className="truncate">{item.name}</span>
       </CollapsibleTrigger>
       <CollapsibleContent
         className={cn(variant === "sidebar" ? "pl-6" : "pl-4")}
