@@ -39,7 +39,7 @@ export const WithContent: Story = {
     versions: [1, 2, 3],
     activeVersion: 2,
     bubbleContent: "This is the content for version 2",
-    children: <div>Additional content can go here</div>,
+    children: <div className="h-screen">Additional content can go here</div>,
   },
 }
 

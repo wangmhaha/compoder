@@ -18,20 +18,66 @@ import {
 import { CodeIDEProps, FileNode } from "./interface"
 import { Editor } from "@monaco-editor/react"
 import { FileProvider, useFile } from "./context/FileContext"
-import { useToast } from "@/hooks/use-toast"
-import { ToastAction } from "@/components/ui/toast"
+import { useEffect, useState, useRef } from "react"
+import { cn } from "@/lib/utils"
+import { useTheme } from "next-themes"
+
+function EditorToast({
+  visible,
+  onReset,
+  onSave,
+}: {
+  visible: boolean
+  onReset: () => void
+  onSave: () => void
+}) {
+  if (!visible) return null
+
+  return (
+    <div
+      className={cn(
+        "fixed md:absolute bottom-4 right-4 z-50",
+        "bg-background border rounded-lg shadow-lg",
+        "p-4 min-w-[300px] max-w-[calc(100%-2rem)]",
+        "mx-auto left-4 md:left-auto",
+      )}
+    >
+      <div className="flex flex-col gap-2">
+        <div className="flex justify-between items-center">
+          <h4 className="font-semibold">Unsaved Changes</h4>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          You have unsaved changes in your files.
+        </p>
+        <div className="flex gap-2 justify-end mt-2">
+          <Button variant="outline" size="sm" onClick={onReset}>
+            Reset
+          </Button>
+          <Button size="sm" onClick={onSave}>
+            Save
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 // 创建一个内部组件来使用 useSidebar
-function CodeIDEContent({ data, readOnly }: CodeIDEProps) {
+function CodeIDEContent({ readOnly }: CodeIDEProps) {
   const { state, toggleSidebar } = useSidebar()
+  const { theme } = useTheme()
   const {
     currentFile,
     updateFileContent,
     resetChanges,
     saveChanges,
     initialFiles,
+    addUnsavedFile,
+    removeUnsavedFile,
+    unsavedFiles,
   } = useFile()
-  const { toast, dismiss } = useToast()
+  const [showToast, setShowToast] = useState(false)
+  const editorContainerRef = useRef<HTMLDivElement>(null)
 
   // 修改检查文件是否有更改的辅助函数
   const findFileById = (
@@ -48,10 +94,8 @@ function CodeIDEContent({ data, readOnly }: CodeIDEProps) {
     return undefined
   }
 
-  const checkForChanges = (newValue: string) => {
-    if (!currentFile) return false
-
-    const initialFile = findFileById(initialFiles, currentFile.id)
+  const checkForChanges = (fileId: string, newValue: string) => {
+    const initialFile = findFileById(initialFiles, fileId)
     return initialFile && initialFile.content !== newValue
   }
 
@@ -60,42 +104,31 @@ function CodeIDEContent({ data, readOnly }: CodeIDEProps) {
     if (currentFile && value !== undefined) {
       updateFileContent(currentFile.id, value)
 
-      // 检查是否有未保存的更改
-      const hasChanges = checkForChanges(value)
-
-      console.log("hasChanges", hasChanges)
+      // 检查当前文件是否有未保存的更改
+      const hasChanges = checkForChanges(currentFile.id, value)
 
       if (hasChanges) {
-        // 有更改时显示 toast
-        toast({
-          title: "Unsaved Changes",
-          description: "You have unsaved changes in your file.",
-          action: (
-            <div className="flex gap-2">
-              <ToastAction altText="Reset changes" onClick={resetChanges}>
-                Reset
-              </ToastAction>
-              <ToastAction altText="Save changes" onClick={saveChanges}>
-                Save
-              </ToastAction>
-            </div>
-          ),
-          duration: Infinity,
-          onOpenChange: open => {
-            if (!open) resetChanges()
-          },
-        })
+        addUnsavedFile(currentFile.id)
       } else {
-        // 没有更改时关闭所有 toast
-        dismiss()
+        removeUnsavedFile(currentFile.id)
       }
     }
   }
 
+  useEffect(() => {
+    if (unsavedFiles.size > 0) {
+      setShowToast(true)
+    } else {
+      setShowToast(false)
+    }
+  }, [unsavedFiles.size])
+
+  console.log("theme", theme)
+
   return (
-    <>
-      <AppSidebar data={data} />
-      <SidebarInset>
+    <div className="flex h-full w-full overflow-hidden">
+      <AppSidebar />
+      <SidebarInset className="flex flex-col w-full min-w-0">
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <Button
             variant="ghost"
@@ -126,20 +159,35 @@ function CodeIDEContent({ data, readOnly }: CodeIDEProps) {
             </BreadcrumbList>
           </Breadcrumb>
         </header>
-        <div className="flex flex-1 flex-col gap-4">
+        <div className="flex-1 min-h-0 w-full overflow-hidden">
           {currentFile ? (
-            <Editor
-              height="90vh"
-              language={currentFile.language || "typescript"}
-              value={currentFile.content}
-              theme="vs-dark"
-              options={{
-                minimap: { enabled: false },
-                fontSize: 14,
-                readOnly: readOnly,
-              }}
-              onChange={handleEditorChange}
-            />
+            <>
+              <div
+                ref={editorContainerRef}
+                className="h-full w-full relative overflow-hidden"
+              >
+                <Editor
+                  height="100%"
+                  width="100%"
+                  language={currentFile.language || "typescript"}
+                  value={currentFile.content}
+                  theme={theme === "dark" ? "vs-dark" : "light"}
+                  options={{
+                    minimap: { enabled: false },
+                    fontSize: 14,
+                    readOnly: readOnly,
+                    automaticLayout: true,
+                    scrollBeyondLastLine: false,
+                  }}
+                  onChange={handleEditorChange}
+                />
+              </div>
+              <EditorToast
+                visible={showToast}
+                onReset={resetChanges}
+                onSave={saveChanges}
+              />
+            </>
           ) : (
             <div className="flex items-center justify-center h-full text-muted-foreground">
               Select a file to view its content
@@ -147,7 +195,7 @@ function CodeIDEContent({ data, readOnly }: CodeIDEProps) {
           )}
         </div>
       </SidebarInset>
-    </>
+    </div>
   )
 }
 

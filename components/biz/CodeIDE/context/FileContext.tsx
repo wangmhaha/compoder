@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from "react"
 import type { FileNode } from "../interface"
 import { useToast } from "@/hooks/use-toast"
+import { flushSync } from "react-dom"
 
 interface FileContextType {
   files: FileNode[]
@@ -9,10 +10,13 @@ interface FileContextType {
   setCurrentFile: (file: FileNode | null) => void
   handleFileSelect: (file: FileNode) => void
   updateFileContent: (fileId: string, content: string) => void
-  hasUnsavedChanges: boolean
   resetChanges: () => void
   saveChanges: () => void
   initialFiles: FileNode[]
+  unsavedFiles: Set<string>
+  addUnsavedFile: (fileId: string) => void
+  removeUnsavedFile: (fileId: string) => void
+  hasUnsavedFiles: () => boolean
 }
 
 const FileContext = createContext<FileContextType | undefined>(undefined)
@@ -27,8 +31,8 @@ export function FileProvider({
   const { toast } = useToast()
   const [files, setFiles] = useState<FileNode[]>(initialFiles)
   const [currentFile, setCurrentFile] = useState<FileNode | null>(null)
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
   const [originalFiles, setOriginalFiles] = useState<FileNode[]>(initialFiles)
+  const [unsavedFiles, setUnsavedFiles] = useState<Set<string>>(new Set())
 
   const handleFileSelect = (file: FileNode) => {
     if (file.content) {
@@ -55,7 +59,29 @@ export function FileProvider({
     if (currentFile?.id === fileId) {
       setCurrentFile(prev => (prev ? { ...prev, content } : null))
     }
-    setHasUnsavedChanges(true)
+  }
+
+  const addUnsavedFile = (fileId: string) => {
+    flushSync(() => {
+      setUnsavedFiles(prev => {
+        const newSet = new Set(prev).add(fileId)
+        return newSet
+      })
+    })
+  }
+
+  const removeUnsavedFile = (fileId: string) => {
+    flushSync(() => {
+      setUnsavedFiles(prev => {
+        const newSet = new Set(prev)
+        newSet.delete(fileId)
+        return newSet
+      })
+    })
+  }
+
+  const clearUnsavedFiles = () => {
+    setUnsavedFiles(new Set())
   }
 
   const resetChanges = () => {
@@ -63,8 +89,8 @@ export function FileProvider({
     if (currentFile) {
       const originalFile = findFileById(originalFiles, currentFile.id)
       setCurrentFile(originalFile)
+      clearUnsavedFiles()
     }
-    setHasUnsavedChanges(false)
     toast({
       title: "Changes Reset",
       description: "Your changes have been reset to the last saved version.",
@@ -74,7 +100,9 @@ export function FileProvider({
 
   const saveChanges = () => {
     setOriginalFiles(files)
-    setHasUnsavedChanges(false)
+    if (currentFile) {
+      clearUnsavedFiles()
+    }
     toast({
       title: "Changes Saved",
       description: "Your changes have been saved successfully.",
@@ -102,10 +130,13 @@ export function FileProvider({
         setCurrentFile,
         handleFileSelect,
         updateFileContent,
-        hasUnsavedChanges,
         resetChanges,
         saveChanges,
         initialFiles,
+        unsavedFiles,
+        addUnsavedFile,
+        removeUnsavedFile,
+        hasUnsavedFiles: () => unsavedFiles.size > 0,
       }}
     >
       {children}

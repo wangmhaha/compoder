@@ -20,8 +20,8 @@ import {
 import { FileNode } from "../interface"
 import { useFile } from "../context/FileContext"
 
-export function AppSidebar({ data }: { data: FileNode[] }) {
-  const { handleFileSelect } = useFile()
+export function AppSidebar() {
+  const { handleFileSelect, files } = useFile()
 
   return (
     <Sidebar>
@@ -30,7 +30,7 @@ export function AppSidebar({ data }: { data: FileNode[] }) {
           <SidebarGroupLabel>Files</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {data.map((item, index) => (
+              {files.map((item, index) => (
                 <Tree key={index} item={item} onFileClick={handleFileSelect} />
               ))}
             </SidebarMenu>

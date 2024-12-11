@@ -1,10 +1,11 @@
 import React from "react"
 import type { Preview } from "@storybook/react"
-import { ThemeProvider } from "next-themes"
+import { ThemeProvider, useTheme } from "next-themes"
 import { Toaster } from "../components/ui/toaster"
 import "../app/globals.css"
 
 import { withThemeByClassName } from "@storybook/addon-themes"
+import { ThemeObserver } from "./ThemeObserver"
 
 const preview: Preview = {
   parameters: {
@@ -43,24 +44,26 @@ const preview: Preview = {
 }
 
 export const decorators = [
-  Story => (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <Story />
-      <Toaster />
-    </ThemeProvider>
-  ),
+  Story => {
+    return (
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <ThemeObserver />
+        <Story />
+        <Toaster />
+      </ThemeProvider>
+    )
+  },
   withThemeByClassName({
     themes: {
-      // nameOfTheme: 'classNameForTheme',
-      light: "",
+      light: "light",
       dark: "dark",
     },
-    defaultTheme: "light",
+    defaultTheme: "dark",
   }),
 ]
 
