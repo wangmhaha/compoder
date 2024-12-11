@@ -27,7 +27,6 @@ export function AppSidebar() {
                   item={item}
                   onFileClick={handleFileSelect}
                   variant="sidebar"
-                  defaultOpen={item.name === "components" || item.name === "ui"}
                 />
               ))}
             </SidebarMenu>

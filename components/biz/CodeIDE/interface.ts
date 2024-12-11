@@ -32,6 +32,7 @@ export interface CodeIDEProps {
   data: FileNode[]
   readOnly?: boolean
   onSave: (files: FileNode[]) => Promise<void> | void
+  codeRenderer?: React.ReactNode
 }
 
 export interface AppSidebarProps extends ComponentProps<typeof Sidebar> {
