@@ -3,7 +3,7 @@
 import { AppSidebarLayout } from "@/components/biz/AppSidebarLayout"
 import { Loading } from "@/components/biz/Loading"
 import { mockData } from "@/components/biz/AppSidebarLayout/mock-data"
-import useRoutes from "@/hooks/useRoutes"
+import useRoutes from "@/hooks/use-routes"
 import { useSession, signOut } from "next-auth/react"
 import { redirect } from "next/navigation"
 import { useEffect } from "react"

@@ -21,7 +21,6 @@ $ npx shadcn-ui init
 export const Default: Story = {
   args: {
     code: sampleCode,
-    autoScroll: true,
     showMacControls: true,
   },
 }
@@ -29,7 +28,6 @@ export const Default: Story = {
 export const WithoutMacControls: Story = {
   args: {
     code: sampleCode,
-    autoScroll: true,
     showMacControls: false,
   },
 }
@@ -38,7 +36,6 @@ export const CustomHeight: Story = {
   args: {
     code: sampleCode,
     className: "h-[300px]",
-    autoScroll: true,
     showMacControls: true,
   },
 }
@@ -54,10 +51,12 @@ const StreamingExample = () => {
 - event compiled client and server successfully in 188 ms (17 modules)
 - wait compiling...
 - event compiled successfully in 112 ms (17 modules)
-✨ Fast Refresh enabled.`
+✨ Fast Refresh enabled.
+
+`
 
   useEffect(() => {
-    const lines = fullCode.split("\n")
+    const lines = new Array(100).fill(fullCode).join("\n").split("\n")
     let currentLine = 0
 
     const interval = setInterval(() => {
@@ -67,7 +66,7 @@ const StreamingExample = () => {
       } else {
         clearInterval(interval)
       }
-    }, 800)
+    }, 100)
 
     return () => clearInterval(interval)
   }, [])
@@ -75,7 +74,6 @@ const StreamingExample = () => {
   return (
     <CodingBox
       code={streamingCode}
-      autoScroll={true}
       showMacControls={true}
       className="h-[300px]"
     />

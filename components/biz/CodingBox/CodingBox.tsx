@@ -1,31 +1,27 @@
-import React, { useEffect, useRef } from "react"
+import React, { useRef } from "react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
 import type { CodingBoxProps } from "./interface"
+import { useScrollToBottom } from "@/hooks/use-scroll"
 
 const CodingBox: React.FC<CodingBoxProps> = ({
   code = "",
   className,
-  autoScroll = true,
   showMacControls = true,
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (autoScroll && scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
-    }
-  }, [code, autoScroll])
+  useScrollToBottom(scrollRef, [code])
 
   return (
     <div
       className={cn(
-        "rounded-lg overflow-hidden bg-[#1E1E1E] shadow-lg",
+        "rounded-lg overflow-hidden shadow-lg",
+        "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800",
         className,
       )}
     >
       {showMacControls && (
-        <div className="h-7 bg-[#2D2D2D] flex items-center px-4">
+        <div className="h-7 flex items-center px-4 bg-zinc-100 dark:bg-zinc-800">
           <div className="flex gap-2">
             <div className="w-3 h-3 rounded-full bg-[#FF5F56]" />
             <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
@@ -37,7 +33,9 @@ const CodingBox: React.FC<CodingBoxProps> = ({
         ref={scrollRef}
         className="h-[calc(100%-28px)] p-4 font-mono text-sm"
       >
-        <pre className="text-white whitespace-pre-wrap">{code}</pre>
+        <pre className="whitespace-pre-wrap text-zinc-900 dark:text-zinc-100">
+          {code}
+        </pre>
       </ScrollArea>
     </div>
   )
