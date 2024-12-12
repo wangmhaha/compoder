@@ -6,6 +6,7 @@ import "../app/globals.css"
 
 import { withThemeByClassName } from "@storybook/addon-themes"
 import { ThemeObserver } from "./ThemeObserver"
+import { themes } from "@storybook/theming"
 
 const preview: Preview = {
   parameters: {
@@ -39,6 +40,10 @@ const preview: Preview = {
           },
         },
       },
+    },
+    docs: {
+      theme:
+        localStorage.getItem("theme") === "dark" ? themes.dark : themes.light,
     },
   },
 }

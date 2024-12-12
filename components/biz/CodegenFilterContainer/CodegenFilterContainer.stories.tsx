@@ -8,6 +8,7 @@ const meta = {
   parameters: {
     layout: "padded",
   },
+  tags: ["autodocs"],
 } satisfies Meta<typeof CodegenFilterContainer>
 
 export default meta

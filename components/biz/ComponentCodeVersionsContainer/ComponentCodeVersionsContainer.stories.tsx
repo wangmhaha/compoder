@@ -19,6 +19,7 @@ const ComponentCodeVersionsContainerWithState = (
 const meta: Meta<typeof ComponentCodeVersionsContainer> = {
   title: "Biz/ComponentCodeVersionsContainer",
   component: ComponentCodeVersionsContainer,
+  tags: ["autodocs"],
   render: args => <ComponentCodeVersionsContainerWithState {...args} />,
 }
 

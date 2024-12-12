@@ -7,6 +7,7 @@ import { sampleData } from "./mock"
 const meta = {
   title: "Biz/CodeIDE",
   component: CodeIDE,
+  tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
   },

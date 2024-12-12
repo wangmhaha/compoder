@@ -144,6 +144,9 @@ importers:
       '@storybook/addons':
         specifier: ^7.6.17
         version: 7.6.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/api':
+        specifier: ^7.6.17
+        version: 7.6.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/blocks':
         specifier: ^8.3.6
         version: 8.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.6(prettier@2.8.8))
@@ -162,6 +165,9 @@ importers:
       '@storybook/test':
         specifier: ^8.3.6
         version: 8.4.6(storybook@8.4.6(prettier@2.8.8))
+      '@storybook/theming':
+        specifier: ^8.4.7
+        version: 8.4.7(storybook@8.4.6(prettier@2.8.8))
       '@types/autosize':
         specifier: ^4.0.3
         version: 4.0.3
@@ -2630,6 +2636,11 @@ packages:
 
   '@storybook/theming@8.4.6':
     resolution: {integrity: sha512-q7vDPN/mgj7cXIVQ9R1/V75hrzNgKkm2G0LjMo57//9/djQ+7LxvBsR1iScbFIRSEqppvMiBFzkts+2uXidySA==}
+    peerDependencies:
+      storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
+
+  '@storybook/theming@8.4.7':
+    resolution: {integrity: sha512-99rgLEjf7iwfSEmdqlHkSG3AyLcK0sfExcr0jnc6rLiAkBhzuIsvcHjjUwkR210SOCgXqBPW0ZA6uhnuyppHLw==}
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
@@ -8607,6 +8618,10 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
 
   '@storybook/theming@8.4.6(storybook@8.4.6(prettier@2.8.8))':
+    dependencies:
+      storybook: 8.4.6(prettier@2.8.8)
+
+  '@storybook/theming@8.4.7(storybook@8.4.6(prettier@2.8.8))':
     dependencies:
       storybook: 8.4.6(prettier@2.8.8)
 

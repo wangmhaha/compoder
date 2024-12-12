@@ -6,6 +6,7 @@ import type { ComponentItem } from "../ComponentCodeList/interface"
 const meta: Meta<typeof ComponentCodeFilterContainer> = {
   title: "Biz/ComponentCodeFilterContainer",
   component: ComponentCodeFilterContainer,
+  tags: ["autodocs"],
 }
 
 export default meta

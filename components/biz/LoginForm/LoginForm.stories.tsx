@@ -4,6 +4,7 @@ import { LoginForm } from "./index"
 const meta: Meta<typeof LoginForm> = {
   title: "biz/LoginForm",
   component: LoginForm,
+  tags: ["autodocs"],
 }
 
 export default meta

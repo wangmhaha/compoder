@@ -5,6 +5,7 @@ import { JobItem } from "./interface"
 const meta = {
   title: "Biz/CodegenList",
   component: CodegenList,
+  tags: ["autodocs"],
 } satisfies Meta<typeof CodegenList>
 
 export default meta

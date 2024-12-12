@@ -7,6 +7,7 @@ import { NavMainItem, UserInfo } from "./interface"
 
 const meta: Meta<typeof AppSidebarLayout> = {
   component: AppSidebarLayout,
+  tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
     nextjs: {

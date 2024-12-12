@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 const meta = {
   title: "Biz/ComponentCodeList",
   component: ComponentCodeList,
+  tags: ["autodocs"],
 } satisfies Meta<typeof ComponentCodeList>
 
 export default meta
