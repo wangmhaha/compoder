@@ -20,6 +20,7 @@ const ChatInput = React.memo(
     disabled,
     images,
     onImageRemove,
+    loadingSlot,
   }: ChatInputProps) => {
     const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -96,6 +97,9 @@ const ChatInput = React.memo(
           <div
             className={cn("relative h-full w-full bg-background rounded-lg")}
           >
+            {/* Loading slot */}
+            {loading && loadingSlot && <div className="p-2">{loadingSlot}</div>}
+
             {/* Image preview area */}
             {images && images.length > 0 && (
               <div className="flex flex-wrap gap-1.5 p-2">

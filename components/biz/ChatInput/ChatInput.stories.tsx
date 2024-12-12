@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { ImageIcon, Smile, Link2, Code2 } from "lucide-react"
 import {
@@ -10,10 +10,10 @@ import {
 // import { themes } from "@storybook/theming"
 import { Meta, StoryFn } from "@storybook/react"
 import ChatInput from "./ChatInput"
+import { CodingBox } from "../CodingBox"
 
 // 在文件顶部添加示例图片URL，添加 &w=100&h=100 参数来获取缩略图
 const EXAMPLE_IMAGES = [
-  "https://images.unsplash.com/photo-1706875207512-9ebc0b82c0b3?w=48&h=48&fit=crop",
   "https://images.unsplash.com/photo-1682687982501-1e58ab814714?w=48&h=48&fit=crop",
 ]
 
@@ -183,4 +183,85 @@ WithMultipleImages.args = {
     console.log("Removing image at index:", index)
   },
   actions: WithMultipleActions.args.actions,
+}
+
+// 首先添加 StreamingExample 组件
+const StreamingExample = () => {
+  const [streamingCode, setStreamingCode] = useState(`$ please enter your prompt
+
+> generate a component for a login page
+
+🚀 compoder running...
+`)
+  const fullCode = `
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Select } from "@/components/ui/select"
+import { Checkbox } from "@/components/ui/checkbox"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+export default function Component() {
+  return (
+    <div>
+      <Button>Click me</Button>
+      <Input placeholder="Type something..." />
+      <Textarea placeholder="Write your thoughts here..." />
+      <Select>
+        <SelectItem value="option1">Option 1</SelectItem>
+        <SelectItem value="option2">Option 2</SelectItem>
+      </Select>
+      <Checkbox />
+      <RadioGroup>
+        <RadioGroupItem value="option1">Option 1</RadioGroupItem>
+        <RadioGroupItem value="option2">Option 2</RadioGroupItem>
+      </RadioGroup>
+    </div>
+  )
+}
+`
+
+  useEffect(() => {
+    const lines = new Array(100).fill(fullCode).join("\n").split("\n")
+    let currentLine = 0
+
+    const interval = setInterval(() => {
+      if (currentLine < lines.length) {
+        setStreamingCode(prev => prev + (prev ? "\n" : "") + lines[currentLine])
+        currentLine++
+      } else {
+        clearInterval(interval)
+      }
+    }, 100)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <CodingBox
+      code={streamingCode}
+      showMacControls={true}
+      className="h-[300px]"
+    />
+  )
+}
+
+// 添加带有 loadingSlot 的示例
+export const WithLoadingSlot = Template.bind({})
+WithLoadingSlot.args = {
+  loading: true,
+  loadingSlot: <StreamingExample />,
+  actions: WithMultipleActions.args.actions,
+}
+
+// 添加完整功能且带有 loadingSlot 的示例
+export const FullFeaturedWithLoadingSlot = Template.bind({})
+FullFeaturedWithLoadingSlot.args = {
+  loading: true,
+  loadingSlot: <StreamingExample />,
+  images: EXAMPLE_IMAGES,
+  onImageRemove: (index: number) => {
+    console.log("Removing image at index:", index)
+  },
+  actions: WithMultipleActions.args.actions,
+  value: "Processing your request...",
 }
