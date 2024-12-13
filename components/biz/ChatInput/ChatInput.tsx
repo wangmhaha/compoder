@@ -8,6 +8,7 @@ import { toast } from "@/hooks/use-toast"
 import { ChatInputProps } from "./interface"
 import autosize from "autosize"
 import ImagePreview from "./ImagePreview"
+import { motion, AnimatePresence } from "framer-motion"
 
 const ChatInput = React.memo(
   ({
@@ -98,7 +99,19 @@ const ChatInput = React.memo(
             className={cn("relative h-full w-full bg-background rounded-lg")}
           >
             {/* Loading slot */}
-            {loading && loadingSlot && <div className="p-2">{loadingSlot}</div>}
+            <AnimatePresence>
+              {loading && loadingSlot && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="overflow-hidden"
+                >
+                  <div className="p-2">{loadingSlot}</div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Image preview area */}
             {images && images.length > 0 && (

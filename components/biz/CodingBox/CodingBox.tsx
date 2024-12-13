@@ -3,7 +3,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
 import type { CodingBoxProps } from "./interface"
 import { useScrollToBottom } from "@/hooks/use-scroll"
-import MatrixRain from "../MatrixRain/MatrixRain"
+import { MatrixRain } from "../MatrixRain"
 
 const CodingBox: React.FC<CodingBoxProps> = ({
   code = "",

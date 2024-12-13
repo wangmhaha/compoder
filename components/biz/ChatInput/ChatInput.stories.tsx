@@ -11,8 +11,10 @@ import {
 import { Meta, StoryFn } from "@storybook/react"
 import ChatInput from "./ChatInput"
 import { CodingBox } from "../CodingBox"
+import { motion } from "framer-motion"
+import { CompoderThinkingLoading } from "../CompoderThinkingLoading"
 
-// 在文件顶部添加示例图片URL，添加 &w=100&h=100 参数来获取缩略图
+// Add example image URLs with &w=100&h=100 parameters to get thumbnails
 const EXAMPLE_IMAGES = [
   "https://images.unsplash.com/photo-1682687982501-1e58ab814714?w=48&h=48&fit=crop",
 ]
@@ -237,11 +239,17 @@ export default function Component() {
   }, [])
 
   return (
-    <CodingBox
-      code={streamingCode}
-      showMacControls={true}
-      className="h-[300px]"
-    />
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <CodingBox
+        code={streamingCode}
+        showMacControls={true}
+        className="h-[300px]"
+      />
+    </motion.div>
   )
 }
 
@@ -264,4 +272,63 @@ FullFeaturedWithLoadingSlot.args = {
   },
   actions: WithMultipleActions.args.actions,
   value: "Processing your request...",
+}
+
+// Add a simple animated loading component
+export const SimpleLoadingAnimation = Template.bind({})
+SimpleLoadingAnimation.args = {
+  loading: true,
+  loadingSlot: <CompoderThinkingLoading />,
+  actions: WithMultipleActions.args.actions,
+}
+
+// Add a toggleable loading state example component
+const LoadingToggleExample = () => {
+  const [value, setValue] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [loadingSlot, setLoadingSlot] = useState(<CompoderThinkingLoading />)
+
+  const handleSubmit = () => {
+    if (!value.trim()) return
+    setIsLoading(true)
+    // Simulate a 3 second response
+    setTimeout(() => {
+      setLoadingSlot(<StreamingExample />)
+    }, 3000)
+
+    setTimeout(() => {
+      setIsLoading(false)
+      setLoadingSlot(<CompoderThinkingLoading />)
+      setValue("")
+    }, 6000)
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="text-sm text-muted-foreground">
+        Type something and hit enter to see the loading animation
+      </div>
+      <ChatInput
+        value={value}
+        onChange={setValue}
+        onSubmit={handleSubmit}
+        loading={isLoading}
+        loadingSlot={loadingSlot}
+        actions={WithMultipleActions.args?.actions || []}
+      />
+    </div>
+  )
+}
+
+// Add interactive loading state example
+export const InteractiveLoading: StoryFn<typeof ChatInput> = () => (
+  <LoadingToggleExample />
+)
+InteractiveLoading.parameters = {
+  docs: {
+    description: {
+      story:
+        "Type a message and press enter to see the loading animation in action.",
+    },
+  },
 }
