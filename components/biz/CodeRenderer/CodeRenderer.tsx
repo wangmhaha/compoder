@@ -1,13 +1,18 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react"
 import type { CodeRendererProps } from "./interface"
+import { cn } from "@/lib/utils"
+import { ErrorToast } from "./ErrorToast"
 
 export const CodeRenderer: FC<CodeRendererProps> = ({
   codeRendererServer,
   onFixError,
+  className,
   codes,
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const [isIframeLoaded, setIsIframeLoaded] = useState(false)
+  const [showErrorToast, setShowErrorToast] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
 
   const sendMessage = useCallback(() => {
     if (iframeRef.current) {
@@ -15,8 +20,8 @@ export const CodeRenderer: FC<CodeRendererProps> = ({
         {
           type: "artifacts",
           data: {
-            codeType: "tsx",
-            codeContent: codes,
+            files: codes,
+            entryFile: "App.tsx",
           },
         },
         codeRendererServer,
@@ -30,8 +35,9 @@ export const CodeRenderer: FC<CodeRendererProps> = ({
         sendMessage()
         setIsIframeLoaded(true)
       }
-      if (event.data.type === "retry") {
-        onFixError(event.data.data.errorMessage)
+      if (event.data.type === "error") {
+        setErrorMessage(event.data.errorMessage)
+        setShowErrorToast(true)
       }
     }
 
@@ -48,8 +54,13 @@ export const CodeRenderer: FC<CodeRendererProps> = ({
     }
   }, [codes, isIframeLoaded, sendMessage])
 
+  const handleFixError = () => {
+    onFixError(errorMessage)
+    setShowErrorToast(false)
+  }
+
   return (
-    <div className="w-full h-full p-6">
+    <div className={cn("w-full h-full p-6 relative", className)}>
       <iframe
         ref={iframeRef}
         src={`${codeRendererServer}`}
@@ -57,6 +68,9 @@ export const CodeRenderer: FC<CodeRendererProps> = ({
         className="w-full h-full border-0"
         onLoad={() => setIsIframeLoaded(true)}
       />
+      {showErrorToast && (
+        <ErrorToast message={errorMessage} onFix={handleFixError} />
+      )}
     </div>
   )
 }

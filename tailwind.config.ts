@@ -70,11 +70,16 @@ const config: Config = {
       animation: {
         gradient: "gradient 6s linear infinite",
         "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "slide-up": "slideUp 0.3s ease-out",
       },
       keyframes: {
         gradient: {
           "0%": { backgroundPosition: "0% 0%" },
           "100%": { backgroundPosition: "200% 0%" },
+        },
+        slideUp: {
+          "0%": { transform: "translateY(100%)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
         },
       },
     },

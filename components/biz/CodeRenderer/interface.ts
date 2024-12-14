@@ -6,5 +6,8 @@ export interface CodeFile {
 export interface CodeRendererProps {
   codeRendererServer: string
   onFixError: (errorMessage: string) => void
-  codes: CodeFile[] | string
+  codes: {
+    [key: string]: string
+  }
+  className?: string
 }

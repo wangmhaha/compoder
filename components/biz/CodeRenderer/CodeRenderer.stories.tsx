@@ -13,37 +13,87 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-const mockCode = `
-import React from 'react';
-
-export default function Button() {
-  return (
-    <button className="px-4 py-2 bg-blue-500 text-white rounded">
-      Click me
-    </button>
-  );
-}
-`
-
-const mockFiles = [
-  {
-    filePath: "Button.tsx",
-    content: mockCode,
-  },
-]
-
 export const SingleFile: Story = {
   args: {
-    codeRendererServer: "http://localhost:3001",
+    codeRendererServer: "http://localhost:8002/artifacts",
     onFixError: error => console.log("Error:", error),
-    codes: mockCode,
+    className: "h-[500px]",
+    codes: {
+      "App.tsx": `
+    import React from 'react';
+    import { Button } from 'antd';
+    
+    export default function App() {
+      return (
+        <div style={{ padding: 20, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Button>single file render antd button</Button>
+        </div>
+      );
+    }
+    `,
+    },
   },
 }
 
 export const MultipleFiles: Story = {
   args: {
-    codeRendererServer: "http://localhost:3001",
+    codeRendererServer: "http://localhost:8002/artifacts",
     onFixError: error => console.log("Error:", error),
-    codes: mockFiles,
+    codes: {
+      "App.tsx": `
+    import React from 'react';
+    import Button from './Button';
+    
+    export default function App() {
+      return (
+        <div style={{ padding: 20, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Button />
+        </div>
+      );
+    }
+    `,
+      "Button.tsx": `
+    import React from 'react';
+    import { Button as AntdButton } from 'antd';
+    
+    export default function Button() {
+      return (
+        <AntdButton>multiple files render antd button</AntdButton>
+      );
+    }
+    `,
+    },
+  },
+}
+
+export const withError: Story = {
+  args: {
+    ...SingleFile.args,
+    onFixError: error => console.log("Error:", error),
+    className: "h-screen relative",
+    codes: {
+      "App.tsx": `
+    import React from 'react';
+    import Button from './Butt
+    
+    export default function App() {
+      return (
+        <div style={{ padding: 20, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Button />
+        </div>
+      );
+    }
+    `,
+      "Button.tsx": `
+    import React from 'react';
+    import { Button as AntdButton } from 'antd';
+    
+    export default function Button() {
+      return (
+        <AntdButton>multiple files render antd button</AntdButton>
+      );
+    }
+    `,
+    },
   },
 }
