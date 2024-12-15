@@ -9,6 +9,8 @@ import {
   BreadcrumbItem,
 } from "@/components/ui/breadcrumb"
 import type { AppHeaderProps } from "./interface"
+import React from "react"
+import Link from "next/link"
 
 export function AppHeader({ className, breadcrumbs }: AppHeaderProps) {
   return (
@@ -21,16 +23,15 @@ export function AppHeader({ className, breadcrumbs }: AppHeaderProps) {
         <Breadcrumb>
           <BreadcrumbList>
             {breadcrumbs?.map((item, index) => (
-              <>
+              <React.Fragment key={item.label}>
                 <BreadcrumbItem
-                  key={item.label}
                   className={
                     index < breadcrumbs.length - 1 ? "hidden md:block" : ""
                   }
                 >
                   {item.href ? (
-                    <BreadcrumbLink href={item.href}>
-                      {item.label}
+                    <BreadcrumbLink asChild>
+                      <Link href={item.href}>{item.label}</Link>
                     </BreadcrumbLink>
                   ) : (
                     <BreadcrumbPage>{item.label}</BreadcrumbPage>
@@ -39,7 +40,7 @@ export function AppHeader({ className, breadcrumbs }: AppHeaderProps) {
                 {index < breadcrumbs.length - 1 && (
                   <BreadcrumbSeparator className="hidden md:block" />
                 )}
-              </>
+              </React.Fragment>
             ))}
           </BreadcrumbList>
         </Breadcrumb>

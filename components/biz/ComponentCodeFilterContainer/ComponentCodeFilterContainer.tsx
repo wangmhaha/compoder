@@ -16,6 +16,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
+import { cn } from "@/lib/utils"
 import type {
   ComponentCodeFilterContainerProps,
   FilterField,
@@ -33,11 +34,12 @@ const ComponentCodeFilterContainer: React.FC<
   onSearchChange,
   onFilterFieldChange,
   children,
+  className,
 }) => {
   const totalPages = Math.ceil(total / pageSize)
 
   return (
-    <div className="space-y-6">
+    <div className={cn("space-y-6", className)}>
       <div className="flex items-center gap-3 border rounded-lg bg-background p-2">
         <div className="flex-1 flex items-center gap-2">
           <Search className="h-4 w-4 text-muted-foreground ml-2 flex-shrink-0" />

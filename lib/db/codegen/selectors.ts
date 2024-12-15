@@ -21,7 +21,7 @@ export async function findCodegens(params: CodegenApi.ListRequest) {
 
   const [data, total] = await Promise.all([
     CodegenModel.find(query)
-      .select("title description fullStack")
+      .select("   title description fullStack")
       .skip(skip)
       .limit(pageSize)
       .lean(),

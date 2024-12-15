@@ -15,7 +15,7 @@ const CodegenGuide = ({
   subtitle = "Use one of the most common prompts below or use your own to begin",
 }: CodegenGuideProps) => {
   return (
-    <div className="w-full max-w-4xl mx-auto p-6">
+    <div className="w-full max-w-4xl mx-auto">
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-2">
           Hi,{" "}

@@ -6,11 +6,11 @@ export interface CodegenFilterContainerProps {
   /** Whether it is loading */
   isLoading?: boolean
   /** Currently selected tech stack */
-  selectedStack?: StackType | "all"
+  selectedStack?: StackType | "All"
   /** Search keyword */
   searchKeyword?: string
   /** Tech stack change callback */
-  onStackChange?: (stack: StackType | "all") => void
+  onStackChange?: (stack: StackType) => void
   /** Search keyword change callback */
   onSearchChange?: (keyword: string) => void
   /** Load more callback */

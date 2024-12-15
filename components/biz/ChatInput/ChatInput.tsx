@@ -22,6 +22,7 @@ const ChatInput = React.memo(
     images,
     onImageRemove,
     loadingSlot,
+    className,
   }: ChatInputProps) => {
     const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -85,7 +86,7 @@ const ChatInput = React.memo(
     )
 
     return (
-      <div className="w-full space-y-4">
+      <div className={cn("w-full space-y-4", className)}>
         <div
           className={cn(
             "relative rounded-lg",

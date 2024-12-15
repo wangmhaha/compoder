@@ -77,4 +77,5 @@ const CodegenSchema = new mongoose.Schema<Codegen>(
   },
 )
 
-export const CodegenModel = mongoose.model<Codegen>("Codegen", CodegenSchema)
+export const CodegenModel =
+  mongoose.models.Codegen || mongoose.model<Codegen>("Codegen", CodegenSchema)

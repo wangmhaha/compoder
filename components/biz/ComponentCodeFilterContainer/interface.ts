@@ -19,4 +19,5 @@ export interface ComponentCodeFilterContainerProps {
   onFilterFieldChange: (field: FilterField) => void
   /** Child components */
   children: React.ReactNode
+  className?: string
 }

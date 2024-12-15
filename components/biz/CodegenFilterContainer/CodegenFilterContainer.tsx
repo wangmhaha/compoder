@@ -11,7 +11,7 @@ import type { StackType } from "../CodegenList/interface"
 export function CodegenFilterContainer({
   hasMore = false,
   isLoading = false,
-  selectedStack = "all",
+  selectedStack = "All",
   searchKeyword = "",
   onStackChange,
   onSearchChange,
@@ -44,17 +44,17 @@ export function CodegenFilterContainer({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <Tabs
           value={selectedStack}
-          onValueChange={value => onStackChange?.(value as StackType | "all")}
+          onValueChange={value => onStackChange?.(value as StackType)}
           className="w-full sm:w-auto"
         >
           <TabsList className="w-full sm:w-auto">
-            <TabsTrigger value="all" className="flex-1 sm:flex-none">
+            <TabsTrigger value="All" className="flex-1 sm:flex-none">
               All
             </TabsTrigger>
-            <TabsTrigger value="react" className="flex-1 sm:flex-none">
+            <TabsTrigger value="React" className="flex-1 sm:flex-none">
               React
             </TabsTrigger>
-            <TabsTrigger value="vue" className="flex-1 sm:flex-none">
+            <TabsTrigger value="Vue" className="flex-1 sm:flex-none">
               Vue
             </TabsTrigger>
           </TabsList>

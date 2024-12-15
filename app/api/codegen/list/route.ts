@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
 import { findCodegens } from "@/lib/db/codegen/selectors"
-import { CodegenApi } from "./types"
+import { CodegenApi } from "../types"
 import { validateSession } from "@/lib/auth/middleware"
+import { connectToDatabase } from "@/lib/db/mongo"
 
 export async function GET(req: NextRequest) {
   try {
+    await connectToDatabase()
     // Add identity verification check
     const authError = await validateSession()
     if (authError) {

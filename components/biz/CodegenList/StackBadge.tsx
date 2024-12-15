@@ -7,9 +7,9 @@ interface StackBadgeProps {
 
 export function StackBadge({ stack }: StackBadgeProps) {
   const variants = {
-    react:
+    React:
       "bg-blue-50 text-blue-600/80 dark:bg-blue-950 dark:text-blue-300/80 font-normal",
-    vue: "bg-emerald-50 text-emerald-600/80 dark:bg-emerald-950 dark:text-emerald-300/80 font-normal",
+    Vue: "bg-emerald-50 text-emerald-600/80 dark:bg-emerald-950 dark:text-emerald-300/80 font-normal",
   }
 
   return (

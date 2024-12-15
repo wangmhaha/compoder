@@ -9,4 +9,5 @@ export interface ChatInputProps {
   images?: string[]
   onImageRemove?: (index: number) => void
   loadingSlot?: React.ReactNode
+  className?: string
 }

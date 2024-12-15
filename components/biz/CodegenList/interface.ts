@@ -1,4 +1,4 @@
-type StackType = "react" | "vue"
+type StackType = "React" | "Vue"
 
 interface JobItem {
   id: string

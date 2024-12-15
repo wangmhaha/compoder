@@ -10,7 +10,7 @@ declare namespace CodegenApi {
   }
   // codegen list response
   export interface ListResponse {
-    data: Pick<Codegen, "title" | "description" | "fullStack">[]
+    data: Pick<Codegen, "_id" | "title" | "description" | "fullStack">[]
     total: number
   }
 }

@@ -4,6 +4,7 @@ import localFont from "next/font/local"
 import { ThemeProvider } from "@/components/provider/theme-provider"
 import "./globals.css"
 import { Toaster } from "@/components/ui/toaster"
+import { QueryProvider } from "@/components/provider/query-provider"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,20 +29,22 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased fixed w-full h-full overflow-hidden overscroll-behavior-none`}
       >
-        <SessionProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
-        </SessionProvider>
+        <QueryProvider>
+          <SessionProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </SessionProvider>
+        </QueryProvider>
         <Toaster />
       </body>
     </html>
