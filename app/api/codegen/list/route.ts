@@ -6,12 +6,13 @@ import { connectToDatabase } from "@/lib/db/mongo"
 
 export async function GET(req: NextRequest) {
   try {
-    await connectToDatabase()
     // Add identity verification check
     const authError = await validateSession()
     if (authError) {
       return authError
     }
+
+    await connectToDatabase()
 
     const searchParams = req.nextUrl.searchParams
 

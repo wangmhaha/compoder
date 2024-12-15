@@ -14,3 +14,9 @@ export async function validateSession() {
 
   return null
 }
+
+// get session
+export async function getUserId() {
+  const session = await getServerSession(authOptions)
+  return session?.user?.id
+}

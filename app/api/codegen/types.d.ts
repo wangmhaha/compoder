@@ -13,4 +13,20 @@ declare namespace CodegenApi {
     data: Pick<Codegen, "_id" | "title" | "description" | "fullStack">[]
     total: number
   }
+  // codegen detail request
+  export interface DetailRequest {
+    id: string
+  }
+  // codegen detail response
+  export interface DetailResponse {
+    data: Pick<
+      Codegen,
+      | "_id"
+      | "title"
+      | "description"
+      | "fullStack"
+      | "guides"
+      | "codeRendererUrl"
+    >
+  }
 }

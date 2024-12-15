@@ -1,5 +1,6 @@
 import { CodegenModel } from "./schema"
 import { CodegenApi } from "@/app/api/codegen/types"
+import { Codegen } from "./types"
 
 export async function findCodegens(params: CodegenApi.ListRequest) {
   const { page, pageSize, name, fullStack } = params
@@ -32,4 +33,23 @@ export async function findCodegens(params: CodegenApi.ListRequest) {
     data,
     total,
   }
+}
+
+export async function findCodegenById(id: string) {
+  const codegen = await CodegenModel.findById(id)
+    .select("_id title description fullStack guides codeRendererUrl")
+    .lean<
+      Pick<
+        Codegen,
+        "title" | "description" | "fullStack" | "guides" | "codeRendererUrl"
+      > & {
+        _id: string
+      }
+    >()
+
+  if (!codegen) {
+    throw new Error("Codegen not found")
+  }
+
+  return codegen
 }
