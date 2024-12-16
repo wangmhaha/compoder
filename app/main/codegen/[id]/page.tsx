@@ -30,7 +30,6 @@ export default function CodegenDetailPage() {
               },
             ]}
             name="Mui Coder"
-            subtitle="Choose from our curated list of AI prompts"
           />
           <ChatInput
             className="mt-6"

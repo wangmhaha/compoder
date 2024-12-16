@@ -53,3 +53,9 @@ export async function findCodegenById(id: string) {
 
   return codegen
 }
+
+// get rules by codegenId
+export async function getRulesByCodegenId(codegenId: string) {
+  const codegen = await CodegenModel.findById(codegenId)
+  return codegen?.rules
+}

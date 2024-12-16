@@ -13,6 +13,7 @@
     "init-codegen": "tsx lib/db/codegen/init.ts"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^1.0.8",
     "@auth/mongodb-adapter": "^3.7.4",
     "@emotion/is-prop-valid": "^1.3.1",
     "@monaco-editor/react": "^4.6.0",
@@ -34,6 +35,7 @@
     "@radix-ui/react-tooltip": "^1.1.4",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tanstack/react-query": "^5.62.7",
+    "ai": "^4.0.18",
     "autosize": "^6.0.1",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",

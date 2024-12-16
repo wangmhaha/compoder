@@ -15,8 +15,8 @@ const CodegenGuide = ({
   subtitle = "Use one of the most common prompts below or use your own to begin",
 }: CodegenGuideProps) => {
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      <div className="mb-8">
+    <div className="w-full max-w-4xl mx-auto flex flex-col items-center">
+      <div className="mb-4 text-center">
         <h1 className="text-4xl font-bold mb-2">
           Hi,{" "}
           <span className="bg-gradient-to-r from-violet-500 via-purple-500 to-blue-600 text-transparent bg-clip-text">
@@ -35,15 +35,15 @@ const CodegenGuide = ({
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="flex flex-wrap gap-4 justify-center w-full">
         {prompts.map((prompt, index) => (
           <Card
             key={index}
-            className="hover:shadow-lg transition-shadow duration-200"
+            className="hover:shadow-lg transition-shadow duration-200 min-w-[240px]"
           >
             <CardContent className="p-0">
               <div
-                className="w-full h-[55px] p-2 cursor-pointer hover:bg-accent/50 transition-colors"
+                className="w-full p-2 px-4 cursor-pointer hover:bg-accent/50 transition-colors"
                 onClick={prompt.onClick}
               >
                 <div className="w-full">
