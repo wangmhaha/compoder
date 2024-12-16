@@ -13,13 +13,13 @@ export function getPrivateComponentDocs(rules: CodegenRule[]) {
 }
 
 export function getPrivateDocsDescription(rules: CodegenRule[]): string {
-  const configJson = getPrivateComponentDocs(rules)
+  const docs = getPrivateComponentDocs(rules)
   const basicPublicComponentLibrary = getPublicComponentsRule(rules)
 
   // Check if configJson is empty or not an object
-  if (!configJson || Object.keys(configJson).length === 0) {
+  if (!docs || Object.keys(docs).length === 0) {
     return basicPublicComponentLibrary
-      ? `- ${basicPublicComponentLibrary}中所有的组件`
+      ? `- All components in ${basicPublicComponentLibrary}`
       : ""
   }
 
@@ -27,26 +27,26 @@ export function getPrivateDocsDescription(rules: CodegenRule[]): string {
 
   if (!!basicPublicComponentLibrary) {
     templates.push(`
-        - ${basicPublicComponentLibrary}中所有的组件
+        - All components in ${basicPublicComponentLibrary}
       `)
   }
 
-  for (const namespace in configJson) {
-    if (configJson.hasOwnProperty(namespace)) {
-      const components = configJson[namespace]
+  for (const namespace in docs) {
+    if (docs.hasOwnProperty(namespace)) {
+      const components = docs[namespace]
       let componentDescriptions = ""
 
       for (const key in components) {
         if (components.hasOwnProperty(key)) {
           const component = components[key]
           componentDescriptions += `
-  ${key}：${component.description}
+  ${key}: ${component.description}
   `
         }
       }
 
       const template = `
-  - ${namespace}中的组件，如下内容是对${namespace}组件的描述（只能使用以下列出的组件名称）
+  - Components in ${namespace}, below are descriptions of ${namespace} components (can only use component names listed below)
   ---------------------
   ${componentDescriptions.trim()}
   ---------------------

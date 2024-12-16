@@ -1,47 +1,35 @@
 import { PassThrough } from "stream"
 import { CodegenRule } from "@/lib/db/codegen/types"
+import { LanguageModel } from "ai"
+import { Prompt } from "@/lib/db/componentCode/types"
 
 export interface WorkflowContext {
   stream: PassThrough
   query: {
-    text?: string
-    model: string
+    prompt: Prompt[]
+    aiModel: LanguageModel
     rules: CodegenRule[]
+    userId: string
     component?: {
       name: string
-      customName: string
-      description: string
       code: string
-      imgUrl?: string
+      prompt: Prompt[]
     }
-    userId: string
-    codeType: string
-    description: string
-    imgUrl?: string
-    ai?: {
-      key: string
-      baseUrl: string
-    }
-    designComponentMessages?: string
   }
 
   state: {
-    designTask?: {
-      name: string
-      description: {
-        user: string
-        llm: string
-      }
-      retrievedAugmentationContent?: string
-      generateComponentPrompt: Array<{
-        role: "user" | "assistant"
-        content:
-          | string
-          | Array<{ type: string; text: string; image_url?: { url: string } }>
+    designTask: {
+      componentName: string
+      componentDescription: string
+      library: Array<{
+        name: string
+        components: string[]
+        description: string
       }>
+      retrievedAugmentationContent?: string
     }
-    generatedCode?: string
-    processedComponent?: {
+    generatedCode: string
+    processedComponent: {
       version: string
       code: string
     }

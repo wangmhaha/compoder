@@ -16,7 +16,7 @@ export type Version = {
   versionId: string
   description: string
   code: string
-  prompt: Prompt | Prompt[]
+  prompt: Prompt[]
 }
 
 export interface ComponentCode {

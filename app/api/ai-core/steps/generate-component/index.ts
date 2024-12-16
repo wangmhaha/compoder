@@ -1,29 +1,28 @@
+import { streamText } from "ai"
+import { buildSystemPrompt, generateComponentMessage } from "./utils"
 import { WorkflowContext } from "../../type"
 
-export const createComponent = async (
+export const generateComponent = async (
   context: WorkflowContext,
 ): Promise<WorkflowContext> => {
-  const openai = getOpenAI(context.query.ai?.key, context.query.ai?.baseUrl, {
-    parent: context.trace.span,
-    generationName: "create-component",
-    tags: [context.query.codeType],
-  })
-
   context.stream.write("start call codegen-ai \n")
 
   let completion = ""
   let generated_code = ""
 
-  const stream = await openai.chat.completions.create({
-    stream: true,
-    model: getPromptModel(context.query.codeType),
-    messages: context.state.designTask!.generateComponentPrompt,
+  const stream = await streamText({
+    system: buildSystemPrompt(
+      context.query.rules,
+      context.state.designTask?.retrievedAugmentationContent,
+    ),
+    model: context.query.aiModel,
+    messages: generateComponentMessage(context),
   })
 
-  for await (const part of stream) {
+  for await (const part of stream.textStream) {
     try {
-      process.stdout.write(part?.choices?.[0]?.delta?.content || "")
-      const chunk = part?.choices?.[0]?.delta?.content || ""
+      process.stdout.write(part || "")
+      const chunk = part || ""
       completion += chunk
       context.stream.write(chunk)
     } catch (e) {
