@@ -37,11 +37,16 @@ export async function findCodegens(params: CodegenApi.ListRequest) {
 
 export async function findCodegenById(id: string) {
   const codegen = await CodegenModel.findById(id)
-    .select("_id title description fullStack guides codeRendererUrl")
+    .select("_id title description fullStack guides codeRendererUrl rules")
     .lean<
       Pick<
         Codegen,
-        "title" | "description" | "fullStack" | "guides" | "codeRendererUrl"
+        | "title"
+        | "description"
+        | "fullStack"
+        | "guides"
+        | "codeRendererUrl"
+        | "rules"
       > & {
         _id: string
       }
@@ -52,10 +57,4 @@ export async function findCodegenById(id: string) {
   }
 
   return codegen
-}
-
-// get rules by codegenId
-export async function getRulesByCodegenId(codegenId: string) {
-  const codegen = await CodegenModel.findById(codegenId)
-  return codegen?.rules
 }

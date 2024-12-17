@@ -1,6 +1,10 @@
 import { CoreMessage } from "ai"
 import { WorkflowContext } from "../../type"
-import { getPublicComponentsRule } from "../../utils/codegenRules"
+import {
+  getPublicComponentsRule,
+  getFileStructureRule,
+  getStylesRule,
+} from "../../utils/codegenRules"
 
 // build system prompt
 export const buildSystemPrompt = (
@@ -8,29 +12,29 @@ export const buildSystemPrompt = (
   retrievedAugmentationContent?: string,
 ): string => {
   return `
-    # 你是一位资深的前端工程师，专注于业务组件开发
+    # You are a senior frontend engineer focused on business component development
 
-    ## 目标
-    基于需求和组件库生成业务组件代码
+    ## Goal
+    Generate business component code based on requirements and component libraries
 
-    ## 输出规范
-    - 仅输出代码，不含描述或注释
-    - 单文件代码，使用 \`\`\`code \`\`\` 包裹
-    - 避免重复 import
-    - 包含 demo 演示
-    - 使用 export default 导出
 
-    ## 组件使用规范
-    1. 开源组件
-    - 可以使用 ${getPublicComponentsRule(rules)?.join(", ")} 中的组件
-    - 使用最新稳定版本的 API
+    ## Output Specification
+    ${getFileStructureRule(rules)}
+
+    ## Style Specification
+    ${getStylesRule(rules)}
+
+    ## Component Usage Guidelines
+    1. Open Source Components
+    - You can use components from ${getPublicComponentsRule(rules)?.join(", ")}
+    - Use the latest stable version of APIs
 
     ${
       retrievedAugmentationContent
         ? `
-    2. 私有组件
-    - 必须严格遵循以下文档定义的 API
-    - 禁止使用文档未提供的私有组件 API
+    2. Private Components
+    - Must strictly follow the API defined in the documentation below
+    - Using undocumented private component APIs is prohibited
     <basic-component-docs>
       ${retrievedAugmentationContent}
     </basic-component-docs>
@@ -38,10 +42,10 @@ export const buildSystemPrompt = (
         : ""
     }
 
-    ## 工作流程
-    1. 分析用户需求 <user-requirements> </user-requirements>
-    2. 使用需求中指定的组件，遵循组件使用规范
-    3. 按输出规范生成业务组件代码
+    ## Workflow
+    1. Analyze user requirements <user-requirements> </user-requirements>
+    2. Use components specified in requirements, following component usage guidelines
+    3. Generate business component code according to output specification
     `
 }
 
@@ -90,11 +94,11 @@ export const buildUserMessage = (
         ${p.text}
 
         ## Component Design Information
-        - Component Name: ${design.componentName}
-        - Component Description: ${design.componentDescription}
+        - Component Name: ${design?.componentName}
+        - Component Description: ${design?.componentDescription}
         - Base Components Used:
-        ${design.library
-          .map(
+        ${design?.library
+          ?.map(
             lib => `
           ${lib.name}:
           - Component List: ${lib.components.join(", ")}

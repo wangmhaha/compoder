@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose"
+import mongoose, { Schema, model } from "mongoose"
 import { ComponentCode, Prompt } from "./types"
 
 const PromptSchema = new Schema({
@@ -22,10 +22,6 @@ const PromptSchema = new Schema({
 })
 
 const VersionSchema = new Schema({
-  versionId: {
-    type: String,
-    required: true,
-  },
   description: {
     type: String,
     required: true,
@@ -79,7 +75,6 @@ const ComponentCodeSchema = new Schema(
   },
 )
 
-export const ComponentCodeModel = model<ComponentCode>(
-  "ComponentCode",
-  ComponentCodeSchema,
-)
+export const ComponentCodeModel =
+  mongoose.models.ComponentCode ||
+  model<ComponentCode>("ComponentCode", ComponentCodeSchema)

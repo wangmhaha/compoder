@@ -1,5 +1,6 @@
 import { ComponentCode } from "@/lib/db/componentCode/types"
-
+import { Prompt } from "@/lib/db/componentCode/types"
+import { PassThrough } from "stream"
 declare namespace ComponentCodeApi {
   // list request
   export interface listRequest {
@@ -23,4 +24,13 @@ declare namespace ComponentCodeApi {
   export interface detailResponse {
     data: Pick<ComponentCode, "_id" | "name" | "description" | "versions">
   }
+
+  // create request
+  export interface createRequest {
+    prompt: Prompt[]
+    codegenId: string
+  }
+
+  // create response
+  export type createResponse = PassThrough
 }

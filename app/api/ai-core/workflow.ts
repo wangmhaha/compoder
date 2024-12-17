@@ -1,17 +1,11 @@
 import { pipe } from "./utils/pipe"
 import { withErrorHandling } from "./utils/errorHandling"
-import {
-  designComponent,
-  generateComponent,
-  postprocessGeneratedComponent,
-  storeComponent,
-} from "./steps"
+import { designComponent, generateComponent, storeComponent } from "./steps"
 import { WorkflowContext } from "./type"
 
 export const componentWorkflow = pipe(
   withErrorHandling(designComponent),
   withErrorHandling(generateComponent),
-  withErrorHandling(postprocessGeneratedComponent),
   withErrorHandling(storeComponent),
 )
 

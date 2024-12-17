@@ -8,7 +8,6 @@ export const generateComponent = async (
   context.stream.write("start call codegen-ai \n")
 
   let completion = ""
-  let generated_code = ""
 
   const stream = await streamText({
     system: buildSystemPrompt(
@@ -30,37 +29,13 @@ export const generateComponent = async (
     }
   }
 
-  let start = false
-  for (const l of completion.split("\n")) {
-    let skip = false
-    if (
-      [
-        "```",
-        ...[
-          "tsx",
-          "jsx",
-          "typescript",
-          "react",
-          "javascript",
-          "vue",
-          "code",
-        ].map(e => "```" + e),
-      ].includes(l.toLowerCase().trim())
-    ) {
-      start = !start
-      skip = true
-    }
-    if (start && !skip) generated_code += `${l}\n`
-  }
-  generated_code = generated_code.trim()
-
   context.stream.write("call codegen-ai end \n\n")
 
   return {
     ...context,
     state: {
       ...context.state,
-      generatedCode: generated_code || `'${completion}'`,
+      generatedCode: completion,
     },
   }
 }

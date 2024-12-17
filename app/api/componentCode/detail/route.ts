@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getComponentCodeDetail } from "@/lib/db/componentCode/selectors"
 import { ComponentCodeApi } from "../type"
+import { ComponentCode } from "@/lib/db/componentCode/types"
 
 export async function POST(request: NextRequest) {
   try {
     const body = (await request.json()) as ComponentCodeApi.detailRequest
 
-    const data = await getComponentCodeDetail(body.id)
+    const data = (await getComponentCodeDetail(body.id)) as ComponentCode
 
     const response: ComponentCodeApi.detailResponse = {
       data: {
