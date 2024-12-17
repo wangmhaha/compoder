@@ -79,7 +79,7 @@ export const buildCurrentComponentMessage = (
 // build user prompt
 export const buildUserMessage = (
   prompt: WorkflowContext["query"]["prompt"],
-  design: WorkflowContext["state"]["designTask"],
+  design: NonNullable<WorkflowContext["state"]>["designTask"],
 ): Array<CoreMessage> => {
   return [
     {
@@ -117,6 +117,10 @@ export const buildUserMessage = (
 export const generateComponentMessage = (
   context: WorkflowContext,
 ): Array<CoreMessage> => {
+  if (!context.state?.designTask) {
+    throw new Error("Design task is required but not found in context")
+  }
+
   return [
     ...buildCurrentComponentMessage(context.query.component),
     ...buildUserMessage(context.query.prompt, context.state.designTask),

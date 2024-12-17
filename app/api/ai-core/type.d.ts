@@ -3,8 +3,8 @@ import { CodegenRule } from "@/lib/db/codegen/types"
 import { LanguageModel } from "ai"
 import { Prompt } from "@/lib/db/componentCode/types"
 
-// Define base workflow context
-interface BaseWorkflowContext {
+// workflow context type
+export type WorkflowContext = {
   stream: PassThrough
   query: {
     prompt: Prompt[]
@@ -18,11 +18,7 @@ interface BaseWorkflowContext {
       prompt: Prompt[]
     }
   }
-}
-
-// design phase state
-interface DesignPhaseState {
-  state: {
+  state?: {
     designTask: {
       componentName: string
       componentDescription: string
@@ -33,17 +29,6 @@ interface DesignPhaseState {
       }>
       retrievedAugmentationContent?: string
     }
+    generatedCode?: string
   }
 }
-
-// generate code phase state
-interface GeneratePhaseState {
-  state: {
-    generatedCode: string
-  }
-}
-
-// workflow context type
-export type WorkflowContext = BaseWorkflowContext &
-  DesignPhaseState &
-  GeneratePhaseState

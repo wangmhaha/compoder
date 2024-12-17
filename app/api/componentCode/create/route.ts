@@ -29,7 +29,8 @@ export async function POST(request: NextRequest) {
     const codegenDetail = await findCodegenById(body.codegenId)
     run({
       stream: {
-        write: (chunk: unknown) => writer.write(encoder.encode(chunk)),
+        write: (chunk: unknown) =>
+          writer.write(encoder.encode(chunk as string)),
       } as unknown as PassThrough,
       query: {
         prompt: body.prompt,
