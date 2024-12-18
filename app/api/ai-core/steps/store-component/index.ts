@@ -1,13 +1,12 @@
-import { WorkflowContext } from "../../type"
 import {
   createComponentCode,
   updateComponentCode,
 } from "@/lib/db/componentCode/mutations"
+import { GenerateProcessingWorkflowContext } from "../../type"
 
 export const storeComponent = async (
-  context: WorkflowContext,
-): Promise<WorkflowContext> => {
-  // 当context.query.component存在时，更新componentCode
+  context: GenerateProcessingWorkflowContext,
+): Promise<GenerateProcessingWorkflowContext> => {
   if (context.query.component) {
     await updateComponentCode({
       id: context.query.component.id,
@@ -17,8 +16,8 @@ export const storeComponent = async (
   } else {
     const newComponent = await createComponentCode({
       userId: context.query.userId,
-      name: context.state.designTask!.componentName,
-      description: context.state.designTask!.componentDescription,
+      name: context.state.designTask.componentName,
+      description: context.state.designTask.componentDescription,
       prompt: context.query.prompt,
       code: context.state.generatedCode,
     })

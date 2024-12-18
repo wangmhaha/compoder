@@ -1,8 +1,8 @@
 import { WorkflowContext } from "../type"
 
 export const withErrorHandling =
-  <T>(fn: (ctx: WorkflowContext) => Promise<T>) =>
-  async (context: WorkflowContext): Promise<T> => {
+  <T extends WorkflowContext>(fn: (ctx: T) => Promise<WorkflowContext>) =>
+  async (context: T): Promise<WorkflowContext> => {
     try {
       return await fn(context)
     } catch (error) {

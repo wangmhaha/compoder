@@ -1,10 +1,13 @@
 import { streamText } from "ai"
 import { buildSystemPrompt, generateComponentMessage } from "./utils"
-import { WorkflowContext } from "../../type"
+import {
+  DesignProcessingWorkflowContext,
+  GenerateProcessingWorkflowContext,
+} from "../../type"
 
 export const generateComponent = async (
-  context: WorkflowContext,
-): Promise<WorkflowContext> => {
+  context: DesignProcessingWorkflowContext,
+): Promise<GenerateProcessingWorkflowContext> => {
   context.stream.write("start call codegen-ai \n")
 
   let completion = ""
@@ -12,7 +15,7 @@ export const generateComponent = async (
   const stream = await streamText({
     system: buildSystemPrompt(
       context.query.rules,
-      context.state.designTask?.retrievedAugmentationContent,
+      context.state?.designTask?.retrievedAugmentationContent,
     ),
     model: context.query.aiModel,
     messages: generateComponentMessage(context),

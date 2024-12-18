@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     const stream = new TransformStream()
     const writer = stream.writable.getWriter()
 
-    const body = (await request.json()) as ComponentCodeApi.createRequest
+    const body = (await request.json()) as ComponentCodeApi.editRequest
     const codegenDetail = await findCodegenById(body.codegenId)
     run({
       stream: {
@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
         aiModel,
         rules: codegenDetail.rules,
         userId: userId!,
+        component: body.component,
       },
     })
 

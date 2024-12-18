@@ -3,22 +3,47 @@ import { CodegenRule } from "@/lib/db/codegen/types"
 import { LanguageModel } from "ai"
 import { Prompt } from "@/lib/db/componentCode/types"
 
-// workflow context type
-export type WorkflowContext = {
-  stream: PassThrough
-  query: {
+// 基础的查询类型
+type WorkflowQuery = {
+  prompt: Prompt[]
+  aiModel: LanguageModel
+  rules: CodegenRule[]
+  userId: string
+  component?: {
+    id: string
+    name: string
+    code: string
     prompt: Prompt[]
-    aiModel: LanguageModel
-    rules: CodegenRule[]
-    userId: string
-    component?: {
-      id: string
-      name: string
-      code: string
-      prompt: Prompt[]
-    }
   }
-  state?: {
+}
+
+// 工作流状态类型
+type WorkflowState = {
+  designTask: {
+    componentName: string
+    componentDescription: string
+    library: Array<{
+      name: string
+      components: string[]
+      description: string
+    }>
+    retrievedAugmentationContent?: string
+  }
+  generatedCode: string
+}
+
+// 初始 Context
+export type InitialWorkflowContext = {
+  stream: PassThrough
+  query: WorkflowQuery
+  state?: never
+}
+
+// design 处理中的 Context
+export type DesignProcessingWorkflowContext = {
+  stream: PassThrough
+  query: WorkflowQuery
+  state: {
     designTask: {
       componentName: string
       componentDescription: string
@@ -29,6 +54,30 @@ export type WorkflowContext = {
       }>
       retrievedAugmentationContent?: string
     }
-    generatedCode?: string
   }
 }
+
+// generate 处理中的 Context
+export type GenerateProcessingWorkflowContext = {
+  stream: PassThrough
+  query: WorkflowQuery
+  state: {
+    designTask: {
+      componentName: string
+      componentDescription: string
+      library: Array<{
+        name: string
+        components: string[]
+        description: string
+      }>
+      retrievedAugmentationContent?: string
+    }
+    generatedCode: string
+  }
+}
+
+// 统一的 Context 类型
+export type WorkflowContext =
+  | InitialWorkflowContext
+  | DesignProcessingWorkflowContext
+  | GenerateProcessingWorkflowContext

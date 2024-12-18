@@ -1,6 +1,6 @@
 import { ComponentCode } from "@/lib/db/componentCode/types"
 import { Prompt } from "@/lib/db/componentCode/types"
-import { PassThrough } from "stream"
+
 declare namespace ComponentCodeApi {
   // list request
   export interface listRequest {
@@ -32,5 +32,20 @@ declare namespace ComponentCodeApi {
   }
 
   // create response
-  export type createResponse = PassThrough
+  export type createResponse = ReadableStream
+
+  // edit request
+  export interface editRequest {
+    codegenId: string
+    prompt: Prompt[]
+    component: {
+      id: string
+      name: string
+      code: string
+      prompt: Prompt[]
+    }
+  }
+
+  // edit response
+  export type editResponse = ReadableStream
 }

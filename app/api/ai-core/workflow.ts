@@ -1,15 +1,15 @@
 import { pipe } from "./utils/pipe"
 import { withErrorHandling } from "./utils/errorHandling"
 import { designComponent, generateComponent, storeComponent } from "./steps"
-import { WorkflowContext } from "./type"
+import { InitialWorkflowContext, WorkflowContext } from "./type"
 
-export const componentWorkflow = pipe(
+export const componentWorkflow = pipe<InitialWorkflowContext, WorkflowContext>(
   withErrorHandling(designComponent),
   withErrorHandling(generateComponent),
   withErrorHandling(storeComponent),
 )
 
-export async function run(context: WorkflowContext) {
+export async function run(context: InitialWorkflowContext) {
   try {
     const result = await componentWorkflow(context)
     return {
