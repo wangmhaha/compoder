@@ -1,71 +1,49 @@
-import axios, { AxiosError } from "axios"
-
-export const getInstance = (config?: {
-  baseURL?: string
-  notResponseError?: boolean
-}) => {
-  const instance = axios.create({
-    baseURL: "/api",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-
-  instance.interceptors.request.use(
-    async request => {
-      return request
-    },
-    err => {
-      return Promise.reject(err)
-    },
-  )
-
-  // Add response interceptor
-  instance.interceptors.response.use(
-    response => {
-      return response
-    },
-    err => {
-      if (config?.notResponseError) {
-        return Promise.reject(err)
+export const getInstance = (baseURL: string = "/api") => {
+  return async (url: string, options: RequestInit = {}) => {
+    try {
+      // Add the Authorization header to the request
+      const headers = {
+        Content: "application/json",
+        ...options.headers,
       }
-      return responseError(err)
-    },
-  )
 
-  return instance
+      const response = await fetch(baseURL + url, { ...options, headers })
+
+      // Check the HTTP status code
+      if (!response.ok) {
+        return responseError(response)
+      }
+
+      // Parse the JSON response
+      return await response
+    } catch (error) {
+      console.log("error->", "Request error", error)
+      return responseError(error as Response)
+    }
+  }
 }
 
 export default getInstance
 
 /**
- * Response Error Handler
+ * Response error handler
  */
-function responseError(err: AxiosError) {
-  console.log("error->", "Request Error", err)
+async function responseError(response: Response) {
+  console.log("error->", "Request error", response)
 
-  if (!err) {
+  if (!response) {
     return Promise.reject({ message: "Unknown error" })
   }
-  if (typeof err === "string") {
-    return Promise.reject({ message: err })
-  }
-  // Handle error response
-  if (err?.response?.status === 403) {
-    window.location.replace(
-      `/login?lastRoute=${encodeURIComponent(
-        location.pathname + location.search,
-      )}`,
-    )
-    return Promise.reject({ message: "Token expired, please login again" })
-  }
+
+  const data = await response.json()
+
   // Handle 401 status code
-  if (err?.response?.status === 401) {
+  if (response?.status === 401) {
     window.location.replace("/")
     return Promise.reject({ message: "Unauthorized, redirecting..." })
   }
-  if (err?.response?.data) {
-    return Promise.reject(err?.response?.data)
+  if (data) {
+    return Promise.reject(data)
   }
-  return Promise.reject(err)
+  return Promise.reject(response)
 }

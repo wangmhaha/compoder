@@ -17,7 +17,7 @@ export default function CodegenDetailPage() {
         ]}
       />
       <ScrollArea className="h-[calc(100vh-88px)]">
-        <div className="w-full max-w-4xl pt-12 pb-24 px-6 flex flex-col mx-auto">
+        <div className="w-full max-w-4xl pt-12 pb-12 px-6 flex flex-col mx-auto">
           <CodegenGuide
             prompts={[
               {
