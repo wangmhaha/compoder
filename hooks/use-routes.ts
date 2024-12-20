@@ -20,6 +20,6 @@ export default function useRoutes() {
   const pathname = usePathname()
   return routes.map(route => ({
     ...route,
-    isActive: pathname === route.url,
+    isActive: pathname.startsWith(route.url),
   }))
 }

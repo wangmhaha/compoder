@@ -10,10 +10,11 @@ declare namespace ComponentCodeApi {
     filterField?: "all" | "name" | "description"
   }
   export interface listResponse {
-    data: Pick<ComponentCode, "_id" | "name" | "description"> &
-      {
+    data: Array<
+      Pick<ComponentCode, "_id" | "name" | "description"> & {
         latestVersionCode: string
-      }[]
+      }
+    >
     total: number
   }
   // detail request

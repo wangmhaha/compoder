@@ -22,8 +22,46 @@ const request = getInstance()
 export const {actionName}{ModuleName} = async (
   params: {ModuleName}Api.{Action}Request
 ): Promise<{ModuleName}Api.{Action}Response> => {
-  const response = await request.{method}('/{module}/{action}', {requestConfig})
-  return response.data
+  try {
+    // For GET requests
+    if ("{method}" === "GET") {
+      const filteredParams = Object.fromEntries(
+        Object.entries(params).filter(([, value]) => value !== undefined)
+      )
+      const queryString = new URLSearchParams(
+        filteredParams as Record<string, string>
+      ).toString()
+      const response = await request(`/{module}/{action}?${queryString}`, {
+        method: "GET",
+      })
+      return await response.json()
+    }
+
+    // For POST/PUT requests
+    if ("{method}" === "POST" || "{method}" === "PUT") {
+      const response = await request(`/{module}/{action}`, {
+        method: "{method}",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(params),
+      })
+      return await response.json()
+    }
+
+    // For DELETE requests
+    if ("{method}" === "DELETE") {
+      const response = await request(`/{module}/{action}`, {
+        method: "DELETE",
+      })
+      return await response.json()
+    }
+
+    throw new Error(`Unsupported HTTP method: {method}`)
+  } catch (error) {
+    // Error will be handled by request.ts
+    throw error
+  }
 }
 ```
 
@@ -93,15 +131,23 @@ const request = getInstance()
 export const getCodegenList = async (
   params: CodegenApi.ListRequest,
 ): Promise<CodegenApi.ListResponse> => {
-  const response = await request.get("/codegen/list", { params })
-  return response.data
+  const filteredParams = Object.fromEntries(
+    Object.entries(params).filter(([, value]) => value !== undefined),
+  )
+  const queryString = new URLSearchParams(
+    filteredParams as Record<string, string>,
+  ).toString()
+  const response = await request(`/codegen/list?${queryString}`, {
+    method: "GET",
+  })
+  return response.json()
 }
 ```
 
 ## Notes
 
-1. Maintain consistent file structure and naming conventions
-2. Ensure type safety between API definitions and service implementations
-3. Follow RESTful API naming conventions
+1. For GET requests, transform parameters into URL query string
+2. Filter out undefined values from parameters
+3. Use URLSearchParams for proper URL encoding
 4. Use proper error handling and async/await patterns
 5. Keep service functions focused and single-responsibility

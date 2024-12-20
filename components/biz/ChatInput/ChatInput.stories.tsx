@@ -142,7 +142,7 @@ WithPrefilledContent.args = {
   actions: WithMultipleActions.args.actions,
 }
 
-// 添加带图片的示例
+// Example with images
 export const WithImages = Template.bind({})
 WithImages.args = {
   images: EXAMPLE_IMAGES,
@@ -152,7 +152,7 @@ WithImages.args = {
   actions: WithMultipleActions.args.actions,
 }
 
-// 添加带图片且处于加载状态的示例
+// Example with images in loading state
 export const LoadingWithImages = Template.bind({})
 LoadingWithImages.args = {
   loading: true,
@@ -163,10 +163,10 @@ LoadingWithImages.args = {
   actions: WithMultipleActions.args.actions,
 }
 
-// 添加一个完整功能的示例
+// Example with all features enabled
 export const FullFeatured = Template.bind({})
 FullFeatured.args = {
-  images: EXAMPLE_IMAGES.slice(0, 1), // 只显示一张图片
+  images: EXAMPLE_IMAGES.slice(0, 1), // Only show one image
   onImageRemove: (index: number) => {
     console.log("Removing image at index:", index)
   },
@@ -174,12 +174,12 @@ FullFeatured.args = {
   value: "Check out this amazing image! 🖼️",
 }
 
-// 可选：添加一个多图片的示例
+// Optional: Example with multiple images
 export const WithMultipleImages = Template.bind({})
 WithMultipleImages.args = {
   images: [
     ...EXAMPLE_IMAGES,
-    ...EXAMPLE_IMAGES, // 重复图片以展示多图片布局
+    ...EXAMPLE_IMAGES, // Duplicate images to demonstrate multi-image layout
   ],
   onImageRemove: (index: number) => {
     console.log("Removing image at index:", index)
@@ -187,7 +187,7 @@ WithMultipleImages.args = {
   actions: WithMultipleActions.args.actions,
 }
 
-// 首先添加 StreamingExample 组件
+// First add StreamingExample component
 const StreamingExample = () => {
   const [streamingCode, setStreamingCode] = useState(`$ please enter your prompt
 
@@ -253,7 +253,7 @@ export default function Component() {
   )
 }
 
-// 添加带有 loadingSlot 的示例
+// Example with loadingSlot
 export const WithLoadingSlot = Template.bind({})
 WithLoadingSlot.args = {
   loading: true,

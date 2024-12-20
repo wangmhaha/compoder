@@ -22,7 +22,7 @@ export default function MainLayout({
     }
   }, [status])
 
-  // 当正在检查登录状态时，可以返回一个加载状态
+  // Show loading state while checking authentication status
   if (status === "loading") {
     return <Loading fullscreen />
   }

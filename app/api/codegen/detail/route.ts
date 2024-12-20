@@ -4,7 +4,7 @@ import { CodegenApi } from "../types"
 import { connectToDatabase } from "@/lib/db/mongo"
 import { validateSession } from "@/lib/auth/middleware"
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
     // Add identity verification check
     const authError = await validateSession()
@@ -14,8 +14,13 @@ export async function POST(request: NextRequest) {
 
     await connectToDatabase()
 
-    const body = (await request.json()) as CodegenApi.DetailRequest
-    const { id } = body
+    // 从 URL 查询参数中获取 id，而不是从 body 中获取
+    const searchParams = request.nextUrl.searchParams
+    const id = searchParams.get("id")
+
+    if (!id) {
+      return Response.json({ error: "Missing id parameter" }, { status: 400 })
+    }
 
     const data = await findCodegenById(id)
 

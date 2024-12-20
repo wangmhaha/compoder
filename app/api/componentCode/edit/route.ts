@@ -10,7 +10,7 @@ import { validateSession } from "@/lib/auth/middleware"
 
 const aiModel = getOpenaiClient()
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
     const authError = await validateSession()
     if (authError) {
@@ -25,18 +25,33 @@ export async function POST(request: NextRequest) {
     const stream = new TransformStream()
     const writer = stream.writable.getWriter()
 
-    const body = (await request.json()) as ComponentCodeApi.editRequest
-    const codegenDetail = await findCodegenById(body.codegenId)
+    const searchParams = request.nextUrl.searchParams
+    const params: ComponentCodeApi.editRequest = {
+      codegenId: searchParams.get("codegenId") || "",
+      prompt: JSON.parse(searchParams.get("prompt") || "[]"),
+      component: JSON.parse(searchParams.get("component") || "{}"),
+    }
+
+    // 参数验证
+    if (!params.codegenId || !params.prompt || !params.component) {
+      return NextResponse.json(
+        { error: "Missing required parameters" },
+        { status: 400 },
+      )
+    }
+
+    const codegenDetail = await findCodegenById(params.codegenId)
+
     run({
       stream: {
         write: (chunk: string) => writer.write(encoder.encode(chunk)),
       } as unknown as PassThrough,
       query: {
-        prompt: body.prompt,
+        prompt: params.prompt,
         aiModel,
         rules: codegenDetail.rules,
         userId: userId!,
-        component: body.component,
+        component: params.component,
       },
     })
 
