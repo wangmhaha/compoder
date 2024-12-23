@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { ImageIcon, Smile, Link2, Code2 } from "lucide-react"
+import { Smile, Link2, Code2 } from "lucide-react"
 import {
   Tooltip,
   TooltipContent,
@@ -13,6 +13,7 @@ import ChatInput from "./ChatInput"
 import { CodingBox } from "../CodingBox"
 import { motion } from "framer-motion"
 import { CompoderThinkingLoading } from "../CompoderThinkingLoading"
+import TldrawEdit from "../TldrawEdit/TldrawEdit"
 
 // Add example image URLs with &w=100&h=100 parameters to get thumbnails
 const EXAMPLE_IMAGES = [
@@ -61,9 +62,7 @@ WithSingleAction.args = {
     <TooltipProvider key="draw-image">
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="ghost" size="icon">
-            <ImageIcon className="h-4 w-4" />
-          </Button>
+          <TldrawEdit onSubmit={() => {}} />
         </TooltipTrigger>
         <TooltipContent>
           <p>Draw An Image</p>
@@ -80,9 +79,7 @@ WithMultipleActions.args = {
     <TooltipProvider key="draw-image">
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="ghost" size="icon">
-            <ImageIcon className="h-4 w-4" />
-          </Button>
+          <TldrawEdit onSubmit={() => {}} />
         </TooltipTrigger>
         <TooltipContent>
           <p>Draw An Image</p>

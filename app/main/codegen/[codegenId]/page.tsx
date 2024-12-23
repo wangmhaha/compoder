@@ -1,16 +1,26 @@
 "use client"
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { AppHeader } from "@/components/biz/AppHeader"
 import { ChatInput } from "@/components/biz/ChatInput"
 import { CodegenGuide } from "@/components/biz/CodegenGuide"
 import { ComponentCodeFilterContainer } from "@/components/biz/ComponentCodeFilterContainer"
 import { ComponentCodeList } from "@/components/biz/ComponentCodeList"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { Button } from "@/components/ui/button"
+import TldrawEdit from "@/components/biz/TldrawEdit/TldrawEdit"
 import {
   useCodegenDetail,
   useComponentCodeList,
 } from "./server-store/selectors"
 import { useState } from "react"
+import { useCreateComponentCode } from "./server-store/mutations"
+import { Prompt, PromptImage } from "@/lib/db/componentCode/types"
 
 export default function CodegenDetailPage({
   params,
@@ -33,6 +43,42 @@ export default function CodegenDetailPage({
       filterField,
     })
 
+  const [chatValue, setChatValue] = useState("")
+  const [images, setImages] = useState<string[]>([])
+
+  const createComponentMutation = useCreateComponentCode()
+
+  const handleChatSubmit = async () => {
+    if (!chatValue.trim() && images.length === 0) return
+
+    const prompts: Prompt[] = [
+      { text: chatValue, type: "text" },
+      ...images.map(
+        image =>
+          ({
+            image,
+            type: "image",
+          } as PromptImage),
+      ),
+    ]
+
+    try {
+      await createComponentMutation.mutate({
+        prompt: prompts,
+        codegenId: params.codegenId,
+      })
+
+      setChatValue("")
+      setImages([])
+    } catch (error) {
+      console.error("Failed to create component:", error)
+    }
+  }
+
+  const handleImageRemove = (index: number) => {
+    setImages(prev => prev.filter((_, i) => i !== index))
+  }
+
   return (
     <div>
       <AppHeader
@@ -53,8 +99,30 @@ export default function CodegenDetailPage({
           )}
           <ChatInput
             className="mt-6"
-            value=""
-            onSubmit={() => console.log("Submitted")}
+            value={chatValue}
+            onChange={setChatValue}
+            onSubmit={handleChatSubmit}
+            actions={[
+              <TooltipProvider key="draw-image">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <TldrawEdit
+                        onSubmit={imageData => {
+                          setImages(prev => [...prev, imageData])
+                        }}
+                      />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Draw An Image</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>,
+            ]}
+            images={images}
+            onImageRemove={handleImageRemove}
+            loading={createComponentMutation.isPending}
           />
         </div>
         <div className="w-full mx-auto px-6 max-w-screen-xl">

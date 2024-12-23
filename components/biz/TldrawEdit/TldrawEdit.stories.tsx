@@ -14,7 +14,7 @@ export const Default: Story = {
   args: {
     onSubmit: (dataUrl: string) => {
       console.log("Generated image data URL:", dataUrl)
-      // 在实际场景中，这里可以处理生成的图片数据
+      // In actual scenarios, the generated image data can be processed here
     },
   },
   render: args => <TldrawEdit {...args} />,
@@ -24,7 +24,7 @@ export const WithPreview: Story = {
   args: {
     onSubmit: (dataUrl: string) => {
       console.log("Generated image data URL:", dataUrl)
-      // 创建一个图片预览
+      // Create an image preview
       const previewImg = document.getElementById("preview") as HTMLImageElement
       if (previewImg) {
         previewImg.src = dataUrl
