@@ -39,7 +39,7 @@ const CodegenGuide = ({
         {prompts.map((prompt, index) => (
           <Card
             key={index}
-            className="hover:shadow-lg transition-shadow duration-200 min-w-[240px]"
+            className="hover:shadow-lg transition-shadow duration-200"
           >
             <CardContent className="p-0">
               <div

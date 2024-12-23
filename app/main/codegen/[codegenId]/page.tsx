@@ -45,12 +45,12 @@ export default function CodegenDetailPage({
 
   const [chatValue, setChatValue] = useState("")
   const [images, setImages] = useState<string[]>([])
-
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const createComponentMutation = useCreateComponentCode()
 
   const handleChatSubmit = async () => {
     if (!chatValue.trim() && images.length === 0) return
-
+    setIsSubmitting(true)
     const prompts: Prompt[] = [
       { text: chatValue, type: "text" },
       ...images.map(
@@ -63,15 +63,18 @@ export default function CodegenDetailPage({
     ]
 
     try {
-      await createComponentMutation.mutate({
+      const res = await createComponentMutation.mutateAsync({
         prompt: prompts,
         codegenId: params.codegenId,
       })
+      console.log(res)
 
       setChatValue("")
       setImages([])
     } catch (error) {
       console.error("Failed to create component:", error)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -122,7 +125,7 @@ export default function CodegenDetailPage({
             ]}
             images={images}
             onImageRemove={handleImageRemove}
-            loading={createComponentMutation.isPending}
+            loading={isSubmitting}
           />
         </div>
         <div className="w-full mx-auto px-6 max-w-screen-xl">
