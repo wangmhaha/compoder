@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, FC, useRef } from "react"
-import { ImageIcon, Loader2 } from "lucide-react"
+import { ImageIcon, Loader2, Check } from "lucide-react"
 import dynamic from "next/dynamic"
 import { Editor, setUserPreferences } from "@tldraw/tldraw"
 import { getSvgAsImage } from "./lib/getSvgAsImage"
@@ -71,26 +71,11 @@ const TldrawEdit: FC<TldrawEditProps> = ({ onSubmit }) => {
               }}
               persistenceKey="tldraw"
             />
-            <div className="fixed top-[60px] left-[50%] translate-x-[-50%] z-[1000] bg-background/95 border rounded-lg shadow-lg px-3 py-2 flex flex-col sm:flex-row items-center gap-2 sm:gap-4 min-w-[200px]">
+            <div className="fixed top-[60px] right-0 sm:left-[50%] sm:translate-x-[-50%] z-[1000] bg-background/95 border rounded-lg shadow-lg px-3 py-2 flex flex-row items-center gap-2 sm:gap-4 min-w-[48px] sm:w-fit">
               <p className="text-sm text-foreground whitespace-nowrap">
                 Submit the drawn UI?
               </p>
-              <div className="flex gap-2 w-full sm:w-auto justify-end">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-8 px-3"
-                  onClick={() => {
-                    if (editorRef.current) {
-                      const shapes = Array.from(
-                        editorRef.current.currentPageShapeIds,
-                      )
-                      editorRef.current.deleteShapes(shapes)
-                    }
-                  }}
-                >
-                  Clear
-                </Button>
+              <div className="flex justify-end">
                 <ExportButton
                   editor={editorRef.current!}
                   onSubmit={dataUrl => {
@@ -118,8 +103,8 @@ function ExportButton({
   return (
     <Button
       variant="default"
-      size="sm"
-      className="h-8 px-3"
+      size="icon"
+      className="h-6 w-6 px-3"
       onClick={async e => {
         setLoading(true)
         try {
@@ -129,8 +114,8 @@ function ExportButton({
           )
           if (!svg) {
             toast({
-              title: "Failed to export SVG",
-              variant: "destructive",
+              title: "The drawn UI cannot be empty",
+              variant: "default",
             })
             return
           }
@@ -147,8 +132,11 @@ function ExportButton({
       }}
       disabled={loading}
     >
-      {loading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-      Submit
+      {loading ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : (
+        <Check className="h-4 w-4" />
+      )}
     </Button>
   )
 }
