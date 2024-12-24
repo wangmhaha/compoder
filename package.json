@@ -4,7 +4,7 @@
   "private": true,
   "description": "Compoder: AI-Powered Component Coder - Your Stack, Your Style",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port 3001",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

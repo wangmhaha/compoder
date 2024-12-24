@@ -68,6 +68,16 @@ export default function CodegenDetailPage({
         codegenId: params.codegenId,
       })
       console.log(res)
+      const reader = res?.getReader()
+      const decoder = new TextDecoder()
+      let content = ""
+      while (true) {
+        const { done, value } = await reader?.read()
+        if (done) break
+        content += decoder.decode(value)
+        console.log(content)
+      }
+      console.log(content)
 
       setChatValue("")
       setImages([])

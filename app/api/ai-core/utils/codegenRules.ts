@@ -80,7 +80,7 @@ export function getPrivateDocsDescription(rules: CodegenRule[]): string {
   return templates.join("\n\n")
 }
 
-export async function getFileStructureRule(rules: CodegenRule[]) {
+export function getFileStructureRule(rules: CodegenRule[]) {
   return (
     rules.find(rule => rule.type === "file-structure")?.prompt ??
     defaultFileStructure

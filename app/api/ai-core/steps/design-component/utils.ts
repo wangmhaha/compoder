@@ -25,7 +25,7 @@ const buildSystemPrompt = (rules: WorkflowContext["query"]["rules"]) => {
     ## Constraints
     Basic component materials include:
     ${getPrivateDocsDescription(rules)}
-    Please note: You absolutely cannot provide packages outside of the above basic component materials, nor provide example code. Your job is to call design_new_component_api to generate design details for the new component.
+    Please note: You absolutely cannot provide packages outside of the above basic component materials, nor provide example code. Your job is to call designNewComponentApi to generate design details for the new component.
     ## Workflow
     1. Accept user's business requirements or design draft images
     2. Extract required materials from [Constraints] basic component materials for developing business components
@@ -37,26 +37,28 @@ const buildSystemPrompt = (rules: WorkflowContext["query"]["rules"]) => {
 const buildCurrentComponentMessage = (
   component: WorkflowContext["query"]["component"],
 ): Array<CoreMessage> => {
-  return [
-    {
-      role: "user",
-      content:
-        component?.prompt?.map(prompt => {
-          if (prompt.type === "image") {
-            return { type: "image" as const, image: prompt.image }
-          }
-          return { type: "text" as const, text: prompt.text }
-        }) || [],
-    },
-    {
-      role: "assistant",
-      content: `
+  return component
+    ? [
+        {
+          role: "user",
+          content:
+            component?.prompt?.map(prompt => {
+              if (prompt.type === "image") {
+                return { type: "image" as const, image: prompt.image }
+              }
+              return { type: "text" as const, text: prompt.text }
+            }) || [],
+        },
+        {
+          role: "assistant",
+          content: `
         - Component name: ${component?.name}
         - Component code:
         ${component?.code}
       `,
-    },
-  ]
+        },
+      ]
+    : []
 }
 
 // Build user message
@@ -167,14 +169,18 @@ export async function generateComponentDesign(
     library: [],
   }
 
+  const systemPrompt = buildSystemPrompt(req.query.rules)
+
+  const messages = [
+    ...buildCurrentComponentMessage(req.query.component),
+    ...buildUserMessage(req.query.prompt, req.query.component),
+  ]
+
   try {
     await streamText({
-      system: buildSystemPrompt(req.query.rules),
+      system: systemPrompt,
       model: req.query.aiModel,
-      messages: [
-        ...buildCurrentComponentMessage(req.query.component),
-        ...buildUserMessage(req.query.prompt, req.query.component),
-      ],
+      messages,
       tools: {
         designNewComponentApi: {
           description:

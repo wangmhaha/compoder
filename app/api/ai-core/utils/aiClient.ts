@@ -5,4 +5,4 @@ export const getOpenaiClient = (model?: string) =>
   createOpenAI({
     baseURL: env.OPENAI_BASE_URL,
     apiKey: env.OPENAI_API_KEY,
-  })(model ?? "claude-3-5-sonnet-latest")
+  })(model ?? "openai/gpt-4o-2024-11-20")

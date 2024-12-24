@@ -12,13 +12,17 @@ export const generateComponent = async (
 
   let completion = ""
 
+  const systemPrompt = buildSystemPrompt(
+    context.query.rules,
+    context.state?.designTask?.retrievedAugmentationContent,
+  )
+
+  const messages = generateComponentMessage(context)
+
   const stream = await streamText({
-    system: buildSystemPrompt(
-      context.query.rules,
-      context.state?.designTask?.retrievedAugmentationContent,
-    ),
+    system: systemPrompt,
     model: context.query.aiModel,
-    messages: generateComponentMessage(context),
+    messages,
   })
 
   for await (const part of stream.textStream) {

@@ -54,26 +54,28 @@ export const buildSystemPrompt = (
 export const buildCurrentComponentMessage = (
   component: WorkflowContext["query"]["component"],
 ): Array<CoreMessage> => {
-  return [
-    {
-      role: "user",
-      content:
-        component?.prompt?.map(prompt => {
-          if (prompt.type === "image") {
-            return { type: "image" as const, image: prompt.image }
-          }
-          return { type: "text" as const, text: prompt.text }
-        }) || [],
-    },
-    {
-      role: "assistant",
-      content: `
+  return component
+    ? [
+        {
+          role: "user",
+          content:
+            component?.prompt?.map(prompt => {
+              if (prompt.type === "image") {
+                return { type: "image" as const, image: prompt.image }
+              }
+              return { type: "text" as const, text: prompt.text }
+            }) || [],
+        },
+        {
+          role: "assistant",
+          content: `
           - Component name: ${component?.name}
           - Component code:
           ${component?.code}
         `,
-    },
-  ]
+        },
+      ]
+    : []
 }
 
 // build user prompt

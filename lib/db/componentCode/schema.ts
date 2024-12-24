@@ -22,10 +22,6 @@ const PromptSchema = new Schema({
 })
 
 const VersionSchema = new Schema({
-  description: {
-    type: String,
-    required: true,
-  },
   code: {
     type: String,
     required: true,
