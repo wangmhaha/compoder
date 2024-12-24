@@ -136,14 +136,8 @@ export async function generateComponentDesign(
   req: WorkflowContext,
 ): Promise<ComponentDesign> {
   const componentsSchema = z.object({
-    componentName: z
-      .string()
-      .describe("Component name")
-      .min(1, "Component name is required"),
-    componentDescription: z
-      .string()
-      .describe("Component description")
-      .min(1, "Component description is required"),
+    componentName: z.string().describe("Component name"),
+    componentDescription: z.string().describe("Component description"),
     library: z.array(
       z
         .object({
@@ -177,7 +171,7 @@ export async function generateComponentDesign(
   ]
 
   try {
-    await streamText({
+    const stream = await streamText({
       system: systemPrompt,
       model: req.query.aiModel,
       messages,
@@ -187,11 +181,16 @@ export async function generateComponentDesign(
             "generate the required design details to create a new component",
           parameters: componentsSchema,
           execute: async params => {
+            console.log("params", params)
             parserCompletion = params
           },
         },
       },
     })
+
+    for await (const part of stream.textStream) {
+      console.log("part", part)
+    }
 
     if (parserCompletion.library.length > 0) {
       const docs = getPrivateComponentDocs(req.query.rules)
