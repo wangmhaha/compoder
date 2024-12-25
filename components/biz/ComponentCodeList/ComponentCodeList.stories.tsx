@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { ComponentCodeList } from "./ComponentCodeList"
 import { ComponentItem } from "./interface"
 import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
+import { CodingBox } from "../CodingBox"
 
 const meta = {
   title: "Biz/ComponentCodeList",
@@ -13,11 +13,12 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof ComponentCodeList>
 
-const mockItems = [
+export const mockItems = [
   {
     id: "1",
-    title: "CSS Theme Switch",
-    description: "A beautiful",
+    title: "CSS Theme Switch CSS Theme Switch CSS Theme Switch ",
+    description:
+      "A beautiful A beautiful A beautiful  A beautiful A beautiful A beautiful A beautiful  A beautiful A beautiful  A beautiful",
   },
   {
     id: "2",
@@ -100,32 +101,67 @@ export const AnimatedAddition: Story = {
   },
 }
 
-export const ClickToAddCard: Story = {
-  render: function ClickToAddCardStory() {
-    const [items, setItems] = useState<ComponentItem[]>(mockItems)
+export const ClickToAddCodingBox: Story = {
+  render: function ClickToAddCodingBoxStory() {
+    const [showNewItem, setShowNewItem] = useState(false)
 
-    const handleAddCard = () => {
-      const newCard = {
-        id: `new-${Date.now()}`,
-        title: "New Component",
-        description: "This component just flew in from where you clicked!",
+    useEffect(() => {
+      const handleClick = () => {
+        setShowNewItem(true)
       }
 
-      setItems(prevItems => [newCard, ...prevItems])
-    }
+      window.addEventListener("click", handleClick)
+      return () => window.removeEventListener("click", handleClick)
+    }, [])
 
     return (
       <div className="space-y-4">
-        <div className="flex justify-between items-center mb-[1000px]">
+        <div className="flex justify-center gap-4 items-center mb-96">
           <h3 className="text-lg font-medium">
-            Click anywhere to add a new card
+            Click anywhere to add a coding box
           </h3>
-          <Button onClick={handleAddCard}>Add Card</Button>
         </div>
         <ComponentCodeList
-          items={items}
+          items={mockItems}
           onEditClick={id => console.log("Edit clicked:", id)}
           onDeleteClick={id => console.log("Delete clicked:", id)}
+          newItem={
+            showNewItem ? (
+              <div className="h-full cursor-pointer">
+                <CodingBox
+                  code={`$ Adding new component...
+> Initializing...
+✨ Component ready to be added!
+$ Adding new component...
+> Initializing...
+✨ Component ready to be added!
+$ Adding new component...
+> Initializing...
+✨ Component ready to be added!
+$ Adding new component...
+> Initializing...
+✨ Component ready to be added!
+$ Adding new component...
+> Initializing...
+✨ Component ready to be added!
+$ Adding new component...
+> Initializing...
+✨ Component ready to be added!
+$ Adding new component...
+> Initializing...
+✨ Component ready to be added!
+$ Adding new component...
+> Initializing...
+✨ Component ready to be added!
+
+                  
+Click to confirm`}
+                  showMacControls={true}
+                  className="h-full"
+                />
+              </div>
+            ) : undefined
+          }
         />
       </div>
     )

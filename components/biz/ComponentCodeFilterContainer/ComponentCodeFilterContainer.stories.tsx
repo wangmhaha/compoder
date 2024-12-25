@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { ComponentCodeFilterContainer } from "./index"
 import { ComponentCodeList } from "../ComponentCodeList/ComponentCodeList"
 import type { ComponentItem } from "../ComponentCodeList/interface"
+import { useState, useEffect } from "react"
+import { CodingBox } from "../CodingBox"
 
 const meta: Meta<typeof ComponentCodeFilterContainer> = {
   title: "Biz/ComponentCodeFilterContainer",
@@ -104,5 +106,82 @@ export const SinglePage: Story = {
     onFilterFieldChange: field => {
       console.log("过滤字段改变:", field)
     },
+  },
+}
+
+export const WithCodingBox: Story = {
+  render: function WithCodingBoxStory() {
+    const [showNewItem, setShowNewItem] = useState(false)
+
+    useEffect(() => {
+      const handleClick = () => {
+        setShowNewItem(true)
+      }
+
+      window.addEventListener("click", handleClick)
+      return () => window.removeEventListener("click", handleClick)
+    }, [])
+
+    return (
+      <div className="space-y-4">
+        <div className="flex justify-center gap-4 items-center mb-96">
+          <h4 className="text-lg font-medium">Click to add a coding box</h4>
+        </div>
+        <ComponentCodeFilterContainer
+          pageSize={5}
+          total={mockItems.length}
+          currentPage={1}
+          searchKeyword=""
+          filterField="all"
+          onPageChange={page => console.log("页码改变:", page)}
+          onSearchChange={keyword => console.log("搜索关键词改变:", keyword)}
+          onFilterFieldChange={field => console.log("过滤字段改变:", field)}
+        >
+          <div className="space-y-4">
+            <ComponentCodeList
+              items={mockItems}
+              onEditClick={id => console.log("Edit clicked:", id)}
+              onDeleteClick={id => console.log("Delete clicked:", id)}
+              newItem={
+                showNewItem ? (
+                  <div className="h-full cursor-pointer">
+                    <CodingBox
+                      code={`$ Adding new component...
+> Initializing...
+✨ Component ready to be added!
+$ Adding new component...
+> Initializing...
+✨ Component ready to be added!
+$ Adding new component...
+> Initializing...
+✨ Component ready to be added!
+$ Adding new component...
+> Initializing...
+✨ Component ready to be added!
+$ Adding new component...
+> Initializing...
+✨ Component ready to be added!
+$ Adding new component...
+> Initializing...
+✨ Component ready to be added!
+$ Adding new component...
+> Initializing...
+✨ Component ready to be added!
+$ Adding new component...
+> Initializing...
+✨ Component ready to be added!
+
+Click to confirm`}
+                      showMacControls={true}
+                      className="h-full"
+                    />
+                  </div>
+                ) : undefined
+              }
+            />
+          </div>
+        </ComponentCodeFilterContainer>
+      </div>
+    )
   },
 }

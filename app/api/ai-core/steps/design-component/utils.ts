@@ -190,6 +190,7 @@ export async function generateComponentDesign(
 
     for await (const part of stream.textStream) {
       console.log("part", part)
+      req.stream.write(part)
     }
 
     if (parserCompletion.library.length > 0) {

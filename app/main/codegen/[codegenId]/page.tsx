@@ -21,6 +21,11 @@ import {
 import { useState } from "react"
 import { useCreateComponentCode } from "./server-store/mutations"
 import { Prompt, PromptImage } from "@/lib/db/componentCode/types"
+import { Skeleton } from "@/components/ui/skeleton"
+import { CompoderThinkingLoading } from "@/components/biz/CompoderThinkingLoading"
+import { useShowOnFirstData } from "@/hooks/use-show-on-first-data"
+import { CodingBox } from "@/components/biz/CodingBox"
+import { flushSync } from "react-dom"
 
 export default function CodegenDetailPage({
   params,
@@ -46,7 +51,10 @@ export default function CodegenDetailPage({
   const [chatValue, setChatValue] = useState("")
   const [images, setImages] = useState<string[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [streamingContent, setStreamingContent] = useState("")
   const createComponentMutation = useCreateComponentCode()
+
+  const shouldShowList = useShowOnFirstData(componentCodeData?.items)
 
   const handleChatSubmit = async () => {
     if (!chatValue.trim() && images.length === 0) return
@@ -67,17 +75,17 @@ export default function CodegenDetailPage({
         prompt: prompts,
         codegenId: params.codegenId,
       })
-      console.log(res)
+
       const reader = res?.getReader()
       const decoder = new TextDecoder()
       let content = ""
+
       while (true) {
         const { done, value } = await reader?.read()
         if (done) break
         content += decoder.decode(value)
-        console.log(content)
+        setStreamingContent(content)
       }
-      console.log(content)
 
       setChatValue("")
       setImages([])
@@ -103,63 +111,99 @@ export default function CodegenDetailPage({
       <ScrollArea className="h-[calc(100vh-88px)]">
         <div className="w-full max-w-4xl pt-12 pb-12 px-6 flex flex-col mx-auto">
           {isLoading ? (
-            <div>Loading...</div>
+            <div className="space-y-4">
+              <Skeleton className="h-8 w-3/4" />
+              <Skeleton className="h-32 w-full" />
+              <Skeleton className="h-32 w-full" />
+            </div>
           ) : (
-            <CodegenGuide
-              prompts={codegenDetail?.prompts || []}
-              name={codegenDetail?.name || ""}
-            />
-          )}
-          <ChatInput
-            className="mt-6"
-            value={chatValue}
-            onChange={setChatValue}
-            onSubmit={handleChatSubmit}
-            actions={[
-              <TooltipProvider key="draw-image">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <TldrawEdit
-                        onSubmit={imageData => {
-                          setImages(prev => [...prev, imageData])
-                        }}
-                      />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Draw An Image</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>,
-            ]}
-            images={images}
-            onImageRemove={handleImageRemove}
-            loading={isSubmitting}
-          />
-        </div>
-        <div className="w-full mx-auto px-6 max-w-screen-xl">
-          <p className="text-lg font-bold mb-4">Component List</p>
-          <ComponentCodeFilterContainer
-            total={componentCodeData?.total || 0}
-            currentPage={currentPage}
-            searchKeyword={searchKeyword}
-            filterField={filterField}
-            onPageChange={setCurrentPage}
-            onSearchChange={setSearchKeyword}
-            onFilterFieldChange={setFilterField}
-          >
-            {isComponentLoading ? (
-              <div>Loading components...</div>
-            ) : (
-              <ComponentCodeList
-                items={componentCodeData?.items || []}
-                onEditClick={id => console.log("Edit clicked:", id)}
-                onDeleteClick={id => console.log("Delete clicked:", id)}
+            <>
+              <CodegenGuide
+                prompts={
+                  codegenDetail?.prompts.map(prompt => ({
+                    title: prompt.title,
+                    onClick: () => {
+                      setChatValue(prompt.title)
+                    },
+                  })) || []
+                }
+                name={codegenDetail?.name || ""}
               />
-            )}
-          </ComponentCodeFilterContainer>
+              <ChatInput
+                className="mt-6"
+                value={chatValue}
+                onChange={setChatValue}
+                onSubmit={handleChatSubmit}
+                actions={[
+                  <TooltipProvider key="draw-image">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <TldrawEdit
+                            onSubmit={imageData => {
+                              setImages(prev => [...prev, imageData])
+                            }}
+                          />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Draw An Image</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>,
+                ]}
+                images={images}
+                onImageRemove={handleImageRemove}
+                loading={isSubmitting}
+                loadingSlot={
+                  isSubmitting ? (
+                    <CompoderThinkingLoading
+                      text={
+                        streamingContent
+                          ? "Compoder is coding..."
+                          : "Compoder is thinking..."
+                      }
+                    />
+                  ) : undefined
+                }
+              />
+            </>
+          )}
         </div>
+
+        {(shouldShowList || isSubmitting) && (
+          <div className="w-full mx-auto px-6 max-w-screen-xl">
+            <p className="text-lg font-bold mb-4">Component List</p>
+            <ComponentCodeFilterContainer
+              total={componentCodeData?.total || 0}
+              currentPage={currentPage}
+              searchKeyword={searchKeyword}
+              filterField={filterField}
+              onPageChange={setCurrentPage}
+              onSearchChange={setSearchKeyword}
+              onFilterFieldChange={setFilterField}
+            >
+              {isComponentLoading ? (
+                <div className="space-y-4">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Skeleton key={i} className="h-20 w-full" />
+                  ))}
+                </div>
+              ) : (
+                <ComponentCodeList
+                  newItem={
+                    isSubmitting ? (
+                      <CodingBox className="h-full" code={streamingContent} />
+                    ) : undefined
+                  }
+                  items={componentCodeData?.items || []}
+                  onEditClick={id => console.log("Edit clicked:", id)}
+                  onDeleteClick={id => console.log("Delete clicked:", id)}
+                />
+              )}
+            </ComponentCodeFilterContainer>
+          </div>
+        )}
       </ScrollArea>
     </div>
   )

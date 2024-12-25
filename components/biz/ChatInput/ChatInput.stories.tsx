@@ -11,7 +11,6 @@ import {
 import { Meta, StoryFn } from "@storybook/react"
 import ChatInput from "./ChatInput"
 import { CodingBox } from "../CodingBox"
-import { motion } from "framer-motion"
 import { CompoderThinkingLoading } from "../CompoderThinkingLoading"
 import TldrawEdit from "../TldrawEdit/TldrawEdit"
 
@@ -236,17 +235,11 @@ export default function Component() {
   }, [])
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      <CodingBox
-        code={streamingCode}
-        showMacControls={true}
-        className="h-[300px]"
-      />
-    </motion.div>
+    <CodingBox
+      code={streamingCode}
+      showMacControls={true}
+      className="h-[300px]"
+    />
   )
 }
 

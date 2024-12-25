@@ -38,6 +38,7 @@ export async function listComponentCodes({
   const [data, total] = await Promise.all([
     ComponentCodeModel.find({ userId, ...searchQuery })
       .select("_id name description versions")
+      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(pageSize)
       .lean(),

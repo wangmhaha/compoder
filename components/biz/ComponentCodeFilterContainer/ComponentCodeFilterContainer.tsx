@@ -40,7 +40,7 @@ const ComponentCodeFilterContainer: React.FC<
 
   return (
     <div className={cn("space-y-6", className)}>
-      <div className="flex items-center gap-3 border rounded-lg bg-background p-2">
+      <div className="flex items-center gap-3 border rounded-lg bg-background">
         <div className="flex-1 flex items-center gap-2">
           <Search className="h-4 w-4 text-muted-foreground ml-2 flex-shrink-0" />
           <Input
@@ -54,7 +54,7 @@ const ComponentCodeFilterContainer: React.FC<
           value={filterField}
           onValueChange={value => onFilterFieldChange(value as FilterField)}
         >
-          <SelectTrigger className="w-[140px] focus:ring-0 p-2 h-9 bg-transparent">
+          <SelectTrigger className="w-[140px] focus:ring-0 h-7 mr-2 bg-transparent">
             <div className="flex items-center gap-2">
               <Filter className="h-4 w-4 text-muted-foreground" />
               <SelectValue placeholder="Filter by" />

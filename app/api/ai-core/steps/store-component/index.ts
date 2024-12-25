@@ -24,5 +24,7 @@ export const storeComponent = async (
     context.stream.write(`<newComponentId>${newComponent._id}</newComponentId>`)
   }
 
+  context.stream.close()
+
   return context
 }

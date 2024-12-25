@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { run } from "@/app/api/ai-core/workflow"
 import { ComponentCodeApi } from "../type"
-import { PassThrough } from "stream"
 import { findCodegenById } from "@/lib/db/codegen/selectors"
 import { getOpenaiClient } from "@/app/api/ai-core/utils/aiClient"
 import { getUserId } from "@/lib/auth/middleware"
@@ -45,7 +44,8 @@ export async function GET(request: NextRequest) {
     run({
       stream: {
         write: (chunk: string) => writer.write(encoder.encode(chunk)),
-      } as unknown as PassThrough,
+        close: () => writer.close(),
+      },
       query: {
         prompt: params.prompt,
         aiModel,

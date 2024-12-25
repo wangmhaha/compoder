@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Pencil, Trash2, Copy } from "lucide-react"
 import type { ComponentCodeListProps } from "./interface"
 import { motion, AnimatePresence } from "framer-motion"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
 export function ComponentCodeList({
   items,
@@ -11,19 +11,22 @@ export function ComponentCodeList({
   onEditClick,
   onDeleteClick,
   className,
+  newItem,
 }: ComponentCodeListProps) {
   const [clickPosition, setClickPosition] = useState<{
     x: number
     y: number
   } | null>(null)
 
+  // Create a ref for the container
+  const containerRef = useRef<HTMLDivElement>(null)
+
   // Listen for click events to record click position
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      // Get container element position
-      const container = document.querySelector(".grid")
-      if (container) {
-        const rect = container.getBoundingClientRect()
+      // Use the ref to get container element position
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect()
         // Calculate position relative to container
         setClickPosition({
           x: e.clientX - rect.left,
@@ -38,25 +41,53 @@ export function ComponentCodeList({
 
   return (
     <div
+      ref={containerRef}
       className={`grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${
         className || ""
       }`}
     >
       <AnimatePresence mode="popLayout" initial={false}>
-        {items.map((item, index) => (
+        {newItem && (
           <motion.div
-            key={item.id}
             layout
             initial={
-              index === 0 && clickPosition
+              clickPosition
                 ? {
                     opacity: 1,
                     scale: 0.5,
                     x: clickPosition.x,
                     y: clickPosition.y,
                   }
-                : undefined
+                : {
+                    opacity: 0,
+                    scale: 0.8,
+                  }
             }
+            animate={{
+              opacity: 1,
+              scale: 1,
+              x: 0,
+              y: 0,
+            }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{
+              type: "spring",
+              stiffness: 50,
+              damping: 20,
+              mass: 1.2,
+              duration: 15,
+            }}
+          >
+            <div className="h-full w-full aspect-[1.5] overflow-hidden">
+              {newItem}
+            </div>
+          </motion.div>
+        )}
+        {items.map(item => (
+          <motion.div
+            key={item.id}
+            layout
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{
               opacity: 1,
               scale: 1,
@@ -129,7 +160,7 @@ export function ComponentCodeList({
               <div className="p-4">
                 <div className="space-y-2">
                   <h3 className="font-semibold truncate">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground line-clamp-2">
                     {item.description}
                   </p>
                 </div>

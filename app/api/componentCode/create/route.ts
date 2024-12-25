@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { run } from "@/app/api/ai-core/workflow"
 import { ComponentCodeApi } from "../type"
-import { PassThrough } from "stream"
 import { findCodegenById } from "@/lib/db/codegen/selectors"
 import { getOpenaiClient } from "@/app/api/ai-core/utils/aiClient"
 import { getUserId } from "@/lib/auth/middleware"
@@ -27,10 +26,14 @@ export async function POST(request: NextRequest) {
 
     const body = (await request.json()) as ComponentCodeApi.createRequest
     const codegenDetail = await findCodegenById(body.codegenId)
+
+    const response = new Response(stream.readable)
+
     run({
       stream: {
         write: (chunk: string) => writer.write(encoder.encode(chunk)),
-      } as unknown as PassThrough,
+        close: () => writer.close(),
+      },
       query: {
         prompt: body.prompt,
         aiModel,
@@ -39,7 +42,7 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    return new Response(stream.readable)
+    return response
   } catch (error) {
     console.error("Failed to get component code detail:", error)
     return NextResponse.json(

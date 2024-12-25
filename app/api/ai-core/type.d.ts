@@ -1,4 +1,3 @@
-import { PassThrough } from "stream"
 import { CodegenRule } from "@/lib/db/codegen/types"
 import { LanguageModel } from "ai"
 import { Prompt } from "@/lib/db/componentCode/types"
@@ -34,14 +33,20 @@ type WorkflowState = {
 
 // 初始 Context
 export type InitialWorkflowContext = {
-  stream: PassThrough
+  stream: {
+    write: (chunk: string) => void
+    close: () => void
+  }
   query: WorkflowQuery
   state?: never
 }
 
 // design 处理中的 Context
 export type DesignProcessingWorkflowContext = {
-  stream: PassThrough
+  stream: {
+    write: (chunk: string) => void
+    close: () => void
+  }
   query: WorkflowQuery
   state: {
     designTask: {
@@ -59,7 +64,10 @@ export type DesignProcessingWorkflowContext = {
 
 // generate 处理中的 Context
 export type GenerateProcessingWorkflowContext = {
-  stream: PassThrough
+  stream: {
+    write: (chunk: string) => void
+    close: () => void
+  }
   query: WorkflowQuery
   state: {
     designTask: {
