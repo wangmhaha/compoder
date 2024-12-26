@@ -28,12 +28,7 @@ export const useCodegenDetail = (id: string) => {
   })
 }
 
-export const useComponentCodeList = (params: {
-  page: number
-  pageSize?: number
-  searchKeyword?: string
-  filterField?: ComponentCodeApi.listRequest["filterField"]
-}) => {
+export const useComponentCodeList = (params: ComponentCodeApi.listRequest) => {
   return useQuery<
     ComponentCodeApi.listResponse,
     Error,

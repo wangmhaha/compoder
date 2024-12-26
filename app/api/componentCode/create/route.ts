@@ -39,6 +39,7 @@ export async function POST(request: NextRequest) {
         aiModel,
         rules: codegenDetail.rules,
         userId: userId!,
+        codegenId: body.codegenId,
       },
     })
 

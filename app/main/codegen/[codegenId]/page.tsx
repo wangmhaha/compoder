@@ -6,6 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { cn } from "@/lib/utils"
 import { AppHeader } from "@/components/biz/AppHeader"
 import { ChatInput } from "@/components/biz/ChatInput"
 import { CodegenGuide } from "@/components/biz/CodegenGuide"
@@ -47,6 +48,7 @@ export default function CodegenDetailPage({
 
   const { data: componentCodeData, isLoading: isComponentLoading } =
     useComponentCodeList({
+      codegenId: params.codegenId,
       page: currentPage,
       pageSize: 10,
       searchKeyword,
@@ -188,40 +190,42 @@ export default function CodegenDetailPage({
             </>
           )}
         </div>
-
-        {(shouldShowList || isSubmitting) && (
-          <div className="w-full mx-auto px-6 max-w-screen-xl">
-            <p className="text-lg font-bold mb-4">Component List</p>
-            <ComponentCodeFilterContainer
-              total={componentCodeData?.total || 0}
-              currentPage={currentPage}
-              searchKeyword={searchKeyword}
-              filterField={filterField}
-              onPageChange={setCurrentPage}
-              onSearchChange={setSearchKeyword}
-              onFilterFieldChange={setFilterField}
-            >
-              {isComponentLoading ? (
-                <div className="space-y-4">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Skeleton key={i} className="h-20 w-full" />
-                  ))}
-                </div>
-              ) : (
-                <ComponentCodeList
-                  newItem={
-                    isSubmitting ? (
-                      <CodingBox className="h-full" code={streamingContent} />
-                    ) : undefined
-                  }
-                  items={componentCodeData?.items || []}
-                  onEditClick={id => console.log("Edit clicked:", id)}
-                  onDeleteClick={id => console.log("Delete clicked:", id)}
-                />
-              )}
-            </ComponentCodeFilterContainer>
-          </div>
-        )}
+        <div
+          className={cn(
+            isSubmitting || shouldShowList ? "opacity-100" : "opacity-0",
+            "w-full mx-auto px-6 max-w-screen-xl",
+          )}
+        >
+          <p className="text-lg font-bold mb-4">Component List</p>
+          <ComponentCodeFilterContainer
+            total={componentCodeData?.total || 0}
+            currentPage={currentPage}
+            searchKeyword={searchKeyword}
+            filterField={filterField}
+            onPageChange={setCurrentPage}
+            onSearchChange={setSearchKeyword}
+            onFilterFieldChange={setFilterField}
+          >
+            {isComponentLoading ? (
+              <div className="space-y-4">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Skeleton key={i} className="h-20 w-full" />
+                ))}
+              </div>
+            ) : (
+              <ComponentCodeList
+                newItem={
+                  isSubmitting ? (
+                    <CodingBox className="h-full" code={streamingContent} />
+                  ) : undefined
+                }
+                items={componentCodeData?.items || []}
+                onEditClick={id => console.log("Edit clicked:", id)}
+                onDeleteClick={id => console.log("Delete clicked:", id)}
+              />
+            )}
+          </ComponentCodeFilterContainer>
+        </div>
       </ScrollArea>
     </div>
   )

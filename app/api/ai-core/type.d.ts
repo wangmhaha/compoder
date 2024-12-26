@@ -8,6 +8,7 @@ type WorkflowQuery = {
   aiModel: LanguageModel
   rules: CodegenRule[]
   userId: string
+  codegenId?: string
   component?: {
     id: string
     name: string
