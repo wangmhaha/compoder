@@ -222,6 +222,9 @@ export default function CodegenDetailPage({
                 items={componentCodeData?.items || []}
                 onEditClick={id => console.log("Edit clicked:", id)}
                 onDeleteClick={id => console.log("Delete clicked:", id)}
+                onItemClick={id =>
+                  router.push(`/main/codegen/${params.codegenId}/${id}`)
+                }
               />
             )}
           </ComponentCodeFilterContainer>

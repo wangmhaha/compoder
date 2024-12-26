@@ -41,7 +41,7 @@ const ComponentCodeVersionsContainer = ({
   }, [activeVersion, versions])
 
   return (
-    <div className="flex min-h-[200px]">
+    <div className="flex min-h-[200px] h-full">
       {/* Version indicator section */}
       <div className="relative flex items-center pr-4">
         <div
