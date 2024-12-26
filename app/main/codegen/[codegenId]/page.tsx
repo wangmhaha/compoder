@@ -25,14 +25,19 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { CompoderThinkingLoading } from "@/components/biz/CompoderThinkingLoading"
 import { useShowOnFirstData } from "@/hooks/use-show-on-first-data"
 import { CodingBox } from "@/components/biz/CodingBox"
-import { flushSync } from "react-dom"
-
+import {
+  transformNewComponentIdFromXml,
+  transformTryCatchErrorFromXml,
+} from "@/lib/xml-message-parser/parser"
+import { useRouter } from "next/navigation"
+import { toast } from "@/hooks/use-toast"
 export default function CodegenDetailPage({
   params,
 }: {
   params: { codegenId: string }
 }) {
   const { data: codegenDetail, isLoading } = useCodegenDetail(params.codegenId)
+  const router = useRouter()
 
   const [currentPage, setCurrentPage] = useState(1)
   const [searchKeyword, setSearchKeyword] = useState("")
@@ -85,6 +90,19 @@ export default function CodegenDetailPage({
         if (done) break
         content += decoder.decode(value)
         setStreamingContent(content)
+      }
+
+      const errorMessage = transformTryCatchErrorFromXml(content)
+      if (errorMessage) {
+        toast({
+          title: "Error",
+          description: errorMessage,
+        })
+      }
+
+      const componentId = transformNewComponentIdFromXml(content)
+      if (componentId) {
+        router.push(`/main/codegen/${params.codegenId}/${componentId}`)
       }
 
       setChatValue("")

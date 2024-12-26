@@ -21,7 +21,7 @@ export const storeComponent = async (
       prompt: context.query.prompt,
       code: context.state.generatedCode,
     })
-    context.stream.write(`<newComponentId>${newComponent._id}</newComponentId>`)
+    context.stream.write(`<NewComponentId>${newComponent._id}</NewComponentId>`)
   }
 
   context.stream.close()

@@ -182,6 +182,7 @@ export async function generateComponentDesign(
           parameters: componentsSchema,
           execute: async params => {
             console.log("params", params)
+            req.stream.write(JSON.stringify(params))
             parserCompletion = params
           },
         },
@@ -189,7 +190,6 @@ export async function generateComponentDesign(
     })
 
     for await (const part of stream.textStream) {
-      console.log("part", part)
       req.stream.write(part)
     }
 
@@ -200,8 +200,11 @@ export async function generateComponentDesign(
     }
 
     return parserCompletion
-  } catch (err) {
+  } catch (err: unknown) {
     console.log("err", err)
-    throw new Error("Stream processing error")
+    if (err instanceof Error) {
+      throw err
+    }
+    throw new Error(String(err))
   }
 }

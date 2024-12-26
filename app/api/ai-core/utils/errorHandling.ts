@@ -6,7 +6,6 @@ export const withErrorHandling =
     try {
       return await fn(context)
     } catch (error) {
-      context.stream.write(`${fn.name} failed: ${error}\n`)
-      throw error
+      throw `<TryCatchError>${fn.name} failed: ${error}</TryCatchError>\n`
     }
   }
