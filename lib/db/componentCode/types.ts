@@ -20,6 +20,7 @@ export type Version = {
 export interface ComponentCode {
   _id: Types.ObjectId
   userId: Types.ObjectId
+  codegenId: Types.ObjectId
   name: string
   description: string
   versions: Version[]

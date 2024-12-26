@@ -3,12 +3,14 @@ import { Prompt } from "./types"
 
 export async function createComponentCode({
   userId,
+  codegenId,
   name,
   description,
   prompt,
   code,
 }: {
   userId: string
+  codegenId: string
   name: string
   description: string
   prompt: Prompt[]
@@ -17,6 +19,7 @@ export async function createComponentCode({
   try {
     const componentCode = await ComponentCodeModel.create({
       userId,
+      codegenId,
       name,
       description,
       versions: [

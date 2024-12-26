@@ -4,6 +4,7 @@ import { Prompt } from "@/lib/db/componentCode/types"
 declare namespace ComponentCodeApi {
   // list request
   export interface listRequest {
+    codegenId: string
     page: number
     pageSize: number
     searchKeyword?: string
@@ -28,8 +29,8 @@ declare namespace ComponentCodeApi {
 
   // create request
   export interface createRequest {
-    prompt: Prompt[]
     codegenId: string
+    prompt: Prompt[]
   }
 
   // create response

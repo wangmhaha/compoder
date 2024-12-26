@@ -4,12 +4,14 @@ import { ComponentCode } from "./types"
 
 export async function listComponentCodes({
   userId,
+  codegenId,
   page,
   pageSize,
   searchKeyword,
   filterField = "all",
 }: {
   userId: string
+  codegenId: string
   page: number
   pageSize: number
   searchKeyword?: string
@@ -36,13 +38,13 @@ export async function listComponentCodes({
 
   // 执行查询
   const [data, total] = await Promise.all([
-    ComponentCodeModel.find({ userId, ...searchQuery })
+    ComponentCodeModel.find({ userId, codegenId, ...searchQuery })
       .select("_id name description versions")
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(pageSize)
       .lean(),
-    ComponentCodeModel.countDocuments({ userId, ...searchQuery }),
+    ComponentCodeModel.countDocuments({ userId, codegenId, ...searchQuery }),
   ])
 
   // 处理返回数据格式
@@ -50,6 +52,7 @@ export async function listComponentCodes({
     _id: item._id,
     name: item.name,
     description: item.description,
+    codegenId: item.codegenId,
     latestVersionCode: item.versions?.[item.versions.length - 1]?.code || "",
   }))
 
