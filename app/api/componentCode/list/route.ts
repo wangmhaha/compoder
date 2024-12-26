@@ -16,6 +16,7 @@ export async function GET(req: NextRequest) {
     const userId = await getUserId()
 
     const searchParams = req.nextUrl.searchParams
+    const codegenId = searchParams.get("codegenId") || ""
     const page = parseInt(searchParams.get("page") || "1")
     const pageSize = parseInt(searchParams.get("pageSize") || "10")
     const searchKeyword = searchParams.get("searchKeyword") || undefined
@@ -37,6 +38,7 @@ export async function GET(req: NextRequest) {
       searchKeyword,
       filterField,
       userId: userId!,
+      codegenId,
     })
 
     return NextResponse.json(result)

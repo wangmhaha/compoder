@@ -52,6 +52,11 @@ const ComponentCodeSchema = new Schema(
       required: true,
       ref: "User",
     },
+    codegenId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "Codegen",
+    },
     name: {
       type: String,
       required: true,
