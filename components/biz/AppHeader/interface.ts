@@ -6,4 +6,5 @@ export interface BreadcrumbItem {
 export interface AppHeaderProps {
   className?: string
   breadcrumbs?: BreadcrumbItem[]
+  showSidebarTrigger?: boolean
 }

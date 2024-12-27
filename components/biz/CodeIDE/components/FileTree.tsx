@@ -49,7 +49,7 @@ export function FileTree({
       return (
         <button
           className={cn(
-            "flex w-full items-center gap-2 px-4 py-2 hover:bg-muted",
+            "flex w-full items-center gap-2 px-4 py-2 rounded-sm hover:bg-muted text-sm",
             currentFile?.id === item.id && "bg-muted",
           )}
           onClick={() => onFileClick(item)}
@@ -86,7 +86,7 @@ export function FileTree({
     >
       <CollapsibleTrigger
         className={cn(
-          "flex items-center gap-2 w-full",
+          "flex items-center gap-2 w-full text-sm",
           variant === "sidebar"
             ? "px-4 py-2 hover:bg-muted"
             : cn(

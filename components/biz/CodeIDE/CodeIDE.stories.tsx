@@ -11,6 +11,13 @@ const meta = {
   parameters: {
     layout: "fullscreen",
   },
+  decorators: [
+    Story => (
+      <div style={{ height: "100vh" }}>
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof CodeIDE>
 
 export default meta
@@ -20,10 +27,10 @@ export const WithSaveHandler: Story = {
   args: {
     data: sampleData,
     onSave: async (files: FileNode[]) => {
-      // 模拟异步保存操作
+      // Simulate async save operation
       await new Promise(resolve => setTimeout(resolve, 1000))
       console.log("Files saved:", files)
-      // 这里你可以在控制台中查看保存的文件内容
+      // You can check the saved file contents in the console
     },
   },
 }
@@ -32,7 +39,7 @@ export const WithSaveError: Story = {
   args: {
     data: sampleData,
     onSave: async () => {
-      // 模拟保存失败的情况
+      // Simulate save failure
       await new Promise((_, reject) =>
         setTimeout(() => reject(new Error("Failed to save")), 1000),
       )
@@ -40,7 +47,7 @@ export const WithSaveError: Story = {
   },
 }
 
-// 添加参数说明
+// Add parameter descriptions
 WithSaveHandler.parameters = {
   docs: {
     description: {

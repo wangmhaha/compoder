@@ -43,10 +43,10 @@ const ComponentCodeVersionsContainer = ({
   return (
     <div className="flex min-h-[200px] h-full">
       {/* Version indicator section */}
-      <div className="relative flex items-center pr-4">
+      <div className="relative flex items-center pr-4 overflow-y-auto scrollbar-hide">
         <div
           ref={dotsContainerRef}
-          className="flex flex-col gap-4 transition-transform duration-300 ease-in-out"
+          className="flex flex-col gap-4 transition-transform duration-300 ease-in-out px-1"
         >
           <TooltipProvider>
             {[...versions].reverse().map((version, index) => (
@@ -76,8 +76,11 @@ const ComponentCodeVersionsContainer = ({
             ))}
           </TooltipProvider>
         </div>
-        {/* Arrow */}
-        <div className="absolute right-[-1px] top-1/2 -translate-y-1/2">
+      </div>
+
+      {/* Content container section */}
+      <div className="relative flex-1 border rounded-lg p-4 border-gray-200 dark:border-gray-800 bg-white dark:bg-background">
+        <div className="absolute left-[-8px] top-1/2 -translate-y-1/2">
           <svg
             width="8"
             height="16"
@@ -95,10 +98,7 @@ const ComponentCodeVersionsContainer = ({
             />
           </svg>
         </div>
-      </div>
 
-      {/* Content container section */}
-      <div className="flex-1 border rounded-lg p-4 border-gray-200 dark:border-gray-800 bg-white dark:bg-background">
         <p className="flex items-center gap-2 w-fit rounded-tr-lg rounded-tl-lg rounded-br-lg bg-violet-50 dark:bg-violet-900/30 p-2 dark:text-violet-100 mb-2">
           <MessageCircleMore className="w-4 h-4" />
           {bubbleContent}

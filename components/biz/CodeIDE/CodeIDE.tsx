@@ -9,11 +9,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
-import {
-  SidebarInset,
-  SidebarProvider,
-  useSidebar,
-} from "@/components/ui/sidebar"
 import { CodeIDEProps, FileNode } from "./interface"
 import { Editor } from "@monaco-editor/react"
 import { FileProvider, useFile } from "./context/FileContext"
@@ -53,7 +48,6 @@ function getFilePath(
 
 // Internal component that uses the sidebar context
 function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
-  const { state, toggleSidebar } = useSidebar()
   const { theme } = useTheme()
   const {
     currentFile,
@@ -135,117 +129,109 @@ function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
   }
 
   return (
-    <ResizablePanelGroup direction="horizontal">
-      <ResizablePanel defaultSize={50} minSize={30}>
-        <div className="flex h-full w-full overflow-hidden">
-          <AppSidebar />
-          <SidebarInset className="flex flex-col w-full min-w-0">
-            <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7 -ml-1"
-                onClick={toggleSidebar}
-              >
-                {state === "expanded" ? (
-                  <ChevronsLeft className="h-4 w-4" />
-                ) : (
-                  <ChevronsRight className="h-4 w-4" />
-                )}
-              </Button>
-              <Separator orientation="vertical" className="mr-2 h-4" />
-              <ScrollArea className="w-[calc(100%-4rem)] h-full">
-                <Breadcrumb className="min-w-max pt-5">
-                  <BreadcrumbList>
-                    {currentFilePath ? (
-                      currentFilePath.map((node, index) => (
-                        <BreadcrumbItem key={node.id}>
-                          {index === currentFilePath.length - 1 ? (
-                            <BreadcrumbPage>{node.name}</BreadcrumbPage>
-                          ) : (
-                            <>
-                              <BreadcrumbPopover
-                                node={node}
-                                popoverNode={
-                                  index === 0
-                                    ? {
-                                        id: "originalFiles",
-                                        name: "root",
-                                        children: originalFiles,
-                                      }
-                                    : currentFilePath[index - 1]
-                                }
-                              />
-                              <BreadcrumbSeparator />
-                            </>
-                          )}
-                        </BreadcrumbItem>
-                      ))
-                    ) : (
-                      <BreadcrumbItem>
-                        <BreadcrumbPage>No file selected</BreadcrumbPage>
+    <ResizablePanelGroup direction="horizontal" className="border rounded-md">
+      {/* File tree sidebar */}
+      <ResizablePanel defaultSize={20} minSize={15} maxSize={30}>
+        <AppSidebar />
+      </ResizablePanel>
+
+      <ResizableHandle />
+
+      {/* Main editor area */}
+      <ResizablePanel defaultSize={80}>
+        <div className="flex flex-col h-full w-full min-w-0">
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+            <ScrollArea className="w-[calc(100%-4rem)] h-full">
+              <Breadcrumb className="min-w-max pt-5">
+                <BreadcrumbList>
+                  {currentFilePath ? (
+                    currentFilePath.map((node, index) => (
+                      <BreadcrumbItem key={node.id}>
+                        {index === currentFilePath.length - 1 ? (
+                          <BreadcrumbPage>{node.name}</BreadcrumbPage>
+                        ) : (
+                          <>
+                            <BreadcrumbPopover
+                              node={node}
+                              popoverNode={
+                                index === 0
+                                  ? {
+                                      id: "originalFiles",
+                                      name: "root",
+                                      children: originalFiles,
+                                    }
+                                  : currentFilePath[index - 1]
+                              }
+                            />
+                            <BreadcrumbSeparator />
+                          </>
+                        )}
                       </BreadcrumbItem>
-                    )}
-                  </BreadcrumbList>
-                </Breadcrumb>
-                <ScrollBar orientation="horizontal" />
-              </ScrollArea>
-            </header>
-            <div className="flex-1 min-h-0 w-full overflow-hidden">
-              {currentFile ? (
-                <div
-                  ref={editorContainerRef}
-                  className="h-full w-full relative overflow-hidden"
-                >
-                  <Editor
-                    height="100%"
-                    width="100%"
-                    language={currentFile.language ?? "typescript"}
-                    value={currentFile.content}
-                    theme={theme === "dark" ? "vs-dark" : "light"}
-                    options={{
-                      minimap: { enabled: false },
-                      fontSize: 14,
-                      readOnly: readOnly,
-                      automaticLayout: true,
-                      scrollBeyondLastLine: false,
-                    }}
-                    beforeMount={monaco => {
-                      monaco.languages.typescript.typescriptDefaults.setCompilerOptions(
-                        {
-                          jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
-                          jsxFactory: "React.createElement",
-                          reactNamespace: "React",
-                          allowNonTsExtensions: true,
-                          allowJs: true,
-                          target:
-                            monaco.languages.typescript.ScriptTarget.Latest,
-                        },
-                      )
-                    }}
-                    onChange={handleEditorChange}
-                  />
-                </div>
-              ) : (
-                <div className="flex items-center justify-center h-full text-muted-foreground">
-                  Select a file to view its content
-                </div>
-              )}
-              <EditorToast
-                visible={showToast}
-                onReset={resetChanges}
-                onSave={handleSave}
-                isSaving={isSaving}
-              />
-            </div>
-          </SidebarInset>
+                    ))
+                  ) : (
+                    <BreadcrumbItem>
+                      <BreadcrumbPage>No file selected</BreadcrumbPage>
+                    </BreadcrumbItem>
+                  )}
+                </BreadcrumbList>
+              </Breadcrumb>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+          </header>
+
+          <div className="relative flex-1 min-h-0 w-full overflow-hidden">
+            {currentFile ? (
+              <div
+                ref={editorContainerRef}
+                className="h-full w-full relative overflow-hidden"
+              >
+                <Editor
+                  height="100%"
+                  width="100%"
+                  language={currentFile.language ?? "typescript"}
+                  value={currentFile.content}
+                  theme={theme === "dark" ? "vs-dark" : "light"}
+                  options={{
+                    minimap: { enabled: false },
+                    fontSize: 14,
+                    readOnly: readOnly,
+                    automaticLayout: true,
+                    scrollBeyondLastLine: false,
+                  }}
+                  beforeMount={monaco => {
+                    monaco.languages.typescript.typescriptDefaults.setCompilerOptions(
+                      {
+                        jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
+                        jsxFactory: "React.createElement",
+                        reactNamespace: "React",
+                        allowNonTsExtensions: true,
+                        allowJs: true,
+                        target: monaco.languages.typescript.ScriptTarget.Latest,
+                      },
+                    )
+                  }}
+                  onChange={handleEditorChange}
+                />
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-full text-muted-foreground">
+                Select a file to view its content
+              </div>
+            )}
+            <EditorToast
+              visible={showToast}
+              onReset={resetChanges}
+              onSave={handleSave}
+              isSaving={isSaving}
+            />
+          </div>
         </div>
       </ResizablePanel>
 
       {codeRenderer && (
         <>
-          <ResizableHandle withHandle />
-          <ResizablePanel defaultSize={50} minSize={30}>
+          <ResizableHandle />
+          <ResizablePanel defaultSize={50} minSize={30} maxSize={100}>
             <div className="h-full w-full overflow-auto">{codeRenderer}</div>
           </ResizablePanel>
         </>
@@ -257,10 +243,10 @@ function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
 // Main component wrapped with required providers
 export function CodeIDE(props: CodeIDEProps) {
   return (
-    <SidebarProvider>
+    <div className="h-full min-h-[100px]">
       <FileProvider initialFiles={props.data}>
         <CodeIDEContent {...props} />
       </FileProvider>
-    </SidebarProvider>
+    </div>
   )
 }

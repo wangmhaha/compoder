@@ -92,8 +92,8 @@ export function EditorToast({
       className={cn(
         "fixed md:absolute bottom-4 right-4 z-50",
         "bg-background border rounded-lg shadow-lg",
-        "p-4 min-w-[300px] max-w-[calc(100%-2rem)]",
-        "mx-auto left-4 md:left-auto",
+        "p-4 min-w-[200px] max-w-[300px]",
+        "mx-auto left-4 md:left-auto max-h-[calc(100%-2rem)] overflow-y-auto",
       )}
     >
       <div className="flex flex-col gap-2">
@@ -103,7 +103,7 @@ export function EditorToast({
         <p className="text-sm text-muted-foreground">
           You have unsaved changes in these files:
         </p>
-        <div className="text-sm text-muted-foreground max-h-[150px] overflow-y-auto">
+        <div className="text-sm text-muted-foreground">
           {unsavedFilePaths.map(({ id, path }) => (
             <div
               key={id}
