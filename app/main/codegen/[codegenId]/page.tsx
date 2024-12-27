@@ -124,8 +124,8 @@ export default function CodegenDetailPage({
     <div>
       <AppHeader
         breadcrumbs={[
-          { label: "Codegen List", href: "/main/codegen" },
-          { label: "Codegen Detail" },
+          { label: "Codegen", href: "/main/codegen" },
+          { label: codegenDetail?.name || "Codegen Detail" },
         ]}
       />
       <ScrollArea className="h-[calc(100vh-88px)]">

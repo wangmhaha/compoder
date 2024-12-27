@@ -2,82 +2,50 @@
 import { CodegenFilterContainer } from "@/components/biz/CodegenFilterContainer"
 import { CodegenList } from "@/components/biz/CodegenList"
 import { useGetCodegenList } from "./server-store/selectors"
-import { useEffect, useState } from "react"
-import { JobItem, StackType } from "@/components/biz/CodegenList/interface"
-import { flushSync } from "react-dom"
+import { useState } from "react"
+import { StackType } from "@/components/biz/CodegenList/interface"
 import { AppHeader } from "@/components/biz/AppHeader"
 import { useRouter } from "next/navigation"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useFirstLoading } from "@/hooks/use-first-loading"
 
 export default function Codegen() {
   const router = useRouter()
-  const [searchParams, setSearchParams] = useState<{
-    page?: number
-    pageSize?: number
+  const [filters, setFilters] = useState<{
+    pageSize: number
     selectedStack?: StackType | "All"
     searchKeyword?: string
   }>({
-    page: 1,
-    pageSize: 10,
+    pageSize: 1,
     selectedStack: undefined,
     searchKeyword: undefined,
   })
 
-  const { isLoading, refetch } = useGetCodegenList({
-    page: searchParams.page || 1,
-    pageSize: searchParams.pageSize || 10,
-    name: searchParams.searchKeyword,
+  const { data, isLoading, hasNextPage, fetchNextPage } = useGetCodegenList({
+    pageSize: filters.pageSize,
+    name: filters.searchKeyword,
     fullStack:
-      searchParams.selectedStack === "All"
-        ? undefined
-        : searchParams.selectedStack,
+      filters.selectedStack === "All" ? undefined : filters.selectedStack,
   })
 
-  const [items, setItems] = useState<JobItem[]>([])
-  const [total, setTotal] = useState(0)
-
-  const requestNewData = async () => {
-    const { data } = await refetch()
-    setItems(data?.data ?? [])
-    setTotal(data?.total ?? 0)
-  }
-
-  const requestMoreData = async () => {
-    const { data } = await refetch()
-    setItems(prev => [...prev, ...(data?.data ?? [])])
-    setTotal(data?.total ?? 0)
-  }
-
-  useEffect(() => {
-    requestNewData()
-  }, [])
+  const isFirstLoading = useFirstLoading(isLoading)
 
   const handleStackChange = (stack: StackType) => {
-    const newSearchParams = {
-      ...searchParams,
+    setFilters(prev => ({
+      ...prev,
       selectedStack: stack,
-      page: 1,
-    }
-    flushSync(() => {
-      setSearchParams(newSearchParams)
-    })
-    requestNewData()
+    }))
   }
 
   const handleSearchChange = (keyword: string) => {
-    flushSync(() => {
-      setSearchParams(prev => ({ ...prev, searchKeyword: keyword, page: 1 }))
-    })
-    requestNewData()
+    setFilters(prev => ({
+      ...prev,
+      searchKeyword: keyword,
+    }))
   }
 
   const handleLoadMore = () => {
-    flushSync(() => {
-      setSearchParams(prev => ({
-        ...prev,
-        page: prev.page ? prev.page + 1 : 1,
-      }))
-    })
-    requestMoreData()
+    fetchNextPage()
   }
 
   const handleItemClick = (id: string) => {
@@ -86,16 +54,24 @@ export default function Codegen() {
 
   return (
     <div>
-      <AppHeader breadcrumbs={[{ label: "Codegen List" }]} />
+      <AppHeader breadcrumbs={[{ label: "Codegen" }]} />
       <CodegenFilterContainer
-        selectedStack={searchParams.selectedStack}
+        selectedStack={filters.selectedStack}
         onStackChange={handleStackChange}
         onSearchChange={handleSearchChange}
         onLoadMore={handleLoadMore}
         isLoading={isLoading}
-        hasMore={Boolean(total && total > items.length)}
+        hasMore={hasNextPage}
       >
-        <CodegenList items={items} onItemClick={handleItemClick} />
+        {isFirstLoading ? (
+          <div className="space-y-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <Skeleton key={i} className="h-20 w-full" />
+            ))}
+          </div>
+        ) : (
+          <CodegenList items={data?.data ?? []} onItemClick={handleItemClick} />
+        )}
       </CodegenFilterContainer>
     </div>
   )

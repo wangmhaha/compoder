@@ -1,6 +1,4 @@
 import { AppSidebar } from "./components/FileSidebar"
-import { ChevronsLeft, ChevronsRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,7 +6,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
 import { CodeIDEProps, FileNode } from "./interface"
 import { Editor } from "@monaco-editor/react"
 import { FileProvider, useFile } from "./context/FileContext"
@@ -140,9 +137,9 @@ function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
       {/* Main editor area */}
       <ResizablePanel defaultSize={80}>
         <div className="flex flex-col h-full w-full min-w-0">
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <header className="flex h-10 shrink-0 items-center gap-2 border-b px-4">
             <ScrollArea className="w-[calc(100%-4rem)] h-full">
-              <Breadcrumb className="min-w-max pt-5">
+              <Breadcrumb className="min-w-max pt-2">
                 <BreadcrumbList>
                   {currentFilePath ? (
                     currentFilePath.map((node, index) => (

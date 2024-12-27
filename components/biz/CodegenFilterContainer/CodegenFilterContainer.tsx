@@ -75,7 +75,7 @@ export function CodegenFilterContainer({
 
       {hasMore && (
         <div className="flex items-start justify-center gap-0 pt-4">
-          <div className="flex-1 h-[100px] rounded-[40px] border-t" />
+          <div className="flex-1 h-[100px] border-t rounded-r-[40px]" />
 
           <Button
             variant="outline"
@@ -86,7 +86,7 @@ export function CodegenFilterContainer({
           >
             {isLoading ? (
               <>
-                <Loading className="mr-2 [&_svg]:size-10" />
+                <Loading className="mr-2 [&_svg]:!size-10" />
                 Loading...
               </>
             ) : (
@@ -94,7 +94,7 @@ export function CodegenFilterContainer({
             )}
           </Button>
 
-          <div className="flex-1 h-[100px] rounded-[40px] border-t" />
+          <div className="flex-1 h-[100px] rounded-l-[40px] border-t" />
         </div>
       )}
     </div>
