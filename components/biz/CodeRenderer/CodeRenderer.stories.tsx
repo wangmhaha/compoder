@@ -15,7 +15,7 @@ type Story = StoryObj<typeof meta>
 
 export const SingleFile: Story = {
   args: {
-    codeRendererServer: "http://localhost:8002/artifacts",
+    codeRendererServer: "https://antd-renderer.pages.dev/artifacts",
     onFixError: error => console.log("Error:", error),
     className: "h-[500px]",
     codes: {
@@ -37,7 +37,7 @@ export const SingleFile: Story = {
 
 export const MultipleFiles: Story = {
   args: {
-    codeRendererServer: "http://localhost:8002/artifacts",
+    codeRendererServer: "https://antd-renderer.pages.dev/artifacts",
     onFixError: error => console.log("Error:", error),
     codes: {
       "App.tsx": `

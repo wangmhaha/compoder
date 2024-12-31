@@ -9,7 +9,7 @@ import {
 import { CodeIDEProps, FileNode } from "./interface"
 import { Editor } from "@monaco-editor/react"
 import { FileProvider, useFile } from "./context/FileContext"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, memo } from "react"
 import { useTheme } from "next-themes"
 import { BreadcrumbPopover } from "./components/BreadcrumbPopover"
 import { EditorToast } from "./components/EditorToast"
@@ -247,3 +247,9 @@ export function CodeIDE(props: CodeIDEProps) {
     </div>
   )
 }
+
+// memo data to the CodeIDE component
+export default memo(CodeIDE, (prevProps, nextProps) => {
+  // Deep comparison
+  return JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data)
+})

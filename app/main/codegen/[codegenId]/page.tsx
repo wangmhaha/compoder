@@ -113,6 +113,7 @@ export default function CodegenDetailPage({
       console.error("Failed to create component:", error)
     } finally {
       setIsSubmitting(false)
+      setStreamingContent("")
     }
   }
 
@@ -160,6 +161,7 @@ export default function CodegenDetailPage({
                       <TooltipTrigger asChild>
                         <Button variant="ghost" size="icon">
                           <TldrawEdit
+                            disabled={isSubmitting}
                             onSubmit={imageData => {
                               setImages(prev => [...prev, imageData])
                             }}

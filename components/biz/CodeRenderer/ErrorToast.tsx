@@ -19,7 +19,7 @@ export const ErrorToast: FC<ErrorToastProps> = ({
     return (
       <div className="space-y-2">
         <div className="rounded bg-[#1a1a1a] p-2 font-mono border border-[#00ff00]/20 whitespace-pre-wrap break-words">
-          <ScrollArea className="h-24">
+          <ScrollArea className="h-16">
             {codeLines.map(line => (
               <div key={line} className="flex items-center gap-2">
                 <div className="flex-1 text-[#00ff00] animate-pulse-slow">
@@ -36,14 +36,14 @@ export const ErrorToast: FC<ErrorToastProps> = ({
   return (
     <div
       className={cn(
-        "absolute bottom-4 right-4 z-50 w-[32rem] rounded-lg border border-[#00ff00]/30 bg-black/90 p-4 text-[#00ff00] shadow-lg shadow-[#00ff00]/20 backdrop-blur-sm animate-slide-up",
+        "absolute bottom-4 right-4 z-50 w-[18rem] rounded-lg border border-[#00ff00]/30 bg-black/90 p-4 text-[#00ff00] shadow-lg shadow-[#00ff00]/20 backdrop-blur-sm animate-slide-up",
         className,
       )}
     >
       <div className="grid gap-1">
         <div className="font-mono font-bold flex items-center gap-2">
           <span className="inline-block w-2 h-2 rounded-full bg-[#00ff00] animate-pulse" />
-          SYSTEM ERROR DETECTED
+          Try Compoder Auto Fix
         </div>
         <div className="text-xs leading-relaxed font-mono">
           {formatErrorMessage(message)}

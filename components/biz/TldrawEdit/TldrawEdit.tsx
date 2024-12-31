@@ -27,7 +27,7 @@ const Tldraw = dynamic(() => import("@tldraw/tldraw").then(mod => mod.Tldraw), {
   ssr: false,
 })
 
-const TldrawEdit: FC<TldrawEditProps> = ({ onSubmit }) => {
+const TldrawEdit: FC<TldrawEditProps> = ({ onSubmit, disabled }) => {
   const [, refresh] = useState({})
   const editorRef = useRef<Editor>()
   const [open, setOpen] = useState(false)
@@ -42,6 +42,7 @@ const TldrawEdit: FC<TldrawEditProps> = ({ onSubmit }) => {
               size="icon"
               className="bg-background/20 hover:bg-background/30 dark:bg-white/20 dark:hover:bg-white/30"
               onClick={() => setOpen(true)}
+              disabled={disabled}
             >
               <ImageIcon className="h-4 w-4 text-foreground/70 dark:text-white/70" />
             </Button>

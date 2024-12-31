@@ -26,6 +26,7 @@ export interface FileNode {
   children?: FileNode[]
   content?: string
   language?: string
+  isEntryFile?: boolean
 }
 
 export interface CodeIDEProps {

@@ -44,7 +44,14 @@ This guide helps generate the integration layer between business components and 
 
 ## Output Structure
 
-The generator should create the following files:
+Important Note: When generating code for existing files:
+
+- NEVER remove or replace existing selectors/mutations
+- ONLY add new selectors/mutations incrementally
+- Preserve all existing functionality
+- Follow the existing patterns and naming conventions
+
+The generator should create or update the following files:
 
 ### 1. server-store/selectors.ts (if needed)
 
@@ -52,7 +59,10 @@ The generator should create the following files:
 - Transform API response data to match component prop types in the select function
 - Example structure:
 
+Example of a new selector (while keeping existing ones):
+
 ```typescript
+// Original example - keep this
 export const useGetSomeData = (params: ApiType.Request) => {
   return useQuery<
     ApiType.Response,
@@ -67,16 +77,31 @@ export const useGetSomeData = (params: ApiType.Request) => {
     }),
   })
 }
+
+// When adding new selectors, add them below existing ones
+export const useNewSelector = () => {
+  return useQuery({
+    // ... new selector implementation
+  })
+}
 ```
 
 ### 2. server-store/mutations.ts (if needed)
 
-For APIs that modify data:
+Example of mutations (while keeping existing ones):
 
 ```typescript
+// Original example - keep this
 export const useSomeDataMutation = () => {
   return useMutation<ApiType.Response, Error, ApiType.Request>({
     mutationFn: params => apiMutationCall(params),
+  })
+}
+
+// When adding new mutations, add them below existing ones
+export const useNewMutation = () => {
+  return useMutation({
+    // ... new mutation implementation
   })
 }
 ```
@@ -156,3 +181,19 @@ Generate:
    - Implements all necessary callbacks
 
 The generated code should follow the project's existing patterns and naming conventions.
+
+## Additional Guidelines for Incremental Updates
+
+1. Code Preservation:
+
+   - Always check existing files before adding new code
+   - Never remove or modify existing selectors/mutations
+   - Add new functionality below existing code
+   - Maintain consistent formatting with existing code
+
+2. Integration Strategy:
+
+   - Review existing patterns in the codebase
+   - Follow established naming conventions
+   - Reuse existing utility functions when possible
+   - Add new functionality incrementally

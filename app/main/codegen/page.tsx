@@ -16,7 +16,7 @@ export default function Codegen() {
     selectedStack?: StackType | "All"
     searchKeyword?: string
   }>({
-    pageSize: 1,
+    pageSize: 10,
     selectedStack: undefined,
     searchKeyword: undefined,
   })

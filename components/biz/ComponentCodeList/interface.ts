@@ -1,7 +1,10 @@
+import { CodeRendererProps } from "../CodeRenderer"
+
 export interface ComponentItem {
   id: string
   title: string
   description: string
+  code: CodeRendererProps["codes"]
 }
 
 export interface ComponentCodeListProps {
@@ -11,4 +14,5 @@ export interface ComponentCodeListProps {
   onDeleteClick?: (id: string) => void
   className?: string
   newItem?: React.ReactNode
+  codeRendererServer: string
 }

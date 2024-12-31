@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator"
 import { toast } from "@/hooks/use-toast"
 import { ChatInputProps } from "./interface"
 import autosize from "autosize"
-import ImagePreview from "./ImagePreview"
+import { ImagePreview } from "@/components/biz/ImagePreview"
 import { motion, AnimatePresence } from "framer-motion"
 
 const ChatInput = React.memo(

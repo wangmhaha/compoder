@@ -1,7 +1,29 @@
-import React, { createContext, useContext, useState } from "react"
+import React, { createContext, useContext, useEffect, useState } from "react"
 import type { FileNode } from "../interface"
 import { useToast } from "@/hooks/use-toast"
 import { flushSync } from "react-dom"
+
+const findFileById = (nodes: FileNode[], id: string): FileNode | null => {
+  for (const node of nodes) {
+    if (node.id === id) return node
+    if (node.children) {
+      const found = findFileById(node.children, id)
+      if (found) return found
+    }
+  }
+  return null
+}
+
+const findEntryFile = (nodes: FileNode[]): FileNode | null => {
+  for (const node of nodes) {
+    if (node.isEntryFile) return node
+    if (node.children) {
+      const found = findEntryFile(node.children)
+      if (found) return found
+    }
+  }
+  return null
+}
 
 interface FileContextType {
   files: FileNode[]
@@ -29,9 +51,19 @@ export function FileProvider({
 }) {
   const { toast } = useToast()
   const [files, setFiles] = useState<FileNode[]>(initialFiles)
-  const [currentFile, setCurrentFile] = useState<FileNode | null>(null)
+  const [currentFile, setCurrentFile] = useState<FileNode | null>(
+    findEntryFile(initialFiles) || null,
+  )
   const [originalFiles, setOriginalFiles] = useState<FileNode[]>(initialFiles)
   const [unsavedFiles, setUnsavedFiles] = useState<Set<string>>(new Set())
+
+  // Listen for changes to initialFiles to update files, originalFiles and currentFile
+  useEffect(() => {
+    setFiles(initialFiles)
+    setOriginalFiles(initialFiles)
+    setCurrentFile(findEntryFile(initialFiles) || null)
+    setUnsavedFiles(new Set())
+  }, [initialFiles])
 
   const handleFileSelect = (file: FileNode) => {
     if (file.content) {
@@ -107,17 +139,6 @@ export function FileProvider({
       description: "Your changes have been saved successfully.",
       duration: 1000,
     })
-  }
-
-  const findFileById = (nodes: FileNode[], id: string): FileNode | null => {
-    for (const node of nodes) {
-      if (node.id === id) return node
-      if (node.children) {
-        const found = findFileById(node.children, id)
-        if (found) return found
-      }
-    }
-    return null
   }
 
   return (

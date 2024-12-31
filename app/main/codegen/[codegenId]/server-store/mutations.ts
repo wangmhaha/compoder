@@ -1,5 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { createComponentCode } from "@/app/services/componentCode/componentCode.service"
+import {
+  createComponentCode,
+  editComponentCode,
+} from "@/app/services/componentCode/componentCode.service"
 import { ComponentCodeApi } from "@/app/api/componentCode/type"
 
 export const useCreateComponentCode = () => {
@@ -15,5 +18,15 @@ export const useCreateComponentCode = () => {
       // Invalidate the component list query to trigger a refresh
       queryClient.invalidateQueries({ queryKey: ["componentCodeList"] })
     },
+  })
+}
+
+export const useEditComponentCode = () => {
+  return useMutation<
+    ComponentCodeApi.editResponse,
+    Error,
+    ComponentCodeApi.editRequest
+  >({
+    mutationFn: params => editComponentCode(params),
   })
 }

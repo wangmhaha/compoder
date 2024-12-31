@@ -35,6 +35,7 @@ export const CodeRenderer: FC<CodeRendererProps> = ({
         sendMessage()
         setIsIframeLoaded(true)
       }
+      setShowErrorToast(false)
       if (event.data.type === "error") {
         setErrorMessage(event.data.errorMessage)
         setShowErrorToast(true)

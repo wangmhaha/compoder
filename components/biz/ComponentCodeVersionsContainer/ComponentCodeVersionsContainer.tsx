@@ -8,13 +8,15 @@ import {
 } from "@/components/ui/tooltip"
 import type { ComponentCodeVersionsContainerProps } from "./interface"
 import { MessageCircleMore } from "lucide-react"
+import { Prompt } from "@/lib/db/componentCode/types"
+import { ImagePreview } from "@/components/biz/ImagePreview"
+import { Separator } from "@/components/ui/separator"
 
 const ComponentCodeVersionsContainer = ({
   versions,
   activeVersion,
   onVersionChange,
   children,
-  bubbleContent,
 }: ComponentCodeVersionsContainerProps) => {
   const [hoveredVersion, setHoveredVersion] = useState<number | null>(null)
   const dotsContainerRef = useRef<HTMLDivElement>(null)
@@ -24,7 +26,9 @@ const ComponentCodeVersionsContainer = ({
     const container = dotsContainerRef.current
     if (!container) return
 
-    const activeIndex = versions.indexOf(activeVersion)
+    const activeIndex = versions.findIndex(
+      version => version.id === activeVersion,
+    )
     if (activeIndex === -1) return
 
     const dotHeight = 8 // Height of each dot
@@ -40,6 +44,19 @@ const ComponentCodeVersionsContainer = ({
     container.style.transform = `translateY(${offset}px)`
   }, [activeVersion, versions])
 
+  const renderPrompt = (prompt: Prompt) => {
+    switch (prompt.type) {
+      case "text":
+        return <p className="text-sm">{prompt.text}</p>
+      case "image":
+        return <ImagePreview src={prompt.image} thumbnailSize={32} />
+      default:
+        return null
+    }
+  }
+
+  const activeVersionData = versions.find(v => v.id === activeVersion)
+
   return (
     <div className="flex min-h-[200px] h-full">
       {/* Version indicator section */}
@@ -50,19 +67,19 @@ const ComponentCodeVersionsContainer = ({
         >
           <TooltipProvider>
             {[...versions].reverse().map((version, index) => (
-              <Tooltip key={version}>
+              <Tooltip key={version.id}>
                 <TooltipTrigger asChild>
                   <div
                     className={cn(
                       "w-2 h-2 rounded-full cursor-pointer transition-all duration-300",
                       "bg-gray-300 dark:bg-gray-600",
                       "hover:scale-150 hover:bg-gray-400 dark:hover:bg-gray-500",
-                      activeVersion === version &&
+                      activeVersion === version.id &&
                         "scale-150 bg-gray-500 dark:bg-gray-300",
                       hoveredVersion === versions.length - 1 - index &&
                         "scale-150 bg-gray-400 dark:bg-gray-500",
                     )}
-                    onClick={() => onVersionChange(version)}
+                    onClick={() => onVersionChange(version.id)}
                     onMouseEnter={() =>
                       setHoveredVersion(versions.length - 1 - index)
                     }
@@ -70,7 +87,11 @@ const ComponentCodeVersionsContainer = ({
                   />
                 </TooltipTrigger>
                 <TooltipContent side="right" sideOffset={12}>
-                  <p>v{version}</p>
+                  <div className="flex flex-col gap-2 max-w-[200px] max-h-[200px] overflow-y-auto">
+                    {version.prompt.map((prompt, index) => (
+                      <div key={index}>{renderPrompt(prompt)}</div>
+                    ))}
+                  </div>
                 </TooltipContent>
               </Tooltip>
             ))}
@@ -99,10 +120,19 @@ const ComponentCodeVersionsContainer = ({
           </svg>
         </div>
 
-        <p className="flex items-center gap-2 w-fit rounded-tr-lg rounded-tl-lg rounded-br-lg bg-violet-50 dark:bg-violet-900/30 p-2 dark:text-violet-100 mb-2">
-          <MessageCircleMore className="w-4 h-4" />
-          {bubbleContent}
+        <p className="w-fit flex items-center gap-2 py-2 px-4 rounded-lg bg-gray-50 dark:bg-gray-800 mb-4">
+          <MessageCircleMore className="w-5 h-5" />
+          <Separator
+            orientation="vertical"
+            className="h-5 bg-gray-300 dark:bg-gray-600 mr-1"
+          />
+          <div className="flex items-center gap-2 h-8">
+            {activeVersionData?.prompt.map((prompt, index) => (
+              <div key={index}>{renderPrompt(prompt)}</div>
+            ))}
+          </div>
         </p>
+
         {children}
       </div>
     </div>

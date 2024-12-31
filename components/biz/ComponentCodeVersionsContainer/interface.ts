@@ -1,12 +1,15 @@
+import { Prompt } from "@/lib/db/componentCode/types"
+
 export interface ComponentCodeVersionsContainerProps {
   /** Version number list */
-  versions: number[]
+  versions: {
+    id: string
+    prompt: Prompt[]
+  }[]
   /** Currently active version */
-  activeVersion: number
+  activeVersion: string
   /** Version change callback */
-  onVersionChange: (version: number) => void
+  onVersionChange: (version: string) => void
   /** Container content */
   children: React.ReactNode
-  /** Bubble content */
-  bubbleContent: React.ReactNode
 }

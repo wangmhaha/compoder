@@ -19,37 +19,62 @@ export const mockItems = [
     title: "CSS Theme Switch CSS Theme Switch CSS Theme Switch ",
     description:
       "A beautiful A beautiful A beautiful  A beautiful A beautiful A beautiful A beautiful  A beautiful A beautiful  A beautiful",
+    code: {
+      "App.tsx":
+        "import React from 'react'; import { Button } from 'antd'; return <Button>Hello World</Button>;",
+    },
   },
   {
     id: "2",
     title: "Dark Mode Toggle",
     description: "Simple and elegant dark mode toggle with system preference",
+    code: {
+      "App.tsx":
+        "import React from 'react'; import { Button } from 'antd'; return <Button>Hello World</Button>;",
+    },
   },
   {
     id: "3",
     title: "Color Scheme Picker",
     description: "Advanced color scheme picker with custom theme support",
+    code: {
+      "App.tsx":
+        "import React from 'react'; import { Button } from 'antd'; return <Button>Hello World</Button>;",
+    },
   },
   {
     id: "4",
     title: "Customizable Button",
     description: "A customizable button with various styles and sizes",
+    code: {
+      "App.tsx":
+        "import React from 'react'; import { Button } from 'antd'; return <Button>Hello World</Button>;",
+    },
   },
   {
     id: "5",
     title: "Responsive Layout",
     description: "A responsive layout with breakpoints and media queries",
+    code: {
+      "App.tsx":
+        "import React from 'react'; import { Button } from 'antd'; return <Button>Hello World</Button>;",
+    },
   },
   {
     id: "6",
     title: "Animated Loader",
     description: "A loader with smooth animations and customizable colors",
+    code: {
+      "App.tsx":
+        "import React from 'react'; import { Button } from 'antd'; return <Button>Hello World</Button>;",
+    },
   },
 ] as ComponentItem[]
 
 export const Default: Story = {
   args: {
     items: mockItems,
+    codeRendererServer: "https://antd-renderer.pages.dev/artifacts",
     onEditClick: id => console.log("Edit clicked:", id),
     onDeleteClick: id => console.log("Delete clicked:", id),
   },
@@ -58,6 +83,7 @@ export const Default: Story = {
 export const SingleItem: Story = {
   args: {
     items: [mockItems[0]],
+    codeRendererServer: "https://antd-renderer.pages.dev/artifacts",
     onEditClick: id => console.log("Edit clicked:", id),
     onDeleteClick: id => console.log("Delete clicked:", id),
   },
@@ -66,6 +92,7 @@ export const SingleItem: Story = {
 export const TwoItems: Story = {
   args: {
     items: mockItems.slice(0, 2),
+    codeRendererServer: "https://antd-renderer.pages.dev/artifacts",
     onEditClick: id => console.log("Edit clicked:", id),
     onDeleteClick: id => console.log("Delete clicked:", id),
   },
@@ -83,6 +110,9 @@ export const AnimatedAddition: Story = {
             id: "new-1",
             title: "New Component",
             description: "This component just flew in!",
+            code: {
+              "index.css": "body { background-color: red; }",
+            },
           },
           ...prevItems,
         ])
@@ -93,6 +123,7 @@ export const AnimatedAddition: Story = {
 
     return (
       <ComponentCodeList
+        codeRendererServer="https://antd-renderer.pages.dev/artifacts"
         items={items}
         onEditClick={id => console.log("Edit clicked:", id)}
         onDeleteClick={id => console.log("Delete clicked:", id)}
@@ -122,6 +153,7 @@ export const ClickToAddCodingBox: Story = {
           </h3>
         </div>
         <ComponentCodeList
+          codeRendererServer="https://antd-renderer.pages.dev/artifacts"
           items={mockItems}
           onEditClick={id => console.log("Edit clicked:", id)}
           onDeleteClick={id => console.log("Delete clicked:", id)}

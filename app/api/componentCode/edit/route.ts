@@ -9,7 +9,7 @@ import { validateSession } from "@/lib/auth/middleware"
 
 const aiModel = getOpenaiClient()
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
     const authError = await validateSession()
     if (authError) {
@@ -24,12 +24,7 @@ export async function GET(request: NextRequest) {
     const stream = new TransformStream()
     const writer = stream.writable.getWriter()
 
-    const searchParams = request.nextUrl.searchParams
-    const params: ComponentCodeApi.editRequest = {
-      codegenId: searchParams.get("codegenId") || "",
-      prompt: JSON.parse(searchParams.get("prompt") || "[]"),
-      component: JSON.parse(searchParams.get("component") || "{}"),
-    }
+    const params: ComponentCodeApi.editRequest = await request.json()
 
     // 参数验证
     if (!params.codegenId || !params.prompt || !params.component) {

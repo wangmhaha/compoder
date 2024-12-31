@@ -4,6 +4,7 @@ import { Pencil, Trash2, Copy } from "lucide-react"
 import type { ComponentCodeListProps } from "./interface"
 import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect, useRef } from "react"
+import { CodeRenderer } from "../CodeRenderer"
 
 export function ComponentCodeList({
   items,
@@ -12,6 +13,7 @@ export function ComponentCodeList({
   onDeleteClick,
   className,
   newItem,
+  codeRendererServer,
 }: ComponentCodeListProps) {
   const [clickPosition, setClickPosition] = useState<{
     x: number
@@ -83,7 +85,7 @@ export function ComponentCodeList({
             </div>
           </motion.div>
         )}
-        {items.map(item => (
+        {items?.map(item => (
           <motion.div
             key={item.id}
             layout
@@ -153,7 +155,11 @@ export function ComponentCodeList({
               {/* Preview area with hover effect */}
               <div className="aspect-video bg-muted/30 relative overflow-hidden">
                 <div className="absolute inset-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                  <div className="w-12 h-12 rounded bg-muted/50" />
+                  <CodeRenderer
+                    codeRendererServer={codeRendererServer || ""}
+                    codes={item.code}
+                    onFixError={() => {}}
+                  />
                 </div>
               </div>
 

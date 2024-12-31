@@ -13,6 +13,7 @@ export type PromptImage = {
 export type Prompt = PromptText | PromptImage
 
 export type Version = {
+  _id: Types.ObjectId
   code: string
   prompt: Prompt[]
 }

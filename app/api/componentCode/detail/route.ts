@@ -3,11 +3,19 @@ import { getComponentCodeDetail } from "@/lib/db/componentCode/selectors"
 import { ComponentCodeApi } from "../type"
 import { ComponentCode } from "@/lib/db/componentCode/types"
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    const body = (await request.json()) as ComponentCodeApi.detailRequest
+    const searchParams = request.nextUrl.searchParams
+    const id = searchParams.get("id")
 
-    const data = (await getComponentCodeDetail(body.id)) as ComponentCode
+    if (!id) {
+      return NextResponse.json(
+        { error: "Missing required parameter: id" },
+        { status: 400 },
+      )
+    }
+
+    const data = (await getComponentCodeDetail(id)) as ComponentCode
 
     const response: ComponentCodeApi.detailResponse = {
       data: {

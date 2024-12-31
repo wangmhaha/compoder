@@ -18,9 +18,17 @@ export function transformComponentArtifactFromXml(xmlString: string) {
       })
     }
 
+    const fileNodes = componentFiles.map(file => ({
+      id: file.fileName,
+      name: file.fileName,
+      content: file.content,
+      isEntryFile: file.isEntryFile,
+    }))
+
     return {
       componentName,
-      files: componentFiles,
+      entryFile: componentFiles.find(file => file.isEntryFile)?.fileName,
+      files: fileNodes,
     }
   } catch (error) {
     console.error("Error processing Component Artifact XML:", error)

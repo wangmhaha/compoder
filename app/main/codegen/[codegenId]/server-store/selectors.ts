@@ -1,6 +1,9 @@
 import { useQuery } from "@tanstack/react-query"
 import { getCodegenDetail } from "@/app/services/codegen/codegen.service"
-import { getComponentCodeList } from "@/app/services/componentCode/componentCode.service"
+import {
+  getComponentCodeDetail,
+  getComponentCodeList,
+} from "@/app/services/componentCode/componentCode.service"
 import { CodegenApi } from "@/app/api/codegen/types"
 import { ComponentCodeApi } from "@/app/api/componentCode/type"
 
@@ -56,5 +59,18 @@ export const useComponentCodeList = (params: ComponentCodeApi.listRequest) => {
       })),
       total: response.total,
     }),
+  })
+}
+
+export const useComponentCodeDetail = (id: string) => {
+  return useQuery<
+    ComponentCodeApi.detailResponse,
+    Error,
+    ComponentCodeApi.detailResponse["data"]
+  >({
+    queryKey: ["componentCodeDetail", id],
+    queryFn: () => getComponentCodeDetail({ id }),
+    select: response => response.data,
+    staleTime: 0,
   })
 }
