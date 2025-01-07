@@ -9,7 +9,7 @@ const codegenData: Codegen[] = [
     fullStack: "React",
     guides: ["Generate a login page", "Generate a Table component"],
     model: "gpt-4o",
-    codeRendererUrl: "https://github.com/wujiawei0926/react-code-renderer",
+    codeRendererUrl: "https://mui-renderer.pages.dev/artifacts",
     rules: [
       {
         type: "public-components",
@@ -29,7 +29,7 @@ const codegenData: Codegen[] = [
     fullStack: "React",
     guides: ["Generate a login page", "Generate a Table component"],
     model: "gpt-4o",
-    codeRendererUrl: "https://github.com/wujiawei0926/react-code-renderer",
+    codeRendererUrl: "https://antd-renderer.pages.dev/artifacts",
     rules: [
       {
         type: "public-components",

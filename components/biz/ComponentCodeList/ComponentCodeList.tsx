@@ -113,7 +113,7 @@ export function ComponentCodeList({
               onClick={() => onItemClick?.(item.id)}
             >
               {/* Action buttons */}
-              <div className="absolute right-2 top-2 flex opacity-0 transition-all duration-200 group-hover:opacity-100 group-hover:gap-1">
+              <div className="absolute z-10 right-2 top-2 flex opacity-0 transition-all duration-200 group-hover:opacity-100 group-hover:gap-1">
                 <Button
                   variant="secondary"
                   size="icon"
@@ -156,6 +156,7 @@ export function ComponentCodeList({
               <div className="aspect-video bg-muted/30 relative overflow-hidden">
                 <div className="absolute inset-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
                   <CodeRenderer
+                    className="p-2 [&>iframe]:rounded-md [&>iframe]:w-auto [&>iframe]:h-auto"
                     codeRendererServer={codeRendererServer || ""}
                     codes={item.code}
                     onFixError={() => {}}

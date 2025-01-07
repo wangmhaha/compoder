@@ -25,10 +25,18 @@ export function transformComponentArtifactFromXml(xmlString: string) {
       isEntryFile: file.isEntryFile,
     }))
 
+    const codes = fileNodes.reduce((acc, file) => {
+      if (file.content) {
+        acc[file.name] = file.content
+      }
+      return acc
+    }, {} as Record<string, string>)
+
     return {
       componentName,
       entryFile: componentFiles.find(file => file.isEntryFile)?.fileName,
       files: fileNodes,
+      codes,
     }
   } catch (error) {
     console.error("Error processing Component Artifact XML:", error)

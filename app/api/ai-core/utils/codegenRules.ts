@@ -1,19 +1,37 @@
 import { CodegenRule } from "@/lib/db/codegen/types"
 
-const defaultFileStructure = `
-Output component code in XML format as follows:
+const IMPORTANT_NOTE = `Important: Write the code directly inside each ComponentFile tag. Do NOT use any code block markers (like \`\`\`tsx, \`\`\`ts, etc.) inside the XML tags.
+
+`
+
+const defaultFileStructure = `${IMPORTANT_NOTE}Output component code in XML format as follows:
 <ComponentArtifact name="ComponentName">
   <ComponentFile fileName="App.tsx" isEntryFile="true">
-      // In this file, mock data needs to be created for each component prop, and export default the component demo
+    import { ComponentName } from './ComponentName';
+    
+    const mockProps = {
+      // Define mock data here
+    };
+    
+    export default function App() {
+      return <ComponentName {...mockProps} />;
+    }
   </ComponentFile>
+  
   <ComponentFile fileName="[ComponentName].tsx">
-      // This file contains the actual business logic of the component. If the component code exceeds 500 lines, split it
+    // Main component implementation
+    // Split into multiple files if exceeds 500 lines
   </ComponentFile>
+
   <ComponentFile fileName="helpers.ts">
-      // This file contains helper functions for the component (optional)
+    // Helper functions (optional)
   </ComponentFile>
+
   <ComponentFile fileName="interface.ts">
-      // This file contains prop type definitions for the component. Note: All data that needs to interact with APIs must be defined through props, such as component initialization data props (initialData), props for modifying API data (onChange, onSave, onDelete, etc.)
+    // Type definitions for component props
+    // All API-interacting data must be defined as props:
+    // - initialData for component initialization
+    // - onChange, onSave, onDelete etc. for data modifications
   </ComponentFile>
 </ComponentArtifact>
 `
@@ -81,8 +99,11 @@ export function getPrivateDocsDescription(rules: CodegenRule[]): string {
 }
 
 export function getFileStructureRule(rules: CodegenRule[]) {
-  return (
-    rules.find(rule => rule.type === "file-structure")?.prompt ??
-    defaultFileStructure
-  )
+  const customPrompt = rules.find(
+    rule => rule.type === "file-structure",
+  )?.prompt
+  if (customPrompt) {
+    return IMPORTANT_NOTE + customPrompt
+  }
+  return defaultFileStructure
 }

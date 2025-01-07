@@ -7,7 +7,7 @@ import { CodeIDE, FileNode } from "@/components/biz/CodeIDE"
 import { ChatInput } from "@/components/biz/ChatInput"
 import { useSidebar } from "@/components/ui/sidebar"
 import { useComponentCodeDetail } from "../server-store/selectors"
-import { transformComponentArtifactFromXml } from "@/lib/xml-message-parser/parser"
+import { transformComponentArtifactFromXml, transformTryCatchErrorFromXml } from "@/lib/xml-message-parser/parser"
 import { Skeleton } from "@/components/ui/skeleton"
 import { CodeRenderer as CodeRendererComponent } from "@/components/biz/CodeRenderer"
 import { useFile } from "@/components/biz/CodeIDE/context/FileContext"
@@ -21,6 +21,7 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 import { CompoderThinkingLoading } from "@/components/biz/CompoderThinkingLoading"
 import { CodingBox } from "@/components/biz/CodingBox"
 import { useFirstLoading } from "@/hooks/use-first-loading"
+import { toast } from "@/hooks/use-toast"
 
 export default function ComponentPage() {
   const params = useParams()
@@ -96,6 +97,15 @@ export default function ComponentPage() {
         if (done) break
         content += decoder.decode(value)
         setStreamingContent(content)
+      }
+
+      const errorMessage = transformTryCatchErrorFromXml(content)
+      if (errorMessage) {
+        toast({
+          title: "Error",
+          description: errorMessage,
+          variant: "destructive",
+        })
       }
 
       setImages([])

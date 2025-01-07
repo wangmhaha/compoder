@@ -16,13 +16,9 @@ export async function run(context: InitialWorkflowContext) {
       success: true,
       data: result.state,
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error("Workflow failed:", error)
-    if (error instanceof Error) {
-      context.stream.write(error.toString())
-    } else {
-      context.stream.write("An unknown error occurred")
-    }
+    context.stream.write(error.toString())
     context.stream.close()
   }
 }

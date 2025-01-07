@@ -99,6 +99,7 @@ export default function CodegenDetailPage({
         toast({
           title: "Error",
           description: errorMessage,
+          variant: "destructive",
         })
       }
 
@@ -221,7 +222,10 @@ export default function CodegenDetailPage({
                     <CodingBox className="h-full" code={streamingContent} />
                   ) : undefined
                 }
-                items={componentCodeData?.items || []}
+                items={
+                  componentCodeData?.items ?? []
+                }
+                codeRendererServer={codegenDetail?.codeRendererUrl || ""}
                 onEditClick={id => console.log("Edit clicked:", id)}
                 onDeleteClick={id => console.log("Delete clicked:", id)}
                 onItemClick={id =>

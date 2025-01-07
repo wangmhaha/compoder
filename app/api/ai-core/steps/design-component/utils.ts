@@ -25,11 +25,24 @@ const buildSystemPrompt = (rules: WorkflowContext["query"]["rules"]) => {
     ## Constraints
     Basic component materials include:
     ${getPrivateDocsDescription(rules)}
-    Please note: You absolutely cannot provide packages outside of the above basic component materials, nor provide example code. Your job is to call designNewComponentApi to generate design details for the new component.
+    Please note: You absolutely cannot provide packages outside of the above basic component materials, nor provide example code.
+    ## Response Format
+    You must respond with a JSON object in the following format:
+    {
+      "componentName": string, // Component name
+      "componentDescription": string, // Component description
+      "library": [ // Libraries containing required base material components
+        {
+          "name": string, // Library name
+          "components": string[], // Components name in the library
+          "description": string // Describe how each component in components is used in a table format
+        }
+      ]
+    }
     ## Workflow
     1. Accept user's business requirements or design draft images
     2. Extract required materials from [Constraints] basic component materials for developing business components
-    3. Call designNewComponentApi to generate design details for the new component
+    3. Generate and return the JSON response in the specified format
     `
 }
 
@@ -139,21 +152,17 @@ export async function generateComponentDesign(
     componentName: z.string().describe("Component name"),
     componentDescription: z.string().describe("Component description"),
     library: z.array(
-      z
-        .object({
-          name: z.string().describe("Library name"),
-          components: z
-            .array(z.string())
-            .describe("Components name in the library"),
-          description: z
-            .string()
-            .describe(
-              "Describe how each component in components is used in a table format",
-            ),
-        })
-        .describe(
-          "Libraries containing required base material components. Need to get all base material component libraries at once",
-        ),
+      z.object({
+        name: z.string().describe("Library name"),
+        components: z
+          .array(z.string())
+          .describe("Components name in the library"),
+        description: z
+          .string()
+          .describe(
+            "Describe how each component in components is used in a table format",
+          ),
+      }),
     ),
   })
 
@@ -164,7 +173,6 @@ export async function generateComponentDesign(
   }
 
   const systemPrompt = buildSystemPrompt(req.query.rules)
-
   const messages = [
     ...buildCurrentComponentMessage(req.query.component),
     ...buildUserMessage(req.query.prompt, req.query.component),
@@ -175,22 +183,31 @@ export async function generateComponentDesign(
       system: systemPrompt,
       model: req.query.aiModel,
       messages,
-      tools: {
-        designNewComponentApi: {
-          description:
-            "generate the required design details to create a new component",
-          parameters: componentsSchema,
-          execute: async params => {
-            console.log("params", params)
-            req.stream.write(JSON.stringify(params))
-            parserCompletion = params
-          },
-        },
-      },
     })
+
+    let accumulatedJson = ""
 
     for await (const part of stream.textStream) {
       req.stream.write(part)
+      accumulatedJson += part
+    }
+
+    try {
+      // Try to extract JSON from the response
+      const jsonMatch = accumulatedJson.match(/\{[\s\S]*\}/)
+      if (!jsonMatch) {
+        throw new Error("No valid JSON found in the response")
+      }
+
+      const parsedJson = JSON.parse(jsonMatch[0])
+
+      // Validate the parsed JSON against our schema
+      const validatedResult = componentsSchema.parse(parsedJson)
+      parserCompletion = validatedResult
+    } catch (parseError) {
+      throw new Error(
+        `Failed to parse AI response as valid JSON: ${parseError}`,
+      )
     }
 
     if (parserCompletion.library.length > 0) {

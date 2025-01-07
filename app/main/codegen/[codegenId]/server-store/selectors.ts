@@ -6,6 +6,8 @@ import {
 } from "@/app/services/componentCode/componentCode.service"
 import { CodegenApi } from "@/app/api/codegen/types"
 import { ComponentCodeApi } from "@/app/api/componentCode/type"
+import { ComponentItem } from "@/components/biz/ComponentCodeList/interface"
+import { transformComponentArtifactFromXml } from "@/lib/xml-message-parser/parser"
 
 export const useCodegenDetail = (id: string) => {
   return useQuery<
@@ -17,6 +19,7 @@ export const useCodegenDetail = (id: string) => {
         title: string
         onClick: () => void
       }>
+      codeRendererUrl: string
     }
   >({
     queryKey: ["codegen-detail", id],
@@ -27,6 +30,7 @@ export const useCodegenDetail = (id: string) => {
         title: prompt,
         onClick: () => console.log(`Clicked prompt: ${prompt}`),
       })),
+      codeRendererUrl: data.data.codeRendererUrl,
     }),
   })
 }
@@ -36,7 +40,7 @@ export const useComponentCodeList = (params: ComponentCodeApi.listRequest) => {
     ComponentCodeApi.listResponse,
     Error,
     {
-      items: { id: string; title: string; description: string }[]
+      items: ComponentItem[]
       total: number
     }
   >({
@@ -49,13 +53,14 @@ export const useComponentCodeList = (params: ComponentCodeApi.listRequest) => {
     select: (
       response,
     ): {
-      items: { id: string; title: string; description: string }[]
+      items: ComponentItem[]
       total: number
     } => ({
       items: response.data.map(item => ({
         id: item._id.toString(),
         title: item.name,
         description: item.description,
+        code: transformComponentArtifactFromXml(item.latestVersionCode).codes,
       })),
       total: response.total,
     }),
