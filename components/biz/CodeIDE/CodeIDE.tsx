@@ -7,7 +7,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { CodeIDEProps, FileNode } from "./interface"
-import { Editor } from "@monaco-editor/react"
+import { Editor, Monaco } from "@monaco-editor/react"
 import { FileProvider, useFile } from "./context/FileContext"
 import { useEffect, useState, useRef, memo } from "react"
 import { useTheme } from "next-themes"
@@ -45,7 +45,7 @@ function getFilePath(
 
 // Internal component that uses the sidebar context
 function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
-  const { theme } = useTheme()
+  const { resolvedTheme } = useTheme()
   const {
     currentFile,
     updateFileContent,
@@ -125,6 +125,27 @@ function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
     }
   }
 
+  const handleEditorWillMount = (monaco: Monaco) => {
+    monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+      target: monaco.languages.typescript.ScriptTarget.Latest,
+      allowNonTsExtensions: true,
+      moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+      noEmit: true,
+      allowJs: true,
+      jsx: monaco.languages.typescript.JsxEmit.React,
+      reactNamespace: "React",
+    })
+
+    const diagnosticOptions = {
+      noSemanticValidation: false,
+      noSyntaxValidation: false,
+      diagnosticCodesToIgnore: [2307],
+    }
+    monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions(
+      diagnosticOptions,
+    )
+  }
+
   return (
     <ResizablePanelGroup direction="horizontal" className="border rounded-md">
       {/* File tree sidebar */}
@@ -185,9 +206,9 @@ function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
                 <Editor
                   height="100%"
                   width="100%"
-                  language={currentFile.language ?? "typescript"}
+                  path={currentFile.id}
                   value={currentFile.content}
-                  theme={theme === "dark" ? "vs-dark" : "light"}
+                  theme={resolvedTheme === "light" ? "light" : "vs-dark"}
                   options={{
                     minimap: { enabled: false },
                     fontSize: 14,
@@ -195,18 +216,7 @@ function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
                     automaticLayout: true,
                     scrollBeyondLastLine: false,
                   }}
-                  beforeMount={monaco => {
-                    monaco.languages.typescript.typescriptDefaults.setCompilerOptions(
-                      {
-                        jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
-                        jsxFactory: "React.createElement",
-                        reactNamespace: "React",
-                        allowNonTsExtensions: true,
-                        allowJs: true,
-                        target: monaco.languages.typescript.ScriptTarget.Latest,
-                      },
-                    )
-                  }}
+                  beforeMount={handleEditorWillMount}
                   onChange={handleEditorChange}
                 />
               </div>

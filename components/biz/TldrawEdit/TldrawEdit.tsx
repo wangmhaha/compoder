@@ -54,7 +54,10 @@ const TldrawEdit: FC<TldrawEditProps> = ({ onSubmit, disabled }) => {
       </TooltipProvider>
 
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="right" className="w-full p-0 sm:max-w-full">
+        <SheetContent
+          side="right"
+          className="w-full p-0 sm:max-w-full z-[1000]"
+        >
           <SheetHeader className="px-6 py-4">
             <div className="flex justify-between items-center w-full">
               <SheetTitle>Draw UI</SheetTitle>

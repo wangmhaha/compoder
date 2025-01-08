@@ -50,7 +50,6 @@ export const CodeRenderer: FC<CodeRendererProps> = ({
   }, [sendMessage, onFixError])
 
   useEffect(() => {
-    console.log("codes", codes)
     if (isIframeLoaded && !!codes) {
       sendMessage()
     }

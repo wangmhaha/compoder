@@ -49,6 +49,11 @@ const ChatInput = React.memo(
 
     const handleKeyDown = useCallback(
       (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        // Skip if IME is composing
+        if (event.nativeEvent.isComposing) {
+          return
+        }
+
         if (event.key === "Enter") {
           if (event.shiftKey) {
             // Insert newline when Shift + Enter is pressed
