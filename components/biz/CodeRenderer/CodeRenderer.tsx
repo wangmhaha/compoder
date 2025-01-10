@@ -8,6 +8,7 @@ export const CodeRenderer: FC<CodeRendererProps> = ({
   onFixError,
   className,
   codes,
+  notShowErrorToast,
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const [isIframeLoaded, setIsIframeLoaded] = useState(false)
@@ -31,14 +32,21 @@ export const CodeRenderer: FC<CodeRendererProps> = ({
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
+      if (event.source !== iframeRef.current?.contentWindow) {
+        return
+      }
+
       if (event.data === "IFRAME_LOADED") {
         sendMessage()
         setIsIframeLoaded(true)
       }
-      setShowErrorToast(false)
-      if (event.data.type === "error") {
+      if (event.data.type === "artifacts-error") {
         setErrorMessage(event.data.errorMessage)
         setShowErrorToast(true)
+      }
+      if (event.data.type === "artifacts-success") {
+        setErrorMessage("")
+        setShowErrorToast(false)
       }
     }
 
@@ -69,7 +77,7 @@ export const CodeRenderer: FC<CodeRendererProps> = ({
         className="w-full h-full border-0"
         onLoad={() => setIsIframeLoaded(true)}
       />
-      {showErrorToast && (
+      {!notShowErrorToast && showErrorToast && (
         <ErrorToast message={errorMessage} onFix={handleFixError} />
       )}
     </div>

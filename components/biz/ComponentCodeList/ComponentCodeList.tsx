@@ -156,10 +156,11 @@ export function ComponentCodeList({
               <div className="aspect-video bg-muted/30 relative overflow-hidden">
                 <div className="absolute inset-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
                   <CodeRenderer
-                    className="p-2 [&>iframe]:rounded-md [&>iframe]:w-auto [&>iframe]:h-auto"
+                    className="p-2 [&>iframe]:rounded-md"
                     codeRendererServer={codeRendererServer || ""}
                     codes={item.code}
                     onFixError={() => {}}
+                    notShowErrorToast={true}
                   />
                 </div>
               </div>

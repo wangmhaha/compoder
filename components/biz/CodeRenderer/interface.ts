@@ -5,4 +5,5 @@ export interface CodeRendererProps {
     [key: string]: string
   }
   className?: string
+  notShowErrorToast?: boolean
 }
