@@ -18,9 +18,9 @@ import TldrawEdit from "@/components/biz/TldrawEdit/TldrawEdit"
 import {
   useCodegenDetail,
   useComponentCodeList,
-} from "./server-store/selectors"
+} from "../server-store/selectors"
 import { useState } from "react"
-import { useCreateComponentCode } from "./server-store/mutations"
+import { useCreateComponentCode } from "../server-store/mutations"
 import { Prompt, PromptImage } from "@/lib/db/componentCode/types"
 import { Skeleton } from "@/components/ui/skeleton"
 import { CompoderThinkingLoading } from "@/components/biz/CompoderThinkingLoading"

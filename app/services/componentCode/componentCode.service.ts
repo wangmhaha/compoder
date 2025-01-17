@@ -26,7 +26,13 @@ export const getComponentCodeDetail = async (
   params: ComponentCodeApi.detailRequest,
 ): Promise<ComponentCodeApi.detailResponse> => {
   try {
-    const response = await request(`/componentCode/detail?id=${params.id}`, {
+    const filteredParams = Object.fromEntries(
+      Object.entries(params).filter(([, value]) => value !== undefined),
+    )
+    const queryString = new URLSearchParams(
+      filteredParams as Record<string, string>,
+    ).toString()
+    const response = await request(`/componentCode/detail?${queryString}`, {
       method: "GET",
     })
     return await response.json()
@@ -64,6 +70,23 @@ export const editComponentCode = async (
       body: JSON.stringify(params),
     })
     return response.body as ReadableStream
+  } catch (error) {
+    throw error
+  }
+}
+
+export const saveComponentCode = async (
+  params: ComponentCodeApi.saveRequest,
+): Promise<any> => {
+  try {
+    const response = await request("/componentCode/save", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(params),
+    })
+    return await response.json()
   } catch (error) {
     throw error
   }

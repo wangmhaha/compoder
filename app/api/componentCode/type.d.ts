@@ -50,4 +50,11 @@ declare namespace ComponentCodeApi {
 
   // edit response
   export type editResponse = ReadableStream
+
+  // save request
+  export interface saveRequest {
+    id: string
+    versionId: string
+    code: string
+  }
 }

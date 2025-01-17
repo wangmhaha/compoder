@@ -66,7 +66,7 @@ const LoginForm = ({
               Compoder
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground/90">
-              AI-powered Component Coder
+              AI-powered Component Code Generator
             </p>
           </div>
 

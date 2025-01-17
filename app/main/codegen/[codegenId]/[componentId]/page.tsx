@@ -6,12 +6,12 @@ import { ComponentCodeVersionsContainer } from "@/components/biz/ComponentCodeVe
 import { CodeIDE, FileNode } from "@/components/biz/CodeIDE"
 import { ChatInput } from "@/components/biz/ChatInput"
 import { useSidebar } from "@/components/ui/sidebar"
-import { useComponentCodeDetail } from "../server-store/selectors"
-import { transformComponentArtifactFromXml, transformTryCatchErrorFromXml } from "@/lib/xml-message-parser/parser"
+import { useComponentCodeDetail } from "../../server-store/selectors"
+import { transformComponentArtifactFromXml, transformTryCatchErrorFromXml, transformFileNodeToXml } from "@/lib/xml-message-parser/parser"
 import { Skeleton } from "@/components/ui/skeleton"
 import { CodeRenderer as CodeRendererComponent } from "@/components/biz/CodeRenderer"
 import { useFile } from "@/components/biz/CodeIDE/context/FileContext"
-import { useEditComponentCode } from "../server-store/mutations"
+import { useEditComponentCode, useSaveComponentCode } from "../../server-store/mutations"
 import { Prompt } from "@/lib/db/componentCode/types"
 import { TldrawEdit } from "@/components/biz/TldrawEdit"
 import { Button } from "@/components/ui/button"
@@ -22,6 +22,7 @@ import { CompoderThinkingLoading } from "@/components/biz/CompoderThinkingLoadin
 import { CodingBox } from "@/components/biz/CodingBox"
 import { useFirstLoading } from "@/hooks/use-first-loading"
 import { toast } from "@/hooks/use-toast"
+import { flushSync } from "react-dom"
 
 export default function ComponentPage() {
   const params = useParams()
@@ -55,8 +56,9 @@ export default function ComponentPage() {
 
   const [chatInput, setChatInput] = useState("")
   const editMutation = useEditComponentCode()
+  const saveMutation = useSaveComponentCode()
 
-  const handleChatSubmit = async () => {
+  const handleChatSubmit = async (input?: string) => {
     if (!componentDetail || !params.codegenId) return
 
     const prompt: Prompt[] = [
@@ -65,7 +67,7 @@ export default function ComponentPage() {
         : []),
       {
         type: "text" as const,
-        text: chatInput,
+        text: input || chatInput,
       },
     ]
 
@@ -161,6 +163,13 @@ export default function ComponentPage() {
     setImages(prev => prev.filter((_, i) => i !== index))
   }
 
+  const onFixError = (error: string) => {
+    flushSync(() => {
+      setChatInput(error)
+    })
+    handleChatSubmit(error)
+  }
+
   return (
     <div className="h-screen relative">
       <AppHeader
@@ -189,10 +198,31 @@ export default function ComponentPage() {
             <CodeIDE
               data={fileNodes.files}
               onSave={async (files: FileNode[]) => {
-                await new Promise(resolve => setTimeout(resolve, 1000))
-                console.log("Files saved:", files)
+                if (!componentDetail || !activeVersion) return
+                try {
+                  const code = transformFileNodeToXml(
+                    files,
+                    componentDetail.name,
+                  )
+                  await saveMutation.mutateAsync({
+                    id: componentDetail._id.toString(),
+                    versionId: activeVersion,
+                    code,
+                  })
+                  toast({
+                    title: "Success",
+                    description: "Component code saved successfully",
+                  })
+                } catch (error) {
+                  console.error("Failed to save component code:", error)
+                  toast({
+                    title: "Error",
+                    description: "Failed to save component code",
+                    variant: "destructive",
+                  })
+                }
               }}
-              codeRenderer={<CodeRenderer />}
+              codeRenderer={<CodeRenderer onFixError={onFixError} />}
             />
           </div>
         </ComponentCodeVersionsContainer>
@@ -233,7 +263,11 @@ export default function ComponentPage() {
   )
 }
 
-const CodeRenderer = () => {
+const CodeRenderer = ({
+  onFixError,
+}: {
+  onFixError: (error: string) => void
+}) => {
   const { files } = useFile()
   const codes = files.reduce((acc, file) => {
     if (file.content) {
@@ -251,7 +285,7 @@ const CodeRenderer = () => {
   return (
     <CodeRendererComponent
       codeRendererServer="https://antd-renderer.pages.dev/artifacts"
-      onFixError={error => console.log("Error:", error)}
+      onFixError={onFixError}
       className="h-[500px]"
       codes={codes}
     />

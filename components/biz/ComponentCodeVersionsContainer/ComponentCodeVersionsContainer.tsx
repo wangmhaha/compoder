@@ -108,7 +108,6 @@ const ComponentCodeVersionsContainer = ({
             viewBox="0 0 8 16"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="relative bg-white dark:bg-gray-900"
           >
             <path
               d="M8 0L0 8L8 16"

@@ -1,3 +1,5 @@
+import { FileNode } from "@/components/biz/CodeIDE/interface"
+
 // Parse ComponentArtifact XML string, return component name and component file list
 export function transformComponentArtifactFromXml(xmlString: string) {
   try {
@@ -14,11 +16,11 @@ export function transformComponentArtifactFromXml(xmlString: string) {
       componentFiles.push({
         fileName: match[1],
         isEntryFile: match[2] === "true",
-        content: match[3].trim(),
+        content: match[3],
       })
     }
 
-    const fileNodes = componentFiles.map(file => ({
+    const fileNodes: FileNode[] = componentFiles.map(file => ({
       id: file.fileName,
       name: file.fileName,
       content: file.content,
@@ -42,6 +44,20 @@ export function transformComponentArtifactFromXml(xmlString: string) {
     console.error("Error processing Component Artifact XML:", error)
     throw error
   }
+}
+
+// transform file node to xml string
+export function transformFileNodeToXml(
+  fileNodes: FileNode[],
+  componentName: string,
+) {
+  const xmlFileString = fileNodes
+    .map(
+      file =>
+        `<ComponentFile fileName="${file.name}" isEntryFile="${file.isEntryFile}">${file.content}</ComponentFile>`,
+    )
+    .join("\n")
+  return `<ComponentArtifact name="${componentName}">${xmlFileString}</ComponentArtifact>`
 }
 
 // Parse XML string with format: <TryCatchError> ...error message... </TryCatchError>

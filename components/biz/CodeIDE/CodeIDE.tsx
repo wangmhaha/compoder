@@ -139,7 +139,7 @@ function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
     const diagnosticOptions = {
       noSemanticValidation: false,
       noSyntaxValidation: false,
-      diagnosticCodesToIgnore: [2307],
+      diagnosticCodesToIgnore: [2307, 2304],
     }
     monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions(
       diagnosticOptions,

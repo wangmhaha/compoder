@@ -42,7 +42,7 @@ export function AppSidebarLayout({
                       Compoder
                     </div>
                     <div className="truncate text-primary/50 text-[11px]">
-                      AI-Powered Component Coder
+                       Component Code Generator
                     </div>
                   </div>
                 </a>

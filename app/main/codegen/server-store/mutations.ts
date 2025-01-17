@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import {
   createComponentCode,
   editComponentCode,
+  saveComponentCode,
 } from "@/app/services/componentCode/componentCode.service"
 import { ComponentCodeApi } from "@/app/api/componentCode/type"
 
@@ -28,5 +29,17 @@ export const useEditComponentCode = () => {
     ComponentCodeApi.editRequest
   >({
     mutationFn: params => editComponentCode(params),
+  })
+}
+
+export const useSaveComponentCode = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation<any, Error, ComponentCodeApi.saveRequest>({
+    mutationFn: params => saveComponentCode(params),
+    onSuccess: () => {
+      // Invalidate the component detail query to trigger a refresh
+      queryClient.invalidateQueries({ queryKey: ["componentCodeDetail"] })
+    },
   })
 }
