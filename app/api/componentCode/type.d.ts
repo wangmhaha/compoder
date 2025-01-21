@@ -21,10 +21,13 @@ declare namespace ComponentCodeApi {
   // detail request
   export interface detailRequest {
     id: string
+    codegenId: string
   }
   // detail response
   export interface detailResponse {
-    data: Pick<ComponentCode, "_id" | "name" | "description" | "versions">
+    data: Pick<ComponentCode, "_id" | "name" | "description" | "versions"> & {
+      codeRendererUrl: string
+    }
   }
 
   // create request

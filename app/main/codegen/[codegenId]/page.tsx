@@ -101,6 +101,7 @@ export default function CodegenDetailPage({
           description: errorMessage,
           variant: "destructive",
         })
+        return
       }
 
       const componentId = transformNewComponentIdFromXml(content)

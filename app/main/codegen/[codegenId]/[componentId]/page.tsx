@@ -36,7 +36,7 @@ export default function ComponentPage() {
     data: componentDetail,
     isLoading,
     refetch,
-  } = useComponentCodeDetail(params.componentId as string)
+  } = useComponentCodeDetail(params.componentId as string, params.codegenId as string)
   const shouldShowLoading = useFirstLoading(isLoading)
 
   useEffect(() => {
@@ -222,7 +222,7 @@ export default function ComponentPage() {
                   })
                 }
               }}
-              codeRenderer={<CodeRenderer onFixError={onFixError} />}
+              codeRenderer={<CodeRenderer onFixError={onFixError} codeRendererUrl={componentDetail?.codeRendererUrl!} />}
             />
           </div>
         </ComponentCodeVersionsContainer>
@@ -265,8 +265,10 @@ export default function ComponentPage() {
 
 const CodeRenderer = ({
   onFixError,
+  codeRendererUrl,
 }: {
   onFixError: (error: string) => void
+  codeRendererUrl: string
 }) => {
   const { files } = useFile()
   const codes = files.reduce((acc, file) => {
@@ -284,7 +286,7 @@ const CodeRenderer = ({
   }, {} as Record<string, string>)
   return (
     <CodeRendererComponent
-      codeRendererServer="https://antd-renderer.pages.dev/artifacts"
+      codeRendererServer={codeRendererUrl}
       onFixError={onFixError}
       className="h-[500px]"
       codes={codes}

@@ -107,14 +107,14 @@ export const useComponentCodeList = (params: ComponentCodeApi.listRequest) => {
   })
 }
 
-export const useComponentCodeDetail = (id: string) => {
+export const useComponentCodeDetail = (id: string, codegenId: string) => {
   return useQuery<
     ComponentCodeApi.detailResponse,
     Error,
     ComponentCodeApi.detailResponse["data"]
   >({
     queryKey: ["componentCodeDetail", id],
-    queryFn: () => getComponentCodeDetail({ id }),
+    queryFn: () => getComponentCodeDetail({ id, codegenId }),
     select: response => response.data,
     staleTime: 0,
   })

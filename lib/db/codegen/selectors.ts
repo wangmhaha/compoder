@@ -58,3 +58,8 @@ export async function findCodegenById(id: string) {
 
   return codegen
 }
+
+export async function getCodeRendererUrl(codegenId: string) {
+  const codegen = await CodegenModel.findById(codegenId)
+  return codegen?.codeRendererUrl
+}
