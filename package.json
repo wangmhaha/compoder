@@ -35,9 +35,11 @@
     "@radix-ui/react-tooltip": "^1.1.4",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tanstack/react-query": "^5.62.7",
+    "@tldraw/tldraw": "2.0.0-alpha.17",
     "ai": "^4.0.18",
     "autosize": "^6.0.1",
     "axios": "^1.7.9",
+    "canvas-size": "^1.2.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^11.13.1",
@@ -52,9 +54,7 @@
     "react-resizable-panels": "^2.1.7",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.23.8",
-    "@tldraw/tldraw": "2.0.0-alpha.17",
-    "canvas-size": "^1.2.6"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.9.0",
@@ -75,9 +75,12 @@
     "@storybook/test": "^8.3.6",
     "@storybook/theming": "^8.4.7",
     "@types/autosize": "^4.0.3",
+    "@types/canvas-size": "^1.2.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "^8.26.0",
+    "@typescript-eslint/parser": "^8.26.0",
     "dotenv": "^16.4.5",
     "eslint": "^8",
     "eslint-config-next": "14.2.16",
@@ -85,7 +88,6 @@
     "storybook": "^8.3.6",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.15.7",
-    "typescript": "^5",
-    "@types/canvas-size": "^1.2.2"
+    "typescript": "^5"
   }
 }

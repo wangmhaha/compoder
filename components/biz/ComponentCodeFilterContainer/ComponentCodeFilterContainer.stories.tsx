@@ -19,41 +19,49 @@ const mockItems: ComponentItem[] = [
     id: "1",
     title: "CSS Theme Switch",
     description: "A beautiful theme switch component with smooth transitions",
+    code: { "App.tsx": "const ThemeSwitch = () => { return <div>ThemeSwitch</div> }" },
   },
   {
     id: "2",
     title: "Dark Mode Toggle",
     description: "Simple and elegant dark mode toggle with system preference",
+    code: { "App.tsx": "const DarkModeToggle = () => { return <div>DarkModeToggle</div> }" },
   },
   {
     id: "3",
     title: "Color Scheme Picker",
     description: "Advanced color scheme picker with custom theme support",
+    code: { "App.tsx": "const ColorSchemePicker = () => { return <div>ColorSchemePicker</div> }" },
   },
   {
     id: "4",
     title: "Customizable Button",
     description: "A customizable button with various styles and sizes",
+    code: { "App.tsx": "const CustomizableButton = () => { return <div>CustomizableButton</div> }" },
   },
   {
     id: "5",
     title: "Responsive Layout",
     description: "A responsive layout with breakpoints and media queries",
+    code: { "App.tsx": "const ResponsiveLayout = () => { return <div>ResponsiveLayout</div> }" },
   },
   {
     id: "6",
     title: "Animated Loader",
     description: "A loader with smooth animations and customizable colors",
+    code: { "App.tsx": "const AnimatedLoader = () => { return <div>AnimatedLoader</div> }" },
   },
   {
     id: "7",
     title: "Customizable Button",
     description: "A customizable button with various styles and sizes",
+    code: { "App.tsx": "const CustomizableButton = () => { return <div>CustomizableButton</div> }" },
   },
   {
     id: "8",
     title: "Customizable Button",
     description: "A customizable button with various styles and sizes",
+    code: { "App.tsx": "const CustomizableButton = () => { return <div>CustomizableButton</div> }" },
   },
 ]
 
@@ -69,6 +77,7 @@ export const Default: Story = {
         items={mockItems}
         onEditClick={id => console.log("Edit clicked:", id)}
         onDeleteClick={id => console.log("Delete clicked:", id)}
+        codeRendererServer="https://shadcn-ui-renderer.pages.dev/artifacts"
       />
     ),
     onPageChange: page => {
@@ -95,6 +104,7 @@ export const SinglePage: Story = {
         items={[mockItems[0]]}
         onEditClick={id => console.log("Edit clicked:", id)}
         onDeleteClick={id => console.log("Delete clicked:", id)}
+        codeRendererServer="https://shadcn-ui-renderer.pages.dev/artifacts"
       />
     ),
     onPageChange: page => {
@@ -142,6 +152,7 @@ export const WithCodingBox: Story = {
               items={mockItems}
               onEditClick={id => console.log("Edit clicked:", id)}
               onDeleteClick={id => console.log("Delete clicked:", id)}
+              codeRendererServer="https://shadcn-ui-renderer.pages.dev/artifacts"
               newItem={
                 showNewItem ? (
                   <div className="h-full cursor-pointer">

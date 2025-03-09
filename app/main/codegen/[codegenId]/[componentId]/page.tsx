@@ -288,7 +288,6 @@ const CodeRenderer = ({
     <CodeRendererComponent
       codeRendererServer={codeRendererUrl}
       onFixError={onFixError}
-      className="h-[500px]"
       codes={codes}
     />
   )
