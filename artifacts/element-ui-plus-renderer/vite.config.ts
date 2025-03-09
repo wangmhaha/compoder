@@ -26,6 +26,32 @@ export default defineConfig({
   server: {
     port: 3004,
   },
+  build: {
+    // 确保生成的资源使用相对路径
+    assetsDir: "assets",
+    rollupOptions: {
+      output: {
+        manualChunks: id => {
+          if (id.includes("node_modules")) {
+            if (
+              id.includes("element-plus") ||
+              id.includes("vue") ||
+              id.includes("@element-plus/icons-vue")
+            ) {
+              return "vendor"
+            }
+          }
+        },
+      },
+    },
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: false,
+        pure_funcs: [],
+      },
+    },
+  },
   css: {
     preprocessorOptions: {
       scss: {

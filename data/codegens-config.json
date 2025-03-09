@@ -60,7 +60,7 @@
             "Generate a Table component, include 3 columns: name, age, address"
         ],
         "model": "gpt-4o",
-        "codeRendererUrl": "http://localhost:3004",
+        "codeRendererUrl": "https://element-ui-plus-renderer.pages.dev/",
         "rules": [
             {
                 "type": "public-components",

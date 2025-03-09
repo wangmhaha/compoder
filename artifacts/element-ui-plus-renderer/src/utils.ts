@@ -1,6 +1,6 @@
 import { createApp, defineComponent, h } from "vue/dist/vue.esm-bundler.js"
 
-import * as Vue from "vue"
+import * as Vue from "vue/dist/vue.esm-bundler.js"
 import * as ElementPlus from "element-plus"
 import * as ElementIcons from "@element-plus/icons-vue"
 import * as dayjs from "dayjs"
@@ -109,16 +109,29 @@ export function createComponentFromString(componentString: string) {
   // 创建一个渲染函数
   const renderComponent = () => {
     try {
-      const app = createApp(component)
-      app.use(ElementPlus)
-      for (const [key, component] of Object.entries(ElementIcons)) {
-        app.component(key, component)
-      }
+      // 清空容器内容
       const container = document.getElementById("artifacts-container")
+      if (container) {
+        container.innerHTML = ""
+      }
+
+      // 创建新的应用实例
+      const app = createApp(component)
+
+      // 注册Element Plus
+      app.use(ElementPlus)
+
+      // 注册图标组件
+      for (const [key, iconComponent] of Object.entries(ElementIcons)) {
+        app.component(key, iconComponent)
+      }
 
       if (container) {
         app.mount(container)
-        handleSuccess() // 渲染成功后调用
+        // 延迟一下再发送成功消息，确保渲染完成
+        setTimeout(() => {
+          handleSuccess()
+        }, 100)
       }
       return null
     } catch (error) {
