@@ -101,6 +101,9 @@ export const useComponentCodeList = (params: ComponentCodeApi.listRequest) => {
         title: item.name,
         description: item.description,
         code: transformComponentArtifactFromXml(item.latestVersionCode).codes,
+        entryFile:
+          transformComponentArtifactFromXml(item.latestVersionCode).entryFile ||
+          "",
       })),
       total: response.total,
     }),

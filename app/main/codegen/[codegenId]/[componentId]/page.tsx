@@ -284,11 +284,14 @@ const CodeRenderer = ({
     }
     return acc
   }, {} as Record<string, string>)
+  const entryFile = files.find(file => file.isEntryFile)?.name || "App.tsx"
+
   return (
     <CodeRendererComponent
       codeRendererServer={codeRendererUrl}
       onFixError={onFixError}
       codes={codes}
+      entryFile={entryFile}
     />
   )
 }

@@ -9,6 +9,7 @@ export const CodeRenderer: FC<CodeRendererProps> = ({
   className,
   codes,
   notShowErrorToast,
+  entryFile,
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const [isIframeLoaded, setIsIframeLoaded] = useState(false)
@@ -22,7 +23,7 @@ export const CodeRenderer: FC<CodeRendererProps> = ({
           type: "artifacts",
           data: {
             files: codes,
-            entryFile: "App.tsx",
+            entryFile,
           },
         },
         codeRendererServer,

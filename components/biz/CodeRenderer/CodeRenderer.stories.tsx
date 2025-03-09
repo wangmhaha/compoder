@@ -17,6 +17,7 @@ export const SingleFile: Story = {
   args: {
     codeRendererServer: "https://antd-renderer.pages.dev/artifacts",
     onFixError: error => console.log("Error:", error),
+    entryFile: "App.tsx",
     className: "h-[500px]",
     codes: {
       "App.tsx": `
@@ -39,6 +40,7 @@ export const MultipleFiles: Story = {
   args: {
     codeRendererServer: "https://antd-renderer.pages.dev/artifacts",
     onFixError: error => console.log("Error:", error),
+    entryFile: "App.tsx",
     codes: {
       "App.tsx": `
     import React from 'react';

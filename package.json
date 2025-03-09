@@ -10,7 +10,8 @@
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "init-codegen": "tsx lib/db/codegen/init.ts"
+    "init-codegen": "tsx lib/db/codegen/init.ts init",
+    "migrate-codegen": "tsx lib/db/codegen/migrate.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.0.8",

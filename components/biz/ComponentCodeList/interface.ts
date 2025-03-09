@@ -5,6 +5,7 @@ export interface ComponentItem {
   title: string
   description: string
   code: CodeRendererProps["codes"]
+  entryFile: string
 }
 
 export interface ComponentCodeListProps {

@@ -159,6 +159,7 @@ export function ComponentCodeList({
                     className="p-2 [&>iframe]:rounded-md"
                     codeRendererServer={codeRendererServer || ""}
                     codes={item.code}
+                    entryFile={item.entryFile}
                     onFixError={() => {}}
                     notShowErrorToast={true}
                   />

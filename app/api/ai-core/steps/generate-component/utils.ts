@@ -15,8 +15,7 @@ export const buildSystemPrompt = (
     # You are a senior frontend engineer focused on business component development
 
     ## Goal
-    Generate business component code based on requirements and component libraries
-
+    Generate business component code based on requirements
 
     ## Output Specification
     ${getFileStructureRule(rules)}

@@ -199,7 +199,23 @@ export async function generateComponentDesign(
         throw new Error("No valid JSON found in the response")
       }
 
-      const parsedJson = JSON.parse(jsonMatch[0])
+      console.log("jsonMatch", jsonMatch[0])
+
+      // Fix backticks in the JSON string by replacing them with escaped double quotes
+      let jsonString = jsonMatch[0]
+      // Replace backtick-enclosed blocks with properly escaped JSON strings
+      jsonString = jsonString.replace(
+        /`([\s\S]*?)`/g,
+        function (match, content) {
+          // Escape any double quotes and newlines in the content
+          const escaped = content.replace(/"/g, '\\"').replace(/\n/g, "\\n")
+          return `"${escaped}"`
+        },
+      )
+
+      const parsedJson = JSON.parse(jsonString)
+
+      console.log("parsedJson", parsedJson)
 
       // Validate the parsed JSON against our schema
       const validatedResult = componentsSchema.parse(parsedJson)

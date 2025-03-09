@@ -20,7 +20,7 @@ export const ErrorToast: FC<ErrorToastProps> = ({
       <div className="space-y-2">
         <div className="rounded bg-[#1a1a1a] p-2 font-mono border border-[#00ff00]/20 whitespace-pre-wrap break-words">
           <ScrollArea className="h-16">
-            {codeLines.map(line => (
+            {codeLines?.map(line => (
               <div key={line} className="flex items-center gap-2">
                 <div className="flex-1 text-[#00ff00] animate-pulse-slow">
                   {line}

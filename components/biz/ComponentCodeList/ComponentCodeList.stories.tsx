@@ -23,6 +23,7 @@ export const mockItems = [
       "App.tsx":
         "import React from 'react'; import { Button } from 'antd'; return <Button>Hello World</Button>;",
     },
+    entryFile: "App.tsx",
   },
   {
     id: "2",
@@ -32,6 +33,7 @@ export const mockItems = [
       "App.tsx":
         "import React from 'react'; import { Button } from 'antd'; return <Button>Hello World</Button>;",
     },
+    entryFile: "App.tsx",
   },
   {
     id: "3",
@@ -41,6 +43,7 @@ export const mockItems = [
       "App.tsx":
         "import React from 'react'; import { Button } from 'antd'; return <Button>Hello World</Button>;",
     },
+    entryFile: "App.tsx",
   },
   {
     id: "4",
@@ -50,6 +53,7 @@ export const mockItems = [
       "App.tsx":
         "import React from 'react'; import { Button } from 'antd'; return <Button>Hello World</Button>;",
     },
+    entryFile: "App.tsx",
   },
   {
     id: "5",
@@ -59,6 +63,7 @@ export const mockItems = [
       "App.tsx":
         "import React from 'react'; import { Button } from 'antd'; return <Button>Hello World</Button>;",
     },
+    entryFile: "App.tsx",
   },
   {
     id: "6",
@@ -68,6 +73,7 @@ export const mockItems = [
       "App.tsx":
         "import React from 'react'; import { Button } from 'antd'; return <Button>Hello World</Button>;",
     },
+    entryFile: "App.tsx",
   },
 ] as ComponentItem[]
 
@@ -113,6 +119,7 @@ export const AnimatedAddition: Story = {
             code: {
               "index.css": "body { background-color: red; }",
             },
+            entryFile: "App.tsx",
           },
           ...prevItems,
         ])
