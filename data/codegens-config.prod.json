@@ -8,7 +8,7 @@
             "Generate a Table component, include 3 columns: name, age, address"
         ],
         "model": "gpt-4o",
-        "codeRendererUrl": "http://localhost:3001",
+        "codeRendererUrl": "https://shadcn-ui-renderer.pages.dev",
         "rules": [
             {
                 "type": "public-components",
@@ -28,7 +28,7 @@
             "Generate a Table component, include 3 columns: name, age, address"
         ],
         "model": "gpt-4o",
-        "codeRendererUrl": "http://localhost:3002",
+        "codeRendererUrl": "https://antd-renderer.pages.dev",
         "rules": [
             {
                 "type": "public-components",
@@ -54,7 +54,7 @@
             "Generate a Table component, include 3 columns: name, age, address"
         ],
         "model": "gpt-4o",
-        "codeRendererUrl": "http://localhost:3003",
+        "codeRendererUrl": "https://mui-renderer.pages.dev",
         "rules": [
             {
                 "type": "public-components",
@@ -80,7 +80,7 @@
             "Generate a Table component, include 3 columns: name, age, address"
         ],
         "model": "gpt-4o",
-        "codeRendererUrl": "http://localhost:3004",
+        "codeRendererUrl": "https://element-ui-plus-renderer.pages.dev",
         "rules": [
             {
                 "type": "public-components",
@@ -105,7 +105,7 @@
             "Generate a Table component, include 3 columns: name, age, address"
         ],
         "model": "gpt-4o",
-        "codeRendererUrl": "http://localhost:3005",
+        "codeRendererUrl": "https://private-component-renderer.pages.dev",
         "rules": [
             {
                 "type": "public-components",
@@ -125,7 +125,7 @@
             "Generate a Table component, include 3 columns: name, age, address"
         ],
         "model": "gpt-4o",
-        "codeRendererUrl": "http://localhost:3006",
+        "codeRendererUrl": "https://tailwind-renderer.pages.dev",
         "rules": [
             {
                 "type": "public-components",
