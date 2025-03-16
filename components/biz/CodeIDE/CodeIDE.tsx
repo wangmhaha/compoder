@@ -20,6 +20,41 @@ import {
 } from "@/components/ui/resizable"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
+// Helper function to get language from file extension
+function getLanguageFromFileName(fileName: string): string | undefined {
+  const extension = fileName.split(".").pop()?.toLowerCase()
+
+  // Map file extensions to Monaco Editor supported languages
+  const extensionToLanguage: Record<string, string> = {
+    js: "javascript",
+    jsx: "javascript",
+    ts: "typescript",
+    tsx: "typescript",
+    html: "html",
+    css: "css",
+    scss: "scss",
+    less: "less",
+    json: "json",
+    md: "markdown",
+    vue: "html", // Vue files default to HTML syntax highlighting
+    py: "python",
+    java: "java",
+    c: "c",
+    cpp: "cpp",
+    go: "go",
+    php: "php",
+    rb: "ruby",
+    rs: "rust",
+    sh: "shell",
+    sql: "sql",
+    xml: "xml",
+    yaml: "yaml",
+    yml: "yaml",
+  }
+
+  return extension ? extensionToLanguage[extension] : undefined
+}
+
 // Helper function to get the file path for a given file ID
 function getFilePath(
   nodes: FileNode[],
@@ -208,6 +243,10 @@ function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
                   width="100%"
                   path={currentFile.id}
                   value={currentFile.content}
+                  language={
+                    currentFile.language ||
+                    getLanguageFromFileName(currentFile.name)
+                  }
                   theme={resolvedTheme === "light" ? "light" : "vs-dark"}
                   options={{
                     minimap: { enabled: false },

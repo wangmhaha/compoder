@@ -93,11 +93,17 @@ export function createComponentFromString(componentString: string) {
     console.error("Error parsing script:", error)
     const errorMessage = `Error parsing script: ${error}`
     handleError(errorMessage)
-    return {
+    const app = createApp({
       render() {
         return h(ErrorDisplay, { errorMessage })
       },
+    })
+    const container = document.getElementById("artifacts-container")
+    if (container) {
+      container.innerHTML = ""
+      app.mount(container)
     }
+    return null
   }
 
   // 使用 defineComponent 来创建组件
