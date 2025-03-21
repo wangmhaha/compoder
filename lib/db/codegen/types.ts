@@ -1,7 +1,12 @@
 export interface CodegenRule {
-  type: "public-components" | "styles" | "private-components" | "file-structure"
+  type:
+    | "public-components"
+    | "styles"
+    | "private-components"
+    | "file-structure"
+    | "attention-rules"
   description: string
-  prompt?: string // only used when type is "styles" | "file-structure"
+  prompt?: string // only used when type is "styles" | "file-structure" | "special-attention"
   dataSet?: string[] // only used when type is "public-components"
   docs?: {
     // only used when type is "private-components"

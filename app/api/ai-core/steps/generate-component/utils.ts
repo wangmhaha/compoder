@@ -4,48 +4,113 @@ import {
   getPublicComponentsRule,
   getFileStructureRule,
   getStylesRule,
+  getSpecialAttentionRules,
 } from "../../utils/codegenRules"
+
+// Generate the output specification section
+const generateOutputSpecification = (
+  rules: WorkflowContext["query"]["rules"],
+): string => {
+  const fileStructure = getFileStructureRule(rules)
+  if (!fileStructure) return ""
+
+  return `
+    ## Output Specification
+    ${fileStructure}
+  `
+}
+
+// Generate the style specification section
+const generateStyleSpecification = (
+  rules: WorkflowContext["query"]["rules"],
+): string => {
+  const styles = getStylesRule(rules)
+  if (!styles) return ""
+
+  return `
+    ## Style Specification
+    ${styles}
+  `
+}
+
+// Generate the open source components section
+const generateOpenSourceComponents = (
+  rules: WorkflowContext["query"]["rules"],
+): string => {
+  const publicComponents = getPublicComponentsRule(rules)
+  if (!publicComponents || publicComponents.length === 0) return ""
+
+  return `
+    **Open Source Components**
+    - You can use components from ${publicComponents.join(", ")}
+    - Use the latest stable version of APIs
+  `
+}
+
+// Generate the private components section
+const generatePrivateComponents = (
+  retrievedAugmentationContent?: string,
+): string => {
+  if (!retrievedAugmentationContent) return ""
+
+  return `
+    **Private Components**
+    - Must strictly follow the API defined in the documentation below
+    - Using undocumented private component APIs is prohibited
+    <basic-component-docs>
+      ${retrievedAugmentationContent}
+    </basic-component-docs>
+  `
+}
+
+// Generate the additional rules section
+const generateAdditionalRules = (
+  rules: WorkflowContext["query"]["rules"],
+): string => {
+  const specialAttentionRules = getSpecialAttentionRules(rules)
+  if (!specialAttentionRules) return ""
+
+  return `
+    ## Additional Rules
+    ${specialAttentionRules}
+  `
+}
 
 // build system prompt
 export const buildSystemPrompt = (
   rules: WorkflowContext["query"]["rules"],
   retrievedAugmentationContent?: string,
 ): string => {
+  // Generate each section
+  const outputSpecification = generateOutputSpecification(rules)
+  const styleSpecification = generateStyleSpecification(rules)
+  const openSourceComponents = generateOpenSourceComponents(rules)
+  const privateComponents = generatePrivateComponents(
+    retrievedAugmentationContent,
+  )
+  const additionalRules = generateAdditionalRules(rules)
+
+  // Check if component usage guidelines exist
+  const hasComponentGuidelines = openSourceComponents || privateComponents
+  const componentGuidelinesHeader = hasComponentGuidelines
+    ? "## Component Usage Guidelines\n"
+    : ""
+
+  // Only include component guidelines header if at least one of the sections exists
+  const componentGuidelines = hasComponentGuidelines
+    ? `${componentGuidelinesHeader}${openSourceComponents}${privateComponents}`
+    : ""
+
   return `
     # You are a senior frontend engineer focused on business component development
 
     ## Goal
-    Generate business component code based on requirements
-
-    ## Output Specification
-    ${getFileStructureRule(rules)}
-
-    ## Style Specification
-    ${getStylesRule(rules)}
-
-    ## Component Usage Guidelines
-    1. Open Source Components
-    - You can use components from ${getPublicComponentsRule(rules)?.join(", ")}
-    - Use the latest stable version of APIs
-
-    ${
-      retrievedAugmentationContent
-        ? `
-    2. Private Components
-    - Must strictly follow the API defined in the documentation below
-    - Using undocumented private component APIs is prohibited
-    <basic-component-docs>
-      ${retrievedAugmentationContent}
-    </basic-component-docs>
-    `
-        : ""
-    }
-
-    ## Workflow
-    1. Analyze user requirements <user-requirements> </user-requirements>
-    2. Use components specified in requirements, following component usage guidelines
-    3. Generate business component code according to output specification
-    `
+    Generate business component code based on user requirements, please ensure that all code is generated completely, do not cut off.
+    ${outputSpecification}
+    ${styleSpecification}
+    ${componentGuidelines}
+    ${additionalRules}
+  `
 }
 
 // build current component prompt

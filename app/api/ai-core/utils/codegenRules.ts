@@ -40,6 +40,14 @@ const defaultStyles = `
 Use tailwindcss to write styles
 `
 
+const defaultAdditionalRules = `
+- Ensure component is fully responsive across all device sizes
+- Implement proper accessibility (ARIA) attributes
+- Add comprehensive PropTypes or TypeScript interfaces
+- Include error handling for all async operations
+- Optimize rendering performance where possible
+`
+
 export function getPublicComponentsRule(rules: CodegenRule[]) {
   return rules.find(rule => rule.type === "public-components")?.dataSet
 }
@@ -54,23 +62,55 @@ export function getPrivateComponentDocs(rules: CodegenRule[]) {
 
 export function getPrivateDocsDescription(rules: CodegenRule[]): string {
   const docs = getPrivateComponentDocs(rules)
-  const basicPublicComponentLibrary = getPublicComponentsRule(rules)
+  const publicLibraryComponents = getPublicComponentsRule(rules)
 
-  // Check if configJson is empty or not an object
-  if (!docs || Object.keys(docs).length === 0) {
-    return basicPublicComponentLibrary
-      ? `- All components in ${basicPublicComponentLibrary}`
+  // Helper function to check if public library components are valid and non-empty
+  const isPublicLibraryValid = (components: string[] | undefined): boolean => {
+    return !!components && Array.isArray(components) && components.length > 0
+  }
+
+  const isPrivateLibraryValid = (
+    docs: Record<string, any> | undefined,
+  ): boolean => {
+    return !!docs && Object.keys(docs).length > 0
+  }
+
+  const hasPublicLibrary = isPublicLibraryValid(publicLibraryComponents)
+  const hasPrivateLibrary = isPrivateLibraryValid(docs)
+
+  // 当没有有效的组件库时，返回空字符串
+  if (!hasPrivateLibrary && !hasPublicLibrary) {
+    return ""
+  }
+
+  // Helper function to format public library components as a string
+  const formatPublicLibraryComponents = (
+    components: string[] | undefined,
+  ): string => {
+    return components?.join(", ") || ""
+  }
+
+  // If docs is empty but public library exists, return only public library description
+  if (!hasPrivateLibrary) {
+    return hasPublicLibrary
+      ? `- All components in ${formatPublicLibraryComponents(
+          publicLibraryComponents,
+        )}`
       : ""
   }
 
   const templates: string[] = []
 
-  if (!!basicPublicComponentLibrary) {
+  // Add public library components if available
+  if (hasPublicLibrary) {
     templates.push(`
-        - All components in ${basicPublicComponentLibrary}
+        - All components in ${formatPublicLibraryComponents(
+          publicLibraryComponents,
+        )}
       `)
   }
 
+  // Process private component libraries
   for (const namespace in docs) {
     if (docs.hasOwnProperty(namespace)) {
       const components = docs[namespace]
@@ -106,4 +146,11 @@ export function getFileStructureRule(rules: CodegenRule[]) {
     return IMPORTANT_NOTE + customPrompt
   }
   return defaultFileStructure
+}
+
+export function getSpecialAttentionRules(rules: CodegenRule[]) {
+  return (
+    rules.find(rule => rule.type === "attention-rules")?.prompt ??
+    defaultAdditionalRules
+  )
 }

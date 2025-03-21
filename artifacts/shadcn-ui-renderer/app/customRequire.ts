@@ -8,6 +8,8 @@ export const customRequire = (moduleName: string) => {
     "next/image": require("next/image"),
     "@/lib/utils": require("@/lib/utils"),
     "framer-motion": require("framer-motion"),
+    "react-hook-form": require("react-hook-form"),
+    recharts: require("recharts"),
     zod: require("zod"),
   }
 

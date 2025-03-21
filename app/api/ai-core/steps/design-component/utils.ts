@@ -18,17 +18,17 @@ export interface ComponentDesign {
 }
 
 const buildSystemPrompt = (rules: WorkflowContext["query"]["rules"]) => {
-  return `
-    # You are a senior frontend engineer who excels at developing business components.
-    ## Goal
-    Extract the "basic component materials", component name, and description information needed to develop business components from business requirements and design drafts.
-    ## Constraints
-    Basic component materials include:
-    ${getPrivateDocsDescription(rules)}
-    Please note: You absolutely cannot provide packages outside of the above basic component materials, nor provide example code.
-    ## Response Format
-    You must respond with a JSON object in the following format:
-    {
+  const componentsDescription = getPrivateDocsDescription(rules)
+  const hasComponentLibraries = !!componentsDescription
+
+  // 创建不同情况下的提示词部分
+  const promptParts = {
+    withLibraries: {
+      goal: 'Extract the "basic component materials", component name, and description information needed to develop business components from business requirements and design drafts.',
+      constraints: `Basic component materials include:
+    ${componentsDescription}
+    Please note: You absolutely cannot provide packages outside of the above basic component materials, nor provide example code.`,
+      responseFormat: `{
       "componentName": string, // Component name
       "componentDescription": string, // Component description
       "library": [ // Libraries containing required base material components
@@ -38,12 +38,52 @@ const buildSystemPrompt = (rules: WorkflowContext["query"]["rules"]) => {
           "description": string // Describe how each component in components is used in a table format
         }
       ]
-    }
+    }`,
+      workflowStep2:
+        "2. Extract required materials from [Constraints] basic component materials for developing business components",
+    },
+    withoutLibraries: {
+      goal: "Extract component name and description information needed to develop business components from business requirements and design drafts.",
+      constraints: `- Extract the component name and description information from the business requirements and design drafts. 
+- Analyze the design draft to understand the business functionality needed.
+
+Please note: You should not provide example code in your response.`,
+      responseFormat: `{
+      "componentName": string, // Component name
+      "componentDescription": string // Component description that clearly explains the purpose and functionality
+    }`,
+      workflowStep2:
+        "2. Analyze the business requirements and design drafts to identify needed business components and their functions",
+    },
+  }
+
+  // 选择对应场景的提示词部分
+  const parts = hasComponentLibraries
+    ? promptParts.withLibraries
+    : promptParts.withoutLibraries
+
+  // 构建工作流步骤
+  const workflowSteps = `1. Accept user's business requirements or design draft images
+    ${parts.workflowStep2}
+    3. Generate and return the JSON response in the specified format`
+
+  // 构建最终提示词
+  return `
+    # You are a senior frontend engineer who excels at developing business components.
+    
+    ## Goal
+    ${parts.goal}
+    
+    ## Constraints
+    ${parts.constraints}
+    
+    ## Response Format
+    You must respond with a JSON object in the following format:
+    ${parts.responseFormat}
+    
     ## Workflow
-    1. Accept user's business requirements or design draft images
-    2. Extract required materials from [Constraints] basic component materials for developing business components
-    3. Generate and return the JSON response in the specified format
-    `
+    ${workflowSteps}
+  `
 }
 
 // When component exists, build corresponding user message and assistant message

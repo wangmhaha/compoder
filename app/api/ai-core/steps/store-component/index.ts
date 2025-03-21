@@ -7,7 +7,6 @@ import { GenerateProcessingWorkflowContext } from "../../type"
 export const storeComponent = async (
   context: GenerateProcessingWorkflowContext,
 ): Promise<GenerateProcessingWorkflowContext> => {
-  console.log("storeComponent", context)
   if (context.query.component) {
     await updateComponentCode({
       id: context.query.component.id,

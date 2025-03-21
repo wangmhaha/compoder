@@ -9,6 +9,7 @@ const CodegenRuleSchema = new mongoose.Schema({
       "styles",
       "private-components",
       "file-structure",
+      "special-attention",
     ],
     required: true,
   },

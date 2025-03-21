@@ -5,7 +5,7 @@ import * as fs from "fs"
 import * as path from "path"
 
 // Import codegens from JSON file in scripts directory
-const codegensPath = path.resolve(process.cwd(), "./data/codegens-config.json")
+const codegensPath = path.resolve(process.cwd(), "./data/codegens.json")
 const currentCodegens: Codegen[] = JSON.parse(
   fs.readFileSync(codegensPath, "utf8"),
 )

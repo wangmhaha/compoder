@@ -6,8 +6,9 @@ import { getOpenaiClient } from "@/app/api/ai-core/utils/aiClient"
 import { getUserId } from "@/lib/auth/middleware"
 import { connectToDatabase } from "@/lib/db/mongo"
 import { validateSession } from "@/lib/auth/middleware"
+import { LanguageModel } from "ai"
 
-const aiModel = getOpenaiClient()
+const aiModel = getOpenaiClient("claude-3-7-sonnet-latest") as LanguageModel
 
 export async function POST(request: NextRequest) {
   try {

@@ -47,7 +47,21 @@ const ComponentCodeVersionsContainer = ({
   const renderPrompt = (prompt: Prompt) => {
     switch (prompt.type) {
       case "text":
-        return <p className="text-sm">{prompt.text}</p>
+        return (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <p className="text-sm max-w-[150px] sm:max-w-[200px] md:max-w-[250px] lg:max-w-[300px] xl:max-w-[350px] truncate hover:cursor-help">
+                {prompt.text}
+              </p>
+            </TooltipTrigger>
+            <TooltipContent
+              side="top"
+              className="max-w-[300px] sm:max-w-[350px] md:max-w-[400px]"
+            >
+              <p className="text-sm">{prompt.text}</p>
+            </TooltipContent>
+          </Tooltip>
+        )
       case "image":
         return <ImagePreview src={prompt.image} thumbnailSize={32} />
       default:
