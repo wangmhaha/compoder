@@ -3,6 +3,7 @@ import {
   createComponentCode,
   editComponentCode,
   saveComponentCode,
+  deleteComponentCode,
 } from "@/app/services/componentCode/componentCode.service"
 import { ComponentCodeApi } from "@/app/api/componentCode/type"
 import { useToast } from "@/hooks/use-toast"
@@ -56,6 +57,32 @@ export const useSaveComponentCode = () => {
       toast({
         title: "Error",
         description: error.message,
+        variant: "destructive",
+      })
+    },
+  })
+}
+
+export const useDeleteComponentCode = () => {
+  const queryClient = useQueryClient()
+  const { toast } = useToast()
+
+  return useMutation<void, Error, ComponentCodeApi.deleteRequest>({
+    mutationFn: params => deleteComponentCode(params),
+    onSuccess: () => {
+      // Invalidate the component list query to trigger a refresh
+      queryClient.invalidateQueries({ queryKey: ["componentCodeList"] })
+
+      toast({
+        title: "Success",
+        description: "Component has been deleted successfully",
+      })
+    },
+    onError: error => {
+      console.error("deleteComponentCode error", error)
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete component",
         variant: "destructive",
       })
     },

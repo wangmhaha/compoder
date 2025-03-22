@@ -64,4 +64,9 @@ declare namespace ComponentCodeApi {
     versionId: string
     code: string
   }
+
+  // delete request
+  export interface deleteRequest {
+    id: string
+  }
 }

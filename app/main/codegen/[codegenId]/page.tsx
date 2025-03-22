@@ -20,7 +20,10 @@ import {
   useComponentCodeList,
 } from "../server-store/selectors"
 import { useState } from "react"
-import { useCreateComponentCode } from "../server-store/mutations"
+import {
+  useCreateComponentCode,
+  useDeleteComponentCode,
+} from "../server-store/mutations"
 import { Prompt, PromptImage } from "@/lib/db/componentCode/types"
 import { Skeleton } from "@/components/ui/skeleton"
 import { CompoderThinkingLoading } from "@/components/biz/CompoderThinkingLoading"
@@ -68,6 +71,7 @@ export default function CodegenDetailPage({
   const [provider, setProvider] = useState<AIProvider>()
   const [model, setModel] = useState<string>()
   const createComponentMutation = useCreateComponentCode()
+  const deleteComponentMutation = useDeleteComponentCode()
 
   const shouldShowList = useShowOnFirstData(componentCodeData?.items)
 
@@ -154,6 +158,18 @@ export default function CodegenDetailPage({
 
   const handleImageRemove = (index: number) => {
     setImages(prev => prev.filter((_, i) => i !== index))
+  }
+
+  const handleDeleteComponent = (id: string) => {
+    deleteComponentMutation.mutate(
+      { id },
+      {
+        onSuccess: () => {
+          // Additional logic after successful deletion if needed
+          console.log("Component deleted successfully:", id)
+        },
+      },
+    )
   }
 
   return (
@@ -261,8 +277,8 @@ export default function CodegenDetailPage({
                   }
                   items={componentCodeData?.items ?? []}
                   codeRendererServer={codegenDetail?.codeRendererUrl || ""}
-                  onEditClick={id => console.log("Edit clicked:", id)}
-                  onDeleteClick={id => console.log("Delete clicked:", id)}
+                  // onEditClick={id => console.log("Edit clicked:", id)}
+                  onDeleteClick={id => handleDeleteComponent(id)}
                   onItemClick={id =>
                     router.push(`/main/codegen/${params.codegenId}/${id}`)
                   }

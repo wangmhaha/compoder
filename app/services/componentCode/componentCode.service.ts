@@ -91,3 +91,25 @@ export const saveComponentCode = async (
     throw error
   }
 }
+
+export const deleteComponentCode = async (
+  params: ComponentCodeApi.deleteRequest,
+): Promise<void> => {
+  try {
+    const filteredParams = Object.fromEntries(
+      Object.entries(params).filter(([, value]) => value !== undefined),
+    )
+    const queryString = new URLSearchParams(
+      filteredParams as Record<string, string>,
+    ).toString()
+    const response = await request(`/componentCode/delete?${queryString}`, {
+      method: "DELETE",
+    })
+
+    // No response body for successful deletion (status 204)
+    return
+  } catch (error) {
+    // Error will be handled by request.ts
+    throw error
+  }
+}

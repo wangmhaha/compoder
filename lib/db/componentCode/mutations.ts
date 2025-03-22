@@ -100,3 +100,16 @@ export async function saveComponentCodeVersion({
     throw error
   }
 }
+
+export async function deleteComponentCode({ id }: { id: string }) {
+  try {
+    const result = await ComponentCodeModel.findByIdAndDelete(id)
+    if (!result) {
+      throw new Error("Component code not found")
+    }
+    return { success: true }
+  } catch (error) {
+    console.error("Error deleting component code:", error)
+    throw error
+  }
+}
