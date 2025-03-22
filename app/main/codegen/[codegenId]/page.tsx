@@ -233,7 +233,7 @@ export default function CodegenDetailPage({
           <div
             className={cn(
               isSubmitting || shouldShowList ? "opacity-100" : "opacity-0",
-              "w-full mx-auto px-6 max-w-screen-xl",
+              "w-full mx-auto px-6",
             )}
           >
             <p className="text-lg font-bold mb-4">Component List</p>

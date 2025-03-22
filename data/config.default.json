@@ -1,39 +1,39 @@
 {
-    "providers": {
-        "openai": {
+    "providers": [
+        {
             "provider": "openai",
             "models": [
                 {
                     "name": "claude-3-7-sonnet-latest",
-                    "baseURL": "https://api.302.ai/v1",
+                    "baseURL": "https://openai.com/api/v1",
                     "apiKey": "sk-aj0shmBaHoK2ubdBLITJazrlTJRcwom96eFbUZXvmF4NA1lK"
                 },
                 {
                     "name": "claude-3-5-sonnet-latest",
-                    "baseURL": "https://api.302.ai/v1",
+                    "baseURL": "https://openai.com/api/v1",
                     "apiKey": "sk-aj0shmBaHoK2ubdBLITJazrlTJRcwom96eFbUZXvmF4NA1lK"
                 },
                 {
                     "name": "gpt-4o",
-                    "baseURL": "https://api.302.ai/v1",
+                    "baseURL": "https://openai.com/api/v1",
                     "apiKey": "sk-aj0shmBaHoK2ubdBLITJazrlTJRcwom96eFbUZXvmF4NA1lK"
                 }
             ]
         },
-        "anthropic": {
+        {
             "provider": "anthropic",
             "models": [
                 {
                     "name": "claude-3-7-sonnet-latest",
-                    "baseURL": "https://api.302.ai/v1",
-                    "apiKey": "sk-aj0shmBaHoK2ubdBLITJazrlTJRcwom96eFbUZXvmF4NA1lK"
+                    "baseURL": "https://claude.ai/api",
+                    "apiKey": "sk-ant-api03-1234567890"
                 },
                 {
                     "name": "claude-3-5-sonnet-latest",
-                    "baseURL": "https://api.302.ai/v1",
-                    "apiKey": "sk-aj0shmBaHoK2ubdBLITJazrlTJRcwom96eFbUZXvmF4NA1lK"
+                    "baseURL": "https://claude.ai/api",
+                    "apiKey": "sk-ant-api03-1234567890"
                 }
             ]
         }
-    }
+    ]
 }

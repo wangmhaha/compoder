@@ -71,6 +71,16 @@ export const ProviderModelModalProvider: React.FC<
     setError(null)
 
     try {
+      // First call the reload API to refresh the configuration
+      const reloadResponse = await fetch("/api/config/reload", {
+        method: "POST",
+      })
+
+      if (!reloadResponse.ok) {
+        throw new Error(`Reload API error: ${reloadResponse.status}`)
+      }
+
+      // Then fetch the updated configuration
       const response = await fetch("/api/config")
 
       if (!response.ok) {
@@ -86,11 +96,6 @@ export const ProviderModelModalProvider: React.FC<
       setIsLoading(false)
     }
   }, [])
-
-  // Handle model selection
-  const handleModelSelect = (provider: string, model: Model) => {
-    setSelected(provider, model)
-  }
 
   // Render modal content based on loading and error states
   const renderModalContent = () => {
@@ -117,7 +122,7 @@ export const ProviderModelModalProvider: React.FC<
     return (
       <ProviderModelViewer
         initialData={providers}
-        onModelSelect={handleModelSelect}
+        // onModelSelect={handleModelSelect}
         onRefresh={refreshData}
         showSensitiveInfo={false}
       />
@@ -142,7 +147,7 @@ export const ProviderModelModalProvider: React.FC<
 
       {/* Modal Component */}
       <Dialog open={isOpen} onOpenChange={open => !open && closeModal()}>
-        <DialogContent className="max-w-7xl h-[80vh] overflow-auto">
+        <DialogContent className="max-w-7xl max-h-[80vh] overflow-auto">
           <DialogHeader>
             <DialogTitle>AI Provider Models</DialogTitle>
             <DialogDescription>

@@ -1,6 +1,21 @@
 import { useEffect, useState } from "react"
-import { AIProvider, AIProvidersConfig } from "@/lib/config/ai-providers"
+import { AIProvider } from "@/lib/config/ai-providers"
 import { LLMOption } from "@/components/biz/LLMSelector/interface"
+
+// Define a new interface for API response which matches the return from the API
+interface ConfigApiResponse {
+  providers: Record<
+    AIProvider,
+    {
+      provider: AIProvider
+      models: Array<{
+        model: string
+        title: string
+        apiKey: string
+      }>
+    }
+  >
+}
 
 /**
  * Custom hook that loads LLM options from the config file
@@ -22,7 +37,7 @@ export function useLLMOptions() {
           throw new Error(`Failed to load config data: ${response.statusText}`)
         }
 
-        const config = (await response.json()) as AIProvidersConfig
+        const config = (await response.json()) as ConfigApiResponse
         const llmOptions: LLMOption[] = []
 
         // Process providers and models

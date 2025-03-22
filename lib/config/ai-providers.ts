@@ -20,7 +20,7 @@ export type AIProviderConfig = {
 
 // Full configuration
 export type AIProvidersConfig = {
-  providers: Record<AIProvider, AIProviderConfig>
+  providers: AIProviderConfig[]
 }
 
 // Processed model configuration (with resolved environment variables)
@@ -66,27 +66,24 @@ export function loadAIProvidersConfig(
     const configFileContent = fs.readFileSync(configFilePath, "utf-8")
     const config = JSON.parse(configFileContent) as AIProvidersConfig
 
-    // Process the configuration
-    const processedConfig = Object.entries(config.providers).reduce(
-      (acc, [key, providerConfig]) => {
-        const provider = key as AIProvider
+    // Process the configuration - convert array to record for backward compatibility
+    const processedConfig = config.providers.reduce((acc, providerConfig) => {
+      const provider = providerConfig.provider
 
-        // Process models - directly use the values from the config file
-        const processedModels = providerConfig.models.map(model => {
-          return {
-            ...model,
-          }
-        })
-
-        acc[provider] = {
-          provider,
-          models: processedModels,
+      // Process models - directly use the values from the config file
+      const processedModels = providerConfig.models.map(model => {
+        return {
+          ...model,
         }
+      })
 
-        return acc
-      },
-      {} as Record<AIProvider, ProcessedAIProviderConfig>,
-    )
+      acc[provider] = {
+        provider,
+        models: processedModels,
+      }
+
+      return acc
+    }, {} as Record<AIProvider, ProcessedAIProviderConfig>)
 
     // Update cache
     configCache = processedConfig
