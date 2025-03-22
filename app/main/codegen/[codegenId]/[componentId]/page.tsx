@@ -7,11 +7,18 @@ import { CodeIDE, FileNode } from "@/components/biz/CodeIDE"
 import { ChatInput } from "@/components/biz/ChatInput"
 import { useSidebar } from "@/components/ui/sidebar"
 import { useComponentCodeDetail } from "../../server-store/selectors"
-import { transformComponentArtifactFromXml, transformTryCatchErrorFromXml, transformFileNodeToXml } from "@/lib/xml-message-parser/parser"
+import {
+  transformComponentArtifactFromXml,
+  transformTryCatchErrorFromXml,
+  transformFileNodeToXml,
+} from "@/lib/xml-message-parser/parser"
 import { Skeleton } from "@/components/ui/skeleton"
 import { CodeRenderer as CodeRendererComponent } from "@/components/biz/CodeRenderer"
 import { useFile } from "@/components/biz/CodeIDE/context/FileContext"
-import { useEditComponentCode, useSaveComponentCode } from "../../server-store/mutations"
+import {
+  useEditComponentCode,
+  useSaveComponentCode,
+} from "../../server-store/mutations"
 import { Prompt } from "@/lib/db/componentCode/types"
 import { TldrawEdit } from "@/components/biz/TldrawEdit"
 import { Button } from "@/components/ui/button"
@@ -36,7 +43,10 @@ export default function ComponentPage() {
     data: componentDetail,
     isLoading,
     refetch,
-  } = useComponentCodeDetail(params.componentId as string, params.codegenId as string)
+  } = useComponentCodeDetail(
+    params.componentId as string,
+    params.codegenId as string,
+  )
   const shouldShowLoading = useFirstLoading(isLoading)
 
   useEffect(() => {
@@ -108,6 +118,7 @@ export default function ComponentPage() {
           description: errorMessage,
           variant: "destructive",
         })
+        return
       }
 
       setImages([])
@@ -222,7 +233,12 @@ export default function ComponentPage() {
                   })
                 }
               }}
-              codeRenderer={<CodeRenderer onFixError={onFixError} codeRendererUrl={componentDetail?.codeRendererUrl!} />}
+              codeRenderer={
+                <CodeRenderer
+                  onFixError={onFixError}
+                  codeRendererUrl={componentDetail?.codeRendererUrl!}
+                />
+              }
             />
           </div>
         </ComponentCodeVersionsContainer>

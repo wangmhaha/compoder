@@ -2,6 +2,8 @@ import { CodegenRule } from "@/lib/db/codegen/types"
 
 const IMPORTANT_NOTE = `Important: Write the code directly inside each ComponentFile tag. Do NOT use any code block markers (like \`\`\`tsx, \`\`\`ts, etc.) inside the XML tags.
 
+When modifying existing component code, only return the <ComponentFile> nodes that need to be modified, without returning unchanged files. However, for each modified <ComponentFile> node, you must include the complete code content of that file, even if only a small portion was modified. This ensures the system correctly replaces the entire file content and maintains code integrity.
+
 `
 
 const defaultFileStructure = `${IMPORTANT_NOTE}Output component code in XML format as follows:

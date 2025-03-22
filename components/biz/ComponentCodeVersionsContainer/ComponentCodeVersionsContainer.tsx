@@ -56,7 +56,7 @@ const ComponentCodeVersionsContainer = ({
             </TooltipTrigger>
             <TooltipContent
               side="top"
-              className="max-w-[300px] sm:max-w-[350px] md:max-w-[400px]"
+              className="max-w-[300px] sm:max-w-[350px] md:max-w-[400px] max-h-[300px] overflow-y-auto"
             >
               <p className="text-sm">{prompt.text}</p>
             </TooltipContent>

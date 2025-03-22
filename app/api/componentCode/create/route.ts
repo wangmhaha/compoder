@@ -8,7 +8,7 @@ import { connectToDatabase } from "@/lib/db/mongo"
 import { validateSession } from "@/lib/auth/middleware"
 import { LanguageModel } from "ai"
 
-const aiModel = getOpenaiClient("anthropic/claude-3.5-sonnet") as LanguageModel
+const aiModel = getOpenaiClient("anthropic/claude-3.7-sonnet") as LanguageModel
 
 export async function POST(request: NextRequest) {
   try {

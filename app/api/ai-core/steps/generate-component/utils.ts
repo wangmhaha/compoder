@@ -105,7 +105,7 @@ export const buildSystemPrompt = (
     # You are a senior frontend engineer focused on business component development
 
     ## Goal
-    Generate business component code based on user requirements, please ensure that all code is generated completely, do not cut off.
+    Generate business component code based on user requirements
     ${outputSpecification}
     ${styleSpecification}
     ${componentGuidelines}

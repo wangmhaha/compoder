@@ -27,7 +27,7 @@ const buildSystemPrompt = (rules: WorkflowContext["query"]["rules"]) => {
       goal: 'Extract the "basic component materials", component name, and description information needed to develop business components from business requirements and design drafts.',
       constraints: `Basic component materials include:
     ${componentsDescription}
-    Please note: You absolutely cannot provide packages outside of the above basic component materials, nor provide example code.`,
+    Please note: You should not provide example code and any other text in your response, only provider json response.`,
       responseFormat: `{
       "componentName": string, // Component name
       "componentDescription": string, // Component description
@@ -47,7 +47,7 @@ const buildSystemPrompt = (rules: WorkflowContext["query"]["rules"]) => {
       constraints: `- Extract the component name and description information from the business requirements and design drafts. 
 - Analyze the design draft to understand the business functionality needed.
 
-Please note: You should not provide example code in your response.`,
+Please note: You should not provide example code and any other text in your response, only provider json response.`,
       responseFormat: `{
       "componentName": string, // Component name
       "componentDescription": string // Component description that clearly explains the purpose and functionality
@@ -122,24 +122,12 @@ const buildUserMessage = (
   return [
     {
       role: "user",
-      content: prompt
-        .map(p => {
-          if (p.type === "image") {
-            return { type: "image" as const, image: p.image }
-          }
-          return { type: "text" as const, text: p.text }
-        })
-        .concat({
-          type: "text",
-          text: `
-            Please call designNewComponentApi to generate design details for the new component
-            ${
-              !component
-                ? ""
-                : `(need to combine with the code from the previous ${component?.name} component to generate new design details)`
-            }
-          `,
-        }),
+      content: prompt.map(p => {
+        if (p.type === "image") {
+          return { type: "image" as const, image: p.image }
+        }
+        return { type: "text" as const, text: p.text }
+      }),
     },
   ]
 }
@@ -213,6 +201,8 @@ export async function generateComponentDesign(
   }
 
   const systemPrompt = buildSystemPrompt(req.query.rules)
+
+  console.log("design-component systemPrompt:", systemPrompt)
   const messages = [
     ...buildCurrentComponentMessage(req.query.component),
     ...buildUserMessage(req.query.prompt, req.query.component),

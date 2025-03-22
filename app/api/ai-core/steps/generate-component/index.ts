@@ -17,6 +17,8 @@ export const generateComponent = async (
     context.state?.designTask?.retrievedAugmentationContent,
   )
 
+  console.log("generate-component systemPrompt:", systemPrompt)
+
   const messages = generateComponentMessage(context)
 
   const stream = await streamText({
