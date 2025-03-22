@@ -278,7 +278,14 @@ function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
         <>
           <ResizableHandle />
           <ResizablePanel defaultSize={50} minSize={30} maxSize={100}>
-            <div className="h-full w-full overflow-auto">{codeRenderer}</div>
+            <div
+              className="h-full w-full overflow-hidden"
+              style={{ position: "relative" }}
+            >
+              <div className="absolute inset-0 overflow-auto">
+                {codeRenderer}
+              </div>
+            </div>
           </ResizablePanel>
         </>
       )}

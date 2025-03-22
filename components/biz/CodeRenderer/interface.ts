@@ -7,4 +7,5 @@ export interface CodeRendererProps {
   className?: string
   notShowErrorToast?: boolean
   entryFile: string
+  hideControls?: boolean
 }

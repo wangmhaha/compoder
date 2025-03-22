@@ -247,7 +247,7 @@ export default function ComponentPage() {
         <div className="fixed inset-0 bg-background/50 backdrop-blur-sm z-40" />
       )}
       <ChatInput
-        className="absolute left-1/2 -translate-x-1/2 bottom-6 w-2/3 z-50"
+        className="absolute left-1/2 -translate-x-1/2 bottom-6 w-2/3"
         value={chatInput}
         onChange={setChatInput}
         onSubmit={handleChatSubmit}
@@ -308,6 +308,7 @@ const CodeRenderer = ({
       onFixError={onFixError}
       codes={codes}
       entryFile={entryFile}
+      hideControls={false}
     />
   )
 }
