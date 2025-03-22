@@ -2,13 +2,12 @@ import { NextRequest, NextResponse } from "next/server"
 import { run } from "@/app/api/ai-core/workflow"
 import { ComponentCodeApi } from "../type"
 import { findCodegenById } from "@/lib/db/codegen/selectors"
-import { getOpenaiClient } from "@/app/api/ai-core/utils/aiClient"
+import { getAIClient } from "@/app/api/ai-core/utils/aiClient"
 import { getUserId } from "@/lib/auth/middleware"
 import { connectToDatabase } from "@/lib/db/mongo"
 import { validateSession } from "@/lib/auth/middleware"
 import { LanguageModel } from "ai"
-
-const aiModel = getOpenaiClient("anthropic/claude-3.7-sonnet") as LanguageModel
+import { AIProvider } from "@/lib/config/ai-providers"
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,6 +27,8 @@ export async function POST(request: NextRequest) {
     const body = (await request.json()) as ComponentCodeApi.createRequest
     const codegenDetail = await findCodegenById(body.codegenId)
 
+    const aiModel = getAIClient(body.provider as AIProvider, body.model)
+
     const response = new Response(stream.readable)
 
     run({
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
       },
       query: {
         prompt: body.prompt,
-        aiModel,
+        aiModel: aiModel as LanguageModel,
         rules: codegenDetail.rules,
         userId: userId!,
         codegenId: body.codegenId,

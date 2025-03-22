@@ -22,9 +22,16 @@ import type { NavMainItem } from "../interface"
 
 interface NavMainProps {
   items: NavMainItem[]
+  onNavItemClick?: (url: string) => boolean
 }
 
-export function NavMain({ items }: NavMainProps) {
+export function NavMain({ items, onNavItemClick }: NavMainProps) {
+  const handleNavItemClick = (url: string, e: React.MouseEvent) => {
+    if (onNavItemClick && onNavItemClick(url)) {
+      e.preventDefault()
+    }
+  }
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -37,7 +44,10 @@ export function NavMain({ items }: NavMainProps) {
                 tooltip={item.title}
                 data-active={item.isActive}
               >
-                <Link href={item.url}>
+                <Link
+                  href={item.url}
+                  onClick={e => handleNavItemClick(item.url, e)}
+                >
                   <item.icon />
                   <span>{item.title}</span>
                 </Link>
@@ -58,7 +68,10 @@ export function NavMain({ items }: NavMainProps) {
                             asChild
                             data-active={subItem.isActive}
                           >
-                            <Link href={subItem.url}>
+                            <Link
+                              href={subItem.url}
+                              onClick={e => handleNavItemClick(subItem.url, e)}
+                            >
                               <span>{subItem.title}</span>
                             </Link>
                           </SidebarMenuSubButton>

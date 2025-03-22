@@ -38,4 +38,5 @@ export interface AppSidebarLayoutProps extends ComponentProps<typeof Sidebar> {
   user: UserInfo
   onLogout: () => void
   children: React.ReactNode
+  onNavItemClick?: (url: string) => boolean
 }

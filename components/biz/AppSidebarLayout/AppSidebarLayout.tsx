@@ -23,6 +23,7 @@ export function AppSidebarLayout({
   navMain,
   user,
   onLogout,
+  onNavItemClick,
   children,
   ...props
 }: AppSidebarLayoutProps) {
@@ -42,7 +43,7 @@ export function AppSidebarLayout({
                       Compoder
                     </div>
                     <div className="truncate text-primary/50 text-[11px]">
-                       Component Code Generator
+                      Component Code Generator
                     </div>
                   </div>
                 </a>
@@ -51,14 +52,14 @@ export function AppSidebarLayout({
           </SidebarMenu>
         </SidebarHeader>
         <SidebarContent>
-          <NavMain items={navMain} />
+          <NavMain items={navMain} onNavItemClick={onNavItemClick} />
         </SidebarContent>
         <SidebarFooter>
           <NavUser user={user} onLogout={onLogout} />
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0 ">{children}</div>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   )

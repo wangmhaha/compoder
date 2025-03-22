@@ -30,6 +30,11 @@ import { CodingBox } from "@/components/biz/CodingBox"
 import { useFirstLoading } from "@/hooks/use-first-loading"
 import { toast } from "@/hooks/use-toast"
 import { flushSync } from "react-dom"
+import { AIProvider } from "@/lib/config/ai-providers"
+import {
+  LLMSelectorProvider,
+  LLMSelectorButton,
+} from "@/app/commons/LLMSelectorProvider"
 
 export default function ComponentPage() {
   const params = useParams()
@@ -38,6 +43,9 @@ export default function ComponentPage() {
   const { setOpen } = useSidebar()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [streamingContent, setStreamingContent] = useState("")
+  const [provider, setProvider] = useState<AIProvider>()
+  const [model, setModel] = useState<string>()
+
   // Fetch component code detail
   const {
     data: componentDetail,
@@ -68,8 +76,27 @@ export default function ComponentPage() {
   const editMutation = useEditComponentCode()
   const saveMutation = useSaveComponentCode()
 
+  // handle LLM change
+  const handleLLMChange = (
+    newProvider: AIProvider | undefined,
+    newModel: string | undefined,
+  ) => {
+    console.log(`Selected LLM: ${newProvider} - ${newModel}`)
+    setProvider(newProvider)
+    setModel(newModel)
+  }
+
   const handleChatSubmit = async (input?: string) => {
     if (!componentDetail || !params.codegenId) return
+
+    if (!provider || !model) {
+      toast({
+        title: "Error",
+        description: "Please select a model and provider",
+        variant: "default",
+      })
+      return
+    }
 
     const prompt: Prompt[] = [
       ...(images.length > 0
@@ -81,24 +108,29 @@ export default function ComponentPage() {
       },
     ]
 
+    // build request parameters
+    const requestParams = {
+      codegenId: params.codegenId as string,
+      prompt,
+      component: {
+        id: componentDetail._id.toString(),
+        name: componentDetail.name,
+        code:
+          componentDetail.versions.find(
+            version => version._id.toString() === activeVersion,
+          )?.code || "",
+        prompt:
+          componentDetail.versions.find(
+            version => version._id.toString() === activeVersion,
+          )?.prompt || [],
+      },
+      model,
+      provider,
+    }
+
     try {
       setIsSubmitting(true)
-      const res = await editMutation.mutateAsync({
-        codegenId: params.codegenId as string,
-        prompt,
-        component: {
-          id: componentDetail._id.toString(),
-          name: componentDetail.name,
-          code:
-            componentDetail.versions.find(
-              version => version._id.toString() === activeVersion,
-            )?.code || "",
-          prompt:
-            componentDetail.versions.find(
-              version => version._id.toString() === activeVersion,
-            )?.prompt || [],
-        },
-      })
+      const res = await editMutation.mutateAsync(requestParams)
 
       const reader = res?.getReader()
       const decoder = new TextDecoder()
@@ -182,100 +214,103 @@ export default function ComponentPage() {
   }
 
   return (
-    <div className="h-screen relative">
-      <AppHeader
-        showSidebarTrigger={false}
-        breadcrumbs={[
-          { label: "Codegen", href: "/main/codegen" },
-          {
-            label: "Codegen Detail",
-            href: `/main/codegen/${params.codegenId}`,
-          },
-          { label: componentDetail?.name || "Component Detail" },
-        ]}
-      />
-      <div className="h-[calc(100%-200px)]">
-        <ComponentCodeVersionsContainer
-          versions={
-            componentDetail?.versions.map(version => ({
-              id: version._id.toString(),
-              prompt: version.prompt,
-            })) || []
-          }
-          activeVersion={activeVersion.toString()}
-          onVersionChange={version => setActiveVersion(version)}
-        >
-          <div className="h-[calc(100%-60px)]">
-            <CodeIDE
-              data={fileNodes.files}
-              onSave={async (files: FileNode[]) => {
-                if (!componentDetail || !activeVersion) return
-                try {
-                  const code = transformFileNodeToXml(
-                    files,
-                    componentDetail.name,
-                  )
-                  await saveMutation.mutateAsync({
-                    id: componentDetail._id.toString(),
-                    versionId: activeVersion,
-                    code,
-                  })
-                  toast({
-                    title: "Success",
-                    description: "Component code saved successfully",
-                  })
-                } catch (error) {
-                  console.error("Failed to save component code:", error)
-                  toast({
-                    title: "Error",
-                    description: "Failed to save component code",
-                    variant: "destructive",
-                  })
-                }
-              }}
-              codeRenderer={
-                <CodeRenderer
-                  onFixError={onFixError}
-                  codeRendererUrl={componentDetail?.codeRendererUrl!}
-                />
-              }
-            />
-          </div>
-        </ComponentCodeVersionsContainer>
-      </div>
-      {isSubmitting && (
-        <div className="fixed inset-0 bg-background/50 backdrop-blur-sm z-40" />
-      )}
-      <ChatInput
-        className="absolute left-1/2 -translate-x-1/2 bottom-6 w-2/3"
-        value={chatInput}
-        onChange={setChatInput}
-        onSubmit={handleChatSubmit}
-        actions={[
-          <TooltipProvider key="draw-image">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <TldrawEdit
-                    disabled={isSubmitting}
-                    onSubmit={imageData => {
-                      setImages(prev => [...prev, imageData])
-                    }}
+    <LLMSelectorProvider onChange={handleLLMChange}>
+      <div className="h-screen relative">
+        <AppHeader
+          showSidebarTrigger={false}
+          breadcrumbs={[
+            { label: "Codegen", href: "/main/codegen" },
+            {
+              label: "Codegen Detail",
+              href: `/main/codegen/${params.codegenId}`,
+            },
+            { label: componentDetail?.name || "Component Detail" },
+          ]}
+        />
+        <div className="h-[calc(100%-200px)]">
+          <ComponentCodeVersionsContainer
+            versions={
+              componentDetail?.versions.map(version => ({
+                id: version._id.toString(),
+                prompt: version.prompt,
+              })) || []
+            }
+            activeVersion={activeVersion.toString()}
+            onVersionChange={version => setActiveVersion(version)}
+          >
+            <div className="h-[calc(100%-60px)]">
+              <CodeIDE
+                data={fileNodes.files}
+                onSave={async (files: FileNode[]) => {
+                  if (!componentDetail || !activeVersion) return
+                  try {
+                    const code = transformFileNodeToXml(
+                      files,
+                      componentDetail.name,
+                    )
+                    await saveMutation.mutateAsync({
+                      id: componentDetail._id.toString(),
+                      versionId: activeVersion,
+                      code,
+                    })
+                    toast({
+                      title: "Success",
+                      description: "Component code saved successfully",
+                    })
+                  } catch (error) {
+                    console.error("Failed to save component code:", error)
+                    toast({
+                      title: "Error",
+                      description: "Failed to save component code",
+                      variant: "destructive",
+                    })
+                  }
+                }}
+                codeRenderer={
+                  <CodeRenderer
+                    onFixError={onFixError}
+                    codeRendererUrl={componentDetail?.codeRendererUrl!}
                   />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Draw An Image</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>,
-        ]}
-        images={images}
-        onImageRemove={handleImageRemove}
-        loading={isSubmitting}
-        loadingSlot={loadingSlot}
-      />
-    </div>
+                }
+              />
+            </div>
+          </ComponentCodeVersionsContainer>
+        </div>
+        {isSubmitting && (
+          <div className="fixed inset-0 bg-background/50 backdrop-blur-sm z-40" />
+        )}
+        <ChatInput
+          className="absolute left-1/2 -translate-x-1/2 bottom-6 w-2/3"
+          value={chatInput}
+          onChange={setChatInput}
+          onSubmit={handleChatSubmit}
+          actions={[
+            <TooltipProvider key="draw-image">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <TldrawEdit
+                      disabled={isSubmitting}
+                      onSubmit={imageData => {
+                        setImages(prev => [...prev, imageData])
+                      }}
+                    />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Draw An Image</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>,
+            <LLMSelectorButton key="llm-selector" />,
+          ]}
+          images={images}
+          onImageRemove={handleImageRemove}
+          loading={isSubmitting}
+          loadingSlot={loadingSlot}
+        />
+      </div>
+    </LLMSelectorProvider>
   )
 }
 

@@ -34,6 +34,8 @@ declare namespace ComponentCodeApi {
   export interface createRequest {
     codegenId: string
     prompt: Prompt[]
+    model: string
+    provider: string
   }
 
   // create response
@@ -49,6 +51,8 @@ declare namespace ComponentCodeApi {
       code: string
       prompt: Prompt[]
     }
+    model: string
+    provider: string
   }
 
   // edit response

@@ -12,12 +12,12 @@ export const getAIClient = (provider: AIProvider, model: string) => {
       return createOpenAI({
         baseURL: modelConfig.baseURL,
         apiKey: modelConfig.apiKey,
-      })(modelConfig.name)
+      })(modelConfig.model)
     case "anthropic":
       return createAnthropic({
         baseURL: modelConfig.baseURL,
         apiKey: modelConfig.apiKey,
-      })(modelConfig.name)
+      })(modelConfig.model)
     default:
       throw new Error(`Unsupported AI provider: ${provider}`)
   }

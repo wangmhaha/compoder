@@ -194,6 +194,7 @@ export const CodeRenderer: FC<CodeRendererProps> = ({
           isFullscreen={isFullscreen}
           onChangeDevice={handleChangeDevice}
           currentDevice={currentDevice}
+          codeRendererServer={codeRendererServer}
         />
       )}
 

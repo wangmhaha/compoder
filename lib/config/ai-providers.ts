@@ -1,13 +1,13 @@
 import fs from "fs"
 import path from "path"
-import { env } from "@/lib/env"
 
 // Define AI provider types
 export type AIProvider = "openai" | "anthropic"
 
 // Model configuration
 export type AIModelConfig = {
-  name: string
+  model: string
+  title: string
   baseURL: string
   apiKey: string
 }
@@ -25,7 +25,8 @@ export type AIProvidersConfig = {
 
 // Processed model configuration (with resolved environment variables)
 export type ProcessedAIModelConfig = {
-  name: string
+  model: string
+  title: string
   baseURL: string
   apiKey: string
 }
@@ -114,7 +115,7 @@ export function findModelConfig(
 
   // Find the model by name
   const modelConfig = providerConfig.models.find(
-    model => model.name === modelName,
+    model => model.model === modelName,
   )
 
   if (!modelConfig) {

@@ -2,13 +2,12 @@ import { NextRequest, NextResponse } from "next/server"
 import { run } from "@/app/api/ai-core/workflow"
 import { ComponentCodeApi } from "../type"
 import { findCodegenById } from "@/lib/db/codegen/selectors"
-import { getOpenaiClient } from "@/app/api/ai-core/utils/aiClient"
+import { getAIClient } from "@/app/api/ai-core/utils/aiClient"
 import { getUserId } from "@/lib/auth/middleware"
 import { connectToDatabase } from "@/lib/db/mongo"
 import { validateSession } from "@/lib/auth/middleware"
 import { LanguageModel } from "ai"
-
-const aiModel = getOpenaiClient("anthropic/claude-3.7-sonnet") as LanguageModel
+import { AIProvider } from "@/lib/config/ai-providers"
 
 export async function POST(request: NextRequest) {
   try {
@@ -27,7 +26,9 @@ export async function POST(request: NextRequest) {
 
     const params: ComponentCodeApi.editRequest = await request.json()
 
-    // 参数验证
+    const aiModel = getAIClient(params.provider as AIProvider, params.model)
+
+    // validate parameters
     if (!params.codegenId || !params.prompt || !params.component) {
       return NextResponse.json(
         { error: "Missing required parameters" },
@@ -44,7 +45,7 @@ export async function POST(request: NextRequest) {
       },
       query: {
         prompt: params.prompt,
-        aiModel,
+        aiModel: aiModel as LanguageModel,
         rules: codegenDetail.rules,
         userId: userId!,
         component: params.component,
