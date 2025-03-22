@@ -277,10 +277,10 @@ export default function ComponentPage() {
           </ComponentCodeVersionsContainer>
         </div>
         {isSubmitting && (
-          <div className="fixed inset-0 bg-background/50 backdrop-blur-sm z-40" />
+          <div className="fixed inset-0 bg-background/50 backdrop-blur-sm z-10" />
         )}
         <ChatInput
-          className="absolute left-1/2 -translate-x-1/2 bottom-6 w-2/3"
+          className="absolute left-1/2 -translate-x-1/2 bottom-6 w-2/3 z-20"
           value={chatInput}
           onChange={setChatInput}
           onSubmit={handleChatSubmit}
