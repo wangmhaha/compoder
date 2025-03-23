@@ -5,7 +5,8 @@ export const customRequire = (moduleName: string) => {
     "react-dom": require("react-dom"),
     "@mui/material": require("@mui/material"),
     "@mui/icons-material": require("@mui/icons-material"),
-    // "@mui/icons-material/Edit": require("@mui/icons-material/Edit"),
+    "@mui/x-date-pickers": require("@mui/x-date-pickers"),
+    "@mui/x-tree-view": require("@mui/x-tree-view"),
   }
 
   if (modules[moduleName]) {

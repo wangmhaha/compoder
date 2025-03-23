@@ -23,6 +23,9 @@ const defaultFileStructure = `${IMPORTANT_NOTE}Output component code in XML form
   <ComponentFile fileName="[ComponentName].tsx">
     // Main component implementation
     // Split into multiple files if exceeds 500 lines
+    export const ComponentName = () => {
+      // Component implementation
+    }
   </ComponentFile>
 
   <ComponentFile fileName="helpers.ts">

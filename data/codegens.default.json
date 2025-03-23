@@ -8,7 +8,7 @@
             "Generate a Table component, include 3 columns: name, age, address"
         ],
         "model": "gpt-4o",
-        "codeRendererUrl": "https://shadcn-ui-renderer.pages.dev",
+        "codeRendererUrl": "http://localhost:3001",
         "rules": [
             {
                 "type": "public-components",
@@ -16,6 +16,16 @@
                 "dataSet": [
                     "shadcn/ui"
                 ]
+            },
+            {
+                "type": "styles",
+                "description": "Define the rules for generating styles",
+                "prompt": "Styles must be written using tailwindcss with full dark/light mode compatibility. Use Tailwind's dark mode utilities (dark:class-name) for theme variants. Prefer using color-scheme-neutral classes or theme-specific variants (dark:bg-gray-800/light:bg-white) to ensure consistent appearance in both dark and light modes."
+            },
+            {
+                "type": "attention-rules",
+                "description": "Attention rules for the code generator",
+                "prompt": "Only use the following npm packages in the generated code: react, react-dom, lucide-react, next/link, next/image, @/lib/utils, framer-motion, react-hook-form, recharts, zod, and components from @/components/ui/* (shadcn base components). Do not import or use any other packages. Specifically, DO NOT use @hookform/resolvers/zod package - instead, manually set up form validation with zod without using this resolver."
             }
         ]
     },
@@ -28,7 +38,7 @@
             "Generate a Table component, include 3 columns: name, age, address"
         ],
         "model": "gpt-4o",
-        "codeRendererUrl": "https://antd-renderer.pages.dev",
+        "codeRendererUrl": "http://localhost:3002",
         "rules": [
             {
                 "type": "public-components",
@@ -41,7 +51,17 @@
             {
                 "type": "styles",
                 "description": "Define the rules for generating styles",
-                "prompt": "Styles can only be written using tailwindcss"
+                "prompt": "Use styled-components for styles"
+            },
+            {
+                "type": "file-structure",
+                "description": "Define the file structure for the project",
+                "prompt": "Output component code in XML format as follows:\n<ComponentArtifact name=\"ComponentName\">\n  <ComponentFile fileName=\"App.tsx\" isEntryFile=\"true\">\n    import { ComponentName } from './ComponentName';\n    \n    const mockProps = {\n      // Define mock data here\n    };\n    \n    export default function App() {\n      return <ComponentName {...mockProps} />;\n    }\n  </ComponentFile>\n  \n  <ComponentFile fileName=\"[ComponentName].tsx\">\n    // Main component implementation\n    // Split into multiple files if exceeds 500 lines\n    export const ComponentName = () => {\n      // Component implementation\n    }\n  </ComponentFile>\n\n  <ComponentFile fileName=\"helpers.ts\">\n    // Helper functions (optional)\n  </ComponentFile>\n\n  <ComponentFile fileName=\"interface.ts\">\n    // Type definitions for component props\n    // All API-interacting data must be defined as props:\n    // - initialData for component initialization\n    // - onChange, onSave, onDelete etc. for data modifications\n  </ComponentFile>\n  <ComponentFile fileName=\"styles.ts\">\n    // Styles for the component, must be written using styled-components only\n  </ComponentFile>\n</ComponentArtifact>"
+            },
+            {
+                "type": "attention-rules",
+                "description": "Attention rules for the code generator",
+                "prompt": "Only use the following npm packages in the generated code: react, react-dom, antd, @ant-design/icons, styled-components. Do not import or use any other packages. When importing from 'antd' and '@ant-design/icons', ONLY use named imports like: import { Button, TextField } from 'antd'; import { Delete, Edit } from '@ant-design/icons'; - DO NOT use default imports, namespace imports, or side effect imports for these packages."
             }
         ]
     },
@@ -54,7 +74,7 @@
             "Generate a Table component, include 3 columns: name, age, address"
         ],
         "model": "gpt-4o",
-        "codeRendererUrl": "https://mui-renderer.pages.dev",
+        "codeRendererUrl": "http://localhost:3003",
         "rules": [
             {
                 "type": "public-components",
@@ -68,6 +88,11 @@
                 "type": "styles",
                 "description": "Define the rules for generating styles",
                 "prompt": "All styles must be written using sx prop only"
+            },
+            {
+                "type": "attention-rules",
+                "description": "Attention rules for the code generator",
+                "prompt": "Only use the following npm packages in the generated code: react, react-dom, @mui/material, @mui/icons-material, @mui/x-date-pickers, @mui/x-tree-view. Do not import or use any other packages. When importing from '@mui/material' and '@mui/icons-material', ONLY use named imports like: import { Button, TextField } from '@mui/material'; import { Delete, Edit } from '@mui/icons-material'; - DO NOT use default imports, namespace imports, or side effect imports for these packages."
             }
         ]
     },
@@ -80,7 +105,7 @@
             "Generate a Table component, include 3 columns: name, age, address"
         ],
         "model": "gpt-4o",
-        "codeRendererUrl": "https://element-ui-plus-renderer.pages.dev",
+        "codeRendererUrl": "http://localhost:3004",
         "rules": [
             {
                 "type": "public-components",
@@ -105,33 +130,13 @@
             "Generate a Table component, include 3 columns: name, age, address"
         ],
         "model": "gpt-4o",
-        "codeRendererUrl": "https://private-component-renderer.pages.dev",
+        "codeRendererUrl": "http://localhost:3005",
         "rules": [
             {
                 "type": "public-components",
                 "description": "Define which public components to use",
                 "dataSet": [
                     "private-components"
-                ]
-            }
-        ]
-    },
-    {
-        "title": "React Tailwind CSS Component Codegen",
-        "description": "Code generator based on Tailwind CSS",
-        "fullStack": "React",
-        "guides": [
-            "Generate a login page",
-            "Generate a Table component, include 3 columns: name, age, address"
-        ],
-        "model": "gpt-4o",
-        "codeRendererUrl": "https://tailwind-renderer.pages.dev",
-        "rules": [
-            {
-                "type": "public-components",
-                "description": "Define which public components to use",
-                "dataSet": [
-                    "tailwindcss"
                 ]
             }
         ]

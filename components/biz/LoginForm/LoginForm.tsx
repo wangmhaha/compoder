@@ -66,7 +66,7 @@ const LoginForm = ({
               Compoder
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground/90">
-              AI-powered Component Code Generator
+              Generate component code in seconds.
             </p>
           </div>
 
@@ -100,14 +100,16 @@ const LoginForm = ({
 
           <div className="text-center space-y-3 sm:space-y-4 text-xs sm:text-sm text-muted-foreground/80">
             <p className="font-medium">
-              <span className="text-primary">Join Compoder</span>, it&apos;s
-              free & open source!
+              Join Compoder,
+              <span className="text-primary">
+                {" "}
+                it&apos;s free & open source!
+              </span>
             </p>
             <p className="leading-relaxed">
-              Build your team&apos;s AI-powered component factory -
-              <span className="block mt-1 text-muted-foreground/70">
-                Learns your tech stack and coding standards
-              </span>
+              Your Stack, Your UI - AI-Powered Component Code Generator for
+              Every
+              <span className="text-primary"> Design Engineer</span>
             </p>
           </div>
 

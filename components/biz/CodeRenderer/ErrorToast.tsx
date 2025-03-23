@@ -36,7 +36,7 @@ export const ErrorToast: FC<ErrorToastProps> = ({
   return (
     <div
       className={cn(
-        "absolute bottom-4 right-4 z-50 w-[18rem] rounded-lg border border-[#00ff00]/30 bg-black/90 p-4 text-[#00ff00] shadow-lg shadow-[#00ff00]/20 backdrop-blur-sm animate-slide-up",
+        "absolute bottom-4 right-4 z-10 w-[18rem] rounded-lg border border-[#00ff00]/30 bg-black/90 p-4 text-[#00ff00] shadow-lg shadow-[#00ff00]/20 backdrop-blur-sm animate-slide-up",
         className,
       )}
     >

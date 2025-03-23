@@ -4,19 +4,28 @@
             "provider": "openai",
             "models": [
                 {
-                    "name": "claude-3-7-sonnet-latest",
-                    "baseURL": "https://openai.com/api/v1",
-                    "apiKey": "sk-aj0shmBaHoK2ubdBLITJazrlTJRcwom96eFbUZXvmF4NA1lK"
+                    "model": "anthropic/claude-3.7-sonnet",
+                    "title": "Claude 3.7 Sonnet (OpenRouter)",
+                    "baseURL": "https://openrouter.ai/api/v1",
+                    "apiKey": "sk-****"
                 },
                 {
-                    "name": "claude-3-5-sonnet-latest",
-                    "baseURL": "https://openai.com/api/v1",
-                    "apiKey": "sk-aj0shmBaHoK2ubdBLITJazrlTJRcwom96eFbUZXvmF4NA1lK"
+                    "model": "anthropic/claude-3.5-sonnet",
+                    "title": "Claude 3.5 Sonnet (OpenRouter)",
+                    "baseURL": "https://openrouter.ai/api/v1",
+                    "apiKey": "sk-****"
                 },
                 {
-                    "name": "gpt-4o",
-                    "baseURL": "https://openai.com/api/v1",
-                    "apiKey": "sk-aj0shmBaHoK2ubdBLITJazrlTJRcwom96eFbUZXvmF4NA1lK"
+                    "model": "openai/gpt-4o",
+                    "title": "GPT-4o (OpenRouter)",
+                    "baseURL": "https://openrouter.ai/api/v1",
+                    "apiKey": "sk-****"
+                },
+                {
+                    "model": "gpt-4o",
+                    "title": "GPT-4o (302)",
+                    "baseURL": "https://api.302.ai/v1",
+                    "apiKey": "sk-****"
                 }
             ]
         },
@@ -24,14 +33,16 @@
             "provider": "anthropic",
             "models": [
                 {
-                    "name": "claude-3-7-sonnet-latest",
-                    "baseURL": "https://claude.ai/api",
-                    "apiKey": "sk-ant-api03-1234567890"
+                    "model": "claude-3-7-sonnet-latest",
+                    "title": "Claude 3.7 Sonnet (302)",
+                    "baseURL": "https://api.302.ai/v1",
+                    "apiKey": "sk-****"
                 },
                 {
-                    "name": "claude-3-5-sonnet-latest",
-                    "baseURL": "https://claude.ai/api",
-                    "apiKey": "sk-ant-api03-1234567890"
+                    "model": "claude-3-5-sonnet-latest",
+                    "title": "Claude 3.5 Sonnet (302)",
+                    "baseURL": "https://api.302.ai/v1",
+                    "apiKey": "sk-****"
                 }
             ]
         }

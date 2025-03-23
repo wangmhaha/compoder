@@ -48,19 +48,21 @@ const ComponentCodeVersionsContainer = ({
     switch (prompt.type) {
       case "text":
         return (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <p className="text-sm max-w-[150px] sm:max-w-[200px] md:max-w-[250px] lg:max-w-[300px] xl:max-w-[350px] truncate hover:cursor-help">
-                {prompt.text}
-              </p>
-            </TooltipTrigger>
-            <TooltipContent
-              side="top"
-              className="max-w-[300px] sm:max-w-[350px] md:max-w-[400px] max-h-[300px] overflow-y-auto"
-            >
-              <p className="text-sm">{prompt.text}</p>
-            </TooltipContent>
-          </Tooltip>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <p className="text-sm max-w-[150px] sm:max-w-[200px] md:max-w-[250px] lg:max-w-[300px] xl:max-w-[350px] truncate hover:cursor-help">
+                  {prompt.text}
+                </p>
+              </TooltipTrigger>
+              <TooltipContent
+                side="top"
+                className="max-w-[300px] sm:max-w-[350px] md:max-w-[400px] max-h-[300px] overflow-y-auto"
+              >
+                <p className="text-sm">{prompt.text}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         )
       case "image":
         return <ImagePreview src={prompt.image} thumbnailSize={32} />
@@ -72,14 +74,14 @@ const ComponentCodeVersionsContainer = ({
   const activeVersionData = versions.find(v => v.id === activeVersion)
 
   return (
-    <div className="flex min-h-[200px] h-full">
-      {/* Version indicator section */}
-      <div className="relative flex items-center pr-4 overflow-y-auto scrollbar-hide">
-        <div
-          ref={dotsContainerRef}
-          className="flex flex-col gap-4 transition-transform duration-300 ease-in-out px-1"
-        >
-          <TooltipProvider>
+    <TooltipProvider>
+      <div className="flex min-h-[200px] h-full">
+        {/* Version indicator section */}
+        <div className="relative flex items-center pr-4 overflow-y-auto scrollbar-hide">
+          <div
+            ref={dotsContainerRef}
+            className="flex flex-col gap-4 transition-transform duration-300 ease-in-out px-1"
+          >
             {[...versions].reverse().map((version, index) => (
               <Tooltip key={version.id}>
                 <TooltipTrigger asChild>
@@ -109,46 +111,46 @@ const ComponentCodeVersionsContainer = ({
                 </TooltipContent>
               </Tooltip>
             ))}
-          </TooltipProvider>
-        </div>
-      </div>
-
-      {/* Content container section */}
-      <div className="relative flex-1 border rounded-lg p-4 border-gray-200 dark:border-gray-800 bg-white dark:bg-background">
-        <div className="absolute left-[-8px] top-1/2 -translate-y-1/2">
-          <svg
-            width="8"
-            height="16"
-            viewBox="0 0 8 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M8 0L0 8L8 16"
-              stroke="currentColor"
-              className="text-gray-200 dark:text-gray-700"
-              strokeWidth="1"
-              fill="none"
-            />
-          </svg>
-        </div>
-
-        <p className="w-fit flex items-center gap-2 py-2 px-4 rounded-lg bg-gray-50 dark:bg-gray-800 mb-4">
-          <MessageCircleMore className="w-5 h-5" />
-          <Separator
-            orientation="vertical"
-            className="h-5 bg-gray-300 dark:bg-gray-600 mr-1"
-          />
-          <div className="flex items-center gap-2 h-8">
-            {activeVersionData?.prompt.map((prompt, index) => (
-              <div key={index}>{renderPrompt(prompt)}</div>
-            ))}
           </div>
-        </p>
+        </div>
 
-        {children}
+        {/* Content container section */}
+        <div className="relative flex-1 border rounded-lg p-4 border-gray-200 dark:border-gray-800 bg-white dark:bg-background">
+          <div className="absolute left-[-8px] top-1/2 -translate-y-1/2">
+            <svg
+              width="8"
+              height="16"
+              viewBox="0 0 8 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M8 0L0 8L8 16"
+                stroke="currentColor"
+                className="text-gray-200 dark:text-gray-700"
+                strokeWidth="1"
+                fill="none"
+              />
+            </svg>
+          </div>
+
+          <p className="w-fit flex items-center gap-2 py-2 px-4 rounded-lg bg-gray-50 dark:bg-gray-800 mb-4">
+            <MessageCircleMore className="w-5 h-5" />
+            <Separator
+              orientation="vertical"
+              className="h-5 bg-gray-300 dark:bg-gray-600 mr-1"
+            />
+            <div className="flex items-center gap-2 h-8">
+              {activeVersionData?.prompt.map((prompt, index) => (
+                <div key={index}>{renderPrompt(prompt)}</div>
+              ))}
+            </div>
+          </p>
+
+          {children}
+        </div>
       </div>
-    </div>
+    </TooltipProvider>
   )
 }
 
