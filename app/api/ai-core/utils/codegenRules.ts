@@ -83,7 +83,7 @@ export function getPrivateDocsDescription(rules: CodegenRule[]): string {
   const hasPublicLibrary = isPublicLibraryValid(publicLibraryComponents)
   const hasPrivateLibrary = isPrivateLibraryValid(docs)
 
-  // 当没有有效的组件库时，返回空字符串
+  // when there is no valid component library, return empty string
   if (!hasPrivateLibrary && !hasPublicLibrary) {
     return ""
   }

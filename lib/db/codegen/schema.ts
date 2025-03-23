@@ -9,7 +9,7 @@ const CodegenRuleSchema = new mongoose.Schema({
       "styles",
       "private-components",
       "file-structure",
-      "special-attention",
+      "attention-rules",
     ],
     required: true,
   },
@@ -27,14 +27,15 @@ const CodegenRuleSchema = new mongoose.Schema({
     default: undefined,
   },
   docs: {
-    type: Map,
-    of: new mongoose.Schema({
-      type: Map,
-      of: new mongoose.Schema({
+    // only used when type is "private-components"
+    type: Object,
+    of: {
+      type: Object,
+      of: {
         description: String,
         api: String,
-      }),
-    }),
+      },
+    },
     default: undefined,
   },
 })

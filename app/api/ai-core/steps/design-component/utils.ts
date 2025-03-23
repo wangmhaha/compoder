@@ -21,7 +21,7 @@ const buildSystemPrompt = (rules: WorkflowContext["query"]["rules"]) => {
   const componentsDescription = getPrivateDocsDescription(rules)
   const hasComponentLibraries = !!componentsDescription
 
-  // 创建不同情况下的提示词部分
+  // create prompt parts for different situations
   const promptParts = {
     withLibraries: {
       goal: 'Extract the "basic component materials", component name, and description information needed to develop business components from business requirements and design drafts.',
@@ -57,17 +57,17 @@ Please note: You should not provide example code and any other text in your resp
     },
   }
 
-  // 选择对应场景的提示词部分
+  // select the prompt part for the corresponding situation
   const parts = hasComponentLibraries
     ? promptParts.withLibraries
     : promptParts.withoutLibraries
 
-  // 构建工作流步骤
+  // build the workflow steps
   const workflowSteps = `1. Accept user's business requirements or design draft images
     ${parts.workflowStep2}
     3. Generate and return the JSON response in the specified format`
 
-  // 构建最终提示词
+  // build the final prompt
   return `
     # You are a senior frontend engineer who excels at developing business components.
     
