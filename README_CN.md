@@ -29,7 +29,7 @@ Compoder 是一个开源的 AI 驱动组件代码生成引擎，集成了现代�
 
 </div>
 
-https://ai.iamlv.cn/compoder~.mp4
+[Compoder 演示视频 - 点击观看](https://ai.iamlv.cn/compoder~.mp4)
 
 ## 🔥 核心特性：
 
