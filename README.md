@@ -9,8 +9,6 @@
     AI-Powered Component Code Generator For Every Design Engineer<br>
 </h1>
 
----
-
 Compoder is an open-source AI-driven component code generation engine that integrates modern frontend tech stacks with various AI model capabilities. You can customize Compoder to create AI-powered component code generators based on specific technology stacks (such as React, Vue, Mui, Antd, Element-Plus, Tailwind CSS, Shadcn UI...) and specific scenarios (such as Landing Pages, Email Templates, Admin Dashboard Forms).
 
 <p align="center">
@@ -31,7 +29,7 @@ Compoder is an open-source AI-driven component code generation engine that integ
 
 </div>
 
-<video src="./assets/compoder~.mp4" controls width="100%"></video>
+<video src="https://ai.iamlv.cn/compoder~.mp4" controls width="100%"></video>
 
 ## 🔥 Core Features:
 

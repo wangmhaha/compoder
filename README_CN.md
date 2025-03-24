@@ -9,8 +9,6 @@
     AI-Powered Component Code Generator For Every Design Engineer<br>
 </h1>
 
----
-
 Compoder 是一个开源的 AI 驱动组件代码生成引擎，集成了现代前端技术栈和多种 AI 模型能力，你可以基于 Compoder 定制基于特定技术栈（如：React、Vue、Mui、Antd、Element-Plus、Tailwind CSS、Shadcn UI...），以及特定场景（如：Landing Page、邮件模版、后台表单组件）的 AI 驱动的组件代码生成器。
 
 <p align="center">
@@ -31,7 +29,7 @@ Compoder 是一个开源的 AI 驱动组件代码生成引擎，集成了现代�
 
 </div>
 
-<video src="./assets/compoder~.mp4" controls width="100%"></video>
+<video src="https://ai.iamlv.cn/compoder~.mp4" controls width="100%"></video>
 
 ## 🔥 核心特性：
 
