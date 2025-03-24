@@ -1,4 +1,4 @@
-![compoder-cover](https://github.com/IamLiuLv/compoder/assets/banner.gif)
+![compoder-cover](./assets/banner.gif)
 
 <div align="center">
 
@@ -31,13 +31,13 @@ Compoder 是一个开源的 AI 驱动组件代码生成引擎，集成了现代�
 
 </div>
 
-<video src="https://github.com/IamLiuLv/compoder/assets/compoder-demo.mp4" controls width="100%"></video>
+<video src="./assets/compoder~.mp4" controls width="100%"></video>
 
 ## 🔥 核心特性：
 
 **定制 Codegen（Component Code Generator）**：支持自由定制基于多种技术栈、组件库、场景、代码规范、AI 模型等的组件代码生成器。
 
-![compoder-custom-codegen](https://github.com/IamLiuLv/compoder/assets/codegen.png)
+![compoder-custom-codegen](./assets/codegen.png)
 
 **1. 技术栈定制**
 
@@ -105,7 +105,7 @@ pnpm install
 pnpm dev
 ```
 
-更多细节请查看 [贡献指南](#贡献指南)。
+> 详情待补充
 
 ### 使用 Docker 部署
 
@@ -132,15 +132,15 @@ Compoder 基于以下开源项目构建：
 
 在 GitHub 上给 Compoder Star，并立即收到新版本的通知。
 
-![compoder-star](https://github.com/IamLiuLv/compoder/assets/star.gif)
+![compoder-star](./assets/star.gif)
 
 ## 社区与支持
 
 - [GitHub 讨论](https://github.com/IamLiuLv/compoder/discussions) 👉：最适合分享反馈和提问。
 - [GitHub Issues](https://github.com/IamLiuLv/compoder/issues) 👉：最适合报告 bugs 和提出功能建议。
-- [微信](https://github.com/IamLiuLv/compoder/assets/wechat.png)：扫描下方二维码，添加微信好友，备注：Compoder，拉你进入 Compoder 社区，我们会在社区中分享 Compoder 的最新动态、技术分享、组件代码生成器模板，以及寻找长期合作伙伴。
+- [微信](./assets/wechat.png)：扫描下方二维码，添加微信好友，备注：Compoder，拉你进入 Compoder 社区，我们会在社区中分享 Compoder 的最新动态、技术分享、组件代码生成器模板，以及寻找长期合作伙伴。
 
-![compoder-wechat](https://github.com/IamLiuLv/compoder/assets/wechat.png)
+<img src="./assets/wechat.png" alt="compoder" width="100px">
 
 ## Contributing
 

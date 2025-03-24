@@ -1,4 +1,4 @@
-![compoder-cover](https://github.com/IamLiuLv/compoder/assets/banner.gif)
+![compoder-cover](./assets/banner.gif)
 
 <div align="center">
 
@@ -31,13 +31,13 @@ Compoder is an open-source AI-driven component code generation engine that integ
 
 </div>
 
-<video src="https://github.com/IamLiuLv/compoder/assets/compoder-demo.mp4" controls width="100%"></video>
+<video src="./assets/compoder~.mp4" controls width="100%"></video>
 
 ## 🔥 Core Features:
 
 **Customizable Codegen (Component Code Generator)**: Freely customize component code generators based on various tech stacks, component libraries, scenarios, code specifications, and AI models.
 
-![compoder-custom-codegen](https://github.com/IamLiuLv/compoder/assets/codegen.png)
+![compoder-custom-codegen](./assets/codegen.png)
 
 **1. Tech Stack Customization**
 
@@ -105,7 +105,7 @@ pnpm install
 pnpm dev
 ```
 
-For more details, please check the [Contribution Guide](#contributing).
+> details to be added
 
 ### Deployment with Docker
 
@@ -132,15 +132,15 @@ We deeply appreciate these powerful yet simple libraries provided by the communi
 
 Star Compoder on GitHub to receive notifications about new versions immediately.
 
-![compoder-star](https://github.com/IamLiuLv/compoder/assets/star.gif)
+![compoder-star](./assets/star.gif)
 
 ## Community and Support
 
 - [GitHub Discussions](https://github.com/IamLiuLv/compoder/discussions) 👉: Best for sharing feedback and asking questions.
 - [GitHub Issues](https://github.com/IamLiuLv/compoder/issues) 👉: Best for reporting bugs and suggesting features.
-- [WeChat](https://github.com/IamLiuLv/compoder/assets/wechat.png): Scan the QR code below, add as a WeChat friend with the note: Compoder, to join the Compoder community. We will share the latest updates, technical insights, component code generator templates, and look for long-term partners.
+- [WeChat](./assets/wechat.png): Scan the QR code below, add as a WeChat friend with the note: Compoder, to join the Compoder community. We will share the latest updates, technical insights, component code generator templates, and look for long-term partners.
 
-![compoder-wechat](https://github.com/IamLiuLv/compoder/assets/wechat.png)
+<img src="./assets/wechat.png" alt="compoder" width="100px">
 
 ## Contributing
 
