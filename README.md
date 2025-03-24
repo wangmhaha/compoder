@@ -29,7 +29,7 @@ Compoder is an open-source AI-driven component code generation engine that integ
 
 </div>
 
-<video src="https://ai.iamlv.cn/compoder~.mp4" controls width="100%"></video>
+https://ai.iamlv.cn/compoder~.mp4
 
 ## 🔥 Core Features:
 
