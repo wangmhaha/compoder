@@ -91,6 +91,14 @@ Compoder 是一个开源的 AI 驱动组件代码生成引擎，集成了现代�
 
 ### 本地开发
 
+**1. 环境准备**
+
+- Node.js 版本：>= 18.x
+- pnpm 版本：>= 9.x
+- docker, docker-compose（https://www.docker.com/products/docker-desktop/）
+
+**2. 克隆仓库初始化依赖包**
+
 ```bash
 # 克隆仓库
 git clone https://github.com/IamLiuLv/compoder.git
@@ -98,16 +106,67 @@ cd compoder
 
 # 安装依赖
 pnpm install
+```
 
-# 启动开发服务器
+**3. 环境变量 & 配置文件**
+
+```bash
+# 填写对应的环境变量
+cp .env.template .env
+
+# Model provider 配置（需要更换其中的 BaseUrl、API Key）
+cp data/config.template.json data/config.json
+
+# Codegen 配置初始化
+cp data/codegens.template.json data/codegens.json
+pnpm migrate-codegen
+
+# docker 配置
+cp docker-compose.template.yml docker-compose.yml
+```
+
+**4. 启动 Docker 容器**
+
+```bash
+# 本地开发下，主要用来启动 MongoDB 数据库
+docker-compose up -d
+```
+
+**5. 启动 Storybook 业务组件文档**
+
+```bash
+pnpm storybook
+```
+
+**6. 启动 Compoder**
+
+```bash
 pnpm dev
 ```
 
-> 详情待补充
+**7. 启动代码渲染沙箱（Artifacts）**
+
+```bash
+# 启动 Antd 渲染沙箱
+cd artifacts/antd-renderer
+pnpm dev
+
+# 启动 Shadcn UI 渲染沙箱
+cd artifacts/shadcn-ui-renderer
+pnpm dev
+
+# 启动Mui 渲染沙箱
+cd artifacts/mui-renderer
+pnpm dev
+
+# 启动Element Plus 渲染沙箱
+cd artifacts/element-plus-renderer
+pnpm dev
+```
 
 ### 使用 Docker 部署
 
-使用 Docker 部署您自己的功能丰富的 Compoder 实例。我们的团队正在努力提供 Docker 镜像。
+> 使用 Docker 部署您自己的功能丰富的 Compoder 实例。我们的团队正在努力提供 Docker 镜像。
 
 ## 技术栈
 

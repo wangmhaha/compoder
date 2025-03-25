@@ -91,6 +91,14 @@ We are continuously improving Compoder and will launch more exciting new feature
 
 ### Local Development
 
+**1. Environment Setup**
+
+- Node.js version: >= 18.x
+- pnpm version: >= 9.x
+- docker, docker-compose (https://www.docker.com/products/docker-desktop/)
+
+**2. Clone Repository and Initialize Dependencies**
+
 ```bash
 # Clone the repository
 git clone https://github.com/IamLiuLv/compoder.git
@@ -98,12 +106,63 @@ cd compoder
 
 # Install dependencies
 pnpm install
+```
 
-# Start the development server
+**3. Environment Variables & Configuration Files**
+
+```bash
+# Fill in the corresponding environment variables
+cp .env.template .env
+
+# Model provider configuration (need to replace BaseUrl, API Key)
+cp data/config.template.json data/config.json
+
+# Codegen configuration initialization
+cp data/codegens.template.json data/codegens.json
+pnpm migrate-codegen
+
+# Docker configuration
+cp docker-compose.template.yml docker-compose.yml
+```
+
+**4. Start Docker Container**
+
+```bash
+# For local development, mainly used to start MongoDB database
+docker-compose up -d
+```
+
+**5. Start Storybook Business Component Documentation**
+
+```bash
+pnpm storybook
+```
+
+**6. Start Compoder**
+
+```bash
 pnpm dev
 ```
 
-> details to be added
+**7. Start Code Rendering Sandbox (Artifacts)**
+
+```bash
+# Start Antd rendering sandbox
+cd artifacts/antd-renderer
+pnpm dev
+
+# Start Shadcn UI rendering sandbox
+cd artifacts/shadcn-ui-renderer
+pnpm dev
+
+# Start Mui rendering sandbox
+cd artifacts/mui-renderer
+pnpm dev
+
+# Start Element Plus rendering sandbox
+cd artifacts/element-plus-renderer
+pnpm dev
+```
 
 ### Deployment with Docker
 
