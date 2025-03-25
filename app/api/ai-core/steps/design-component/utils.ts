@@ -233,12 +233,21 @@ export async function generateComponentDesign(
 
       // Fix backticks in the JSON string by replacing them with escaped double quotes
       let jsonString = jsonMatch[0]
-      // Replace backtick-enclosed blocks with properly escaped JSON strings
+
+      // 1. 先处理已经存在的转义字符
+      jsonString = jsonString.replace(/\\`/g, "\\\\`")
+
+      // 2. 处理反引号包裹的内容
       jsonString = jsonString.replace(
-        /`([\s\S]*?)`/g,
+        /`((?:[^`\\]|\\.|\\`)*)`/g, // 更精确的正则表达式
         function (match, content) {
-          // Escape any double quotes and newlines in the content
-          const escaped = content.replace(/"/g, '\\"').replace(/\n/g, "\\n")
+          // 处理特殊字符
+          const escaped = content
+            .replace(/\\/g, "\\\\") // 先处理反斜杠
+            .replace(/"/g, '\\"') // 处理双引号
+            .replace(/\n/g, "\\n") // 处理换行
+            .replace(/\r/g, "\\r") // 处理回车
+            .replace(/\t/g, "\\t") // 处理制表符
           return `"${escaped}"`
         },
       )
