@@ -108,7 +108,20 @@ cd compoder
 pnpm install
 ```
 
-**3. 环境变量 & 配置文件**
+**3. 启动 Docker 容器**
+
+```bash
+# docker 配置
+cp docker-compose.template.yml docker-compose.yml
+
+# 本地开发下，主要用来启动 MongoDB 数据库
+docker compose up -d
+
+# or
+docker-compose up -d
+```
+
+**4. 环境变量 & 配置文件**
 
 ```bash
 # 填写对应的环境变量
@@ -120,16 +133,6 @@ cp data/config.template.json data/config.json
 # Codegen 配置初始化
 cp data/codegens.template.json data/codegens.json
 pnpm migrate-codegen
-
-# docker 配置
-cp docker-compose.template.yml docker-compose.yml
-```
-
-**4. 启动 Docker 容器**
-
-```bash
-# 本地开发下，主要用来启动 MongoDB 数据库
-docker-compose up -d
 ```
 
 **5. 启动 Storybook 业务组件文档**

@@ -108,7 +108,20 @@ cd compoder
 pnpm install
 ```
 
-**3. Environment Variables & Configuration Files**
+**3. Start Docker Container**
+
+```bash
+# Docker configuration
+cp docker-compose.template.yml docker-compose.yml
+
+# For local development, mainly used to start MongoDB database
+docker compose up -d
+
+# or
+docker-compose up -d
+```
+
+**4. Environment Variables & Configuration Files**
 
 ```bash
 # Fill in the corresponding environment variables
@@ -120,16 +133,6 @@ cp data/config.template.json data/config.json
 # Codegen configuration initialization
 cp data/codegens.template.json data/codegens.json
 pnpm migrate-codegen
-
-# Docker configuration
-cp docker-compose.template.yml docker-compose.yml
-```
-
-**4. Start Docker Container**
-
-```bash
-# For local development, mainly used to start MongoDB database
-docker-compose up -d
 ```
 
 **5. Start Storybook Business Component Documentation**
