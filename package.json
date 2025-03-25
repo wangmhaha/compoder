@@ -10,7 +10,12 @@
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "migrate-codegen": "tsx lib/db/codegen/migrate.ts"
+    "migrate-codegen": "tsx lib/db/codegen/migrate.ts",
+    "dev:artifacts:element-ui-plus-renderer": "pnpm --filter element-ui-plus-renderer dev",
+    "dev:artifacts:shadcn-ui-renderer": "pnpm --filter shadcn-ui-renderer dev",
+    "dev:artifacts:antd-renderer": "pnpm --filter antd-renderer dev",
+    "dev:artifacts:html-renderer": "pnpm --filter html-renderer dev",
+    "dev:artifacts:material-ui-renderer": "pnpm --filter material-ui-renderer dev"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.1.17",
