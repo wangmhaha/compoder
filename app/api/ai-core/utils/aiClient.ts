@@ -1,5 +1,6 @@
 import { createOpenAI } from "@ai-sdk/openai"
 import { createAnthropic } from "@ai-sdk/anthropic"
+import { createDeepSeek } from "@ai-sdk/deepseek"
 
 import { findModelConfig, type AIProvider } from "@/lib/config/ai-providers"
 
@@ -15,6 +16,11 @@ export const getAIClient = (provider: AIProvider, model: string) => {
       })(modelConfig.model)
     case "anthropic":
       return createAnthropic({
+        baseURL: modelConfig.baseURL,
+        apiKey: modelConfig.apiKey,
+      })(modelConfig.model)
+    case "deepseek":
+      return createDeepSeek({
         baseURL: modelConfig.baseURL,
         apiKey: modelConfig.apiKey,
       })(modelConfig.model)

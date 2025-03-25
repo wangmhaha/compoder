@@ -26,6 +26,7 @@ const LLMSelector: React.FC<LLMSelectorProps> = ({
     const grouped: Record<AIProvider, LLMOption[]> = {
       openai: [],
       anthropic: [],
+      deepseek: [],
     }
 
     initialData.forEach(option => {
