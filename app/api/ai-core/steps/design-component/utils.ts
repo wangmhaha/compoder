@@ -234,20 +234,20 @@ export async function generateComponentDesign(
       // Fix backticks in the JSON string by replacing them with escaped double quotes
       let jsonString = jsonMatch[0]
 
-      // 1. 先处理已经存在的转义字符
+      // 1. Handle existing escape characters first
       jsonString = jsonString.replace(/\\`/g, "\\\\`")
 
-      // 2. 处理反引号包裹的内容
+      // 2. Process content wrapped in backticks
       jsonString = jsonString.replace(
-        /`((?:[^`\\]|\\.|\\`)*)`/g, // 更精确的正则表达式
+        /`((?:[^`\\]|\\.|\\`)*)`/g, // More precise regular expression
         function (match, content) {
-          // 处理特殊字符
+          // Handle special characters
           const escaped = content
-            .replace(/\\/g, "\\\\") // 先处理反斜杠
-            .replace(/"/g, '\\"') // 处理双引号
-            .replace(/\n/g, "\\n") // 处理换行
-            .replace(/\r/g, "\\r") // 处理回车
-            .replace(/\t/g, "\\t") // 处理制表符
+            .replace(/\\/g, "\\\\") // Handle backslashes first
+            .replace(/"/g, '\\"') // Handle double quotes
+            .replace(/\n/g, "\\n") // Handle newlines
+            .replace(/\r/g, "\\r") // Handle carriage returns
+            .replace(/\t/g, "\\t") // Handle tabs
           return `"${escaped}"`
         },
       )
