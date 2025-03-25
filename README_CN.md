@@ -167,6 +167,8 @@ cd artifacts/element-plus-renderer
 pnpm dev
 ```
 
+更多关于 Compoder 的详细使用文档，请参考 [CONTRIBUTING_CN.md](./CONTRIBUTING_CN.md)。
+
 ### 使用 Docker 部署
 
 > 使用 Docker 部署您自己的功能丰富的 Compoder 实例。我们的团队正在努力提供 Docker 镜像。

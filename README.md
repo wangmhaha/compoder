@@ -167,6 +167,8 @@ cd artifacts/element-plus-renderer
 pnpm dev
 ```
 
+More detailed usage documentation, please refer to [CONTRIBUTING.md](./CONTRIBUTING.md).
+
 ### Deployment with Docker
 
 Deploy your own feature-rich Compoder instance using Docker. Our team is working on providing Docker images.
