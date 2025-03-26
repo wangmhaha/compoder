@@ -213,6 +213,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^8.26.0
         version: 8.26.0(eslint@8.57.1)(typescript@5.7.2)
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
       dotenv:
         specifier: ^16.4.5
         version: 16.4.6
@@ -295,6 +298,9 @@ importers:
       '@types/react-dom':
         specifier: ^18
         version: 18.3.1
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
       eslint:
         specifier: ^8
         version: 8.57.1
@@ -335,6 +341,9 @@ importers:
       '@vitejs/plugin-vue':
         specifier: ^5.0.4
         version: 5.2.1(vite@5.4.14(@types/node@20.17.9)(less@4.2.1)(sass@1.85.1)(terser@5.36.0))(vue@3.5.13(typescript@5.7.2))
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
       sass:
         specifier: ^1.72.0
         version: 1.85.1
@@ -451,6 +460,9 @@ importers:
       '@types/react-dom':
         specifier: ^18
         version: 18.3.1
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
       eslint:
         specifier: ^8
         version: 8.57.1
@@ -755,6 +767,9 @@ importers:
       '@types/react-dom':
         specifier: ^18
         version: 18.3.1
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
       dotenv:
         specifier: ^16.4.5
         version: 16.4.6
@@ -6546,6 +6561,11 @@ packages:
 
   create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
+
+  cross-env@7.0.3:
+    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
+    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+    hasBin: true
 
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
@@ -17306,6 +17326,10 @@ snapshots:
       sha.js: 2.4.11
 
   create-require@1.1.1: {}
+
+  cross-env@7.0.3:
+    dependencies:
+      cross-spawn: 7.0.6
 
   cross-spawn@7.0.6:
     dependencies:

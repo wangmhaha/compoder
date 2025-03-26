@@ -4,7 +4,7 @@
   "private": true,
   "description": "Shadcn/UI Renderer",
   "scripts": {
-    "dev": "PORT=3001 next dev",
+    "dev": "cross-env PORT=3001 next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -113,6 +113,7 @@
     "@types/path-browserify": "^1.0.3",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "eslint": "^8",
     "eslint-config-next": "14.2.16",

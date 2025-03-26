@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "dev": "VITE_PORT=3004 vite",
+    "dev": "cross-env VITE_PORT=3004 vite",
     "build": "vite build --emptyOutDir",
     "generate": "vite-ssg build",
     "preview": "vite preview",
@@ -21,6 +21,7 @@
     "@iconify-json/ep": "^1.1.15",
     "@types/node": "^20.11.30",
     "@vitejs/plugin-vue": "^5.0.4",
+    "cross-env": "^7.0.3",
     "sass": "^1.72.0",
     "typescript": "^5.4.3",
     "unocss": "^0.58.6",
