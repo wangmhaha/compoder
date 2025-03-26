@@ -93,9 +93,10 @@ Compoder 是一个开源的 AI 驱动组件代码生成引擎，集成了现代�
 
 **1. 环境准备**
 
-- Node.js 版本：>= 18.x
-- pnpm 版本：>= 9.x
-- docker, docker-compose（https://www.docker.com/products/docker-desktop/）
+- [Node.js](https://nodejs.org/) v18.x 或更高版本
+- [pnpm](https://pnpm.io/) v9.x 或更高版本
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
 **2. 克隆仓库初始化依赖包**
 

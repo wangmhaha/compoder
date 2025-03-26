@@ -25,11 +25,18 @@
 
 ## 环境搭建
 
-### 1. Fork 仓库
+### 1. 环境准备
+
+- [Node.js](https://nodejs.org/) v18.x 或更高版本
+- [pnpm](https://pnpm.io/) v9.x 或更高版本
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+
+### 2. Fork 仓库
 
 访问 [Compoder GitHub 仓库](https://github.com/IamLiuLv/compoder)，点击右上角的 "Fork" 按钮创建一个属于您自己的仓库副本。
 
-### 2. 克隆仓库
+### 3. 克隆仓库
 
 ```bash
 # 克隆您 fork 的仓库
@@ -39,13 +46,6 @@ cd compoder
 # 安装依赖
 pnpm install
 ```
-
-### 3. 环境准备
-
-- [Node.js](https://nodejs.org/) v18.x 或更高版本
-- [pnpm](https://pnpm.io/) v9.x 或更高版本
-- [Docker](https://www.docker.com/products/docker-desktop/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
 
 ### 4. 启动 Docker 容器
 

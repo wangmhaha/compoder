@@ -93,9 +93,10 @@ We are continuously improving Compoder and will launch more exciting new feature
 
 **1. Environment Setup**
 
-- Node.js version: >= 18.x
-- pnpm version: >= 9.x
-- docker, docker-compose (https://www.docker.com/products/docker-desktop/)
+- [Node.js](https://nodejs.org/) v18.x or higher
+- [pnpm](https://pnpm.io/) v9.x or higher
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
 **2. Clone Repository and Initialize Dependencies**
 

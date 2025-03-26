@@ -1,6 +1,6 @@
 # Contributing Guide
 
-Welcome to the Compoder contributing guide! As an AI-driven component code generation engine, we're dedicated to providing the most intuitive component code generation experience, integrating multiple tech stacks, component libraries, AI models, and intelligent code generation capabilities. Every contribution you make is valuable.
+Welcome to the Compoder contributing guide! As an AI-driven component code generation engine, we're dedicated to providing the best component code generation experience for design engineers, supporting multiple tech stacks, component libraries, AI models, and various scenarios. Every contribution you make is valuable.
 
 ## Issue Management
 
@@ -21,15 +21,22 @@ Please provide detailed information about the feature implementation goals, why 
 
 ### How to Claim an Issue
 
-Based on the issue description, claim the issues you're interested in and start coding and submitting PRs associated with the issue. Other developers may claim the same issue, but that's okay - we encourage everyone to participate, learn from each other, and grow together.
+Based on the issue description, claim issues you're interested in and start coding and submitting PRs associated with the issue. Other developers may claim the same issue, but that's okay - we encourage everyone to participate, learn from each other, and grow together.
 
 ## Environment Setup
 
-### 1. Fork the Repository
+### 1. Environment Dependencies
+
+- [Node.js](https://nodejs.org/) v18.x or higher
+- [pnpm](https://pnpm.io/) v9.x or higher
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+
+### 2. Fork the Repository
 
 Visit the [Compoder GitHub repository](https://github.com/IamLiuLv/compoder), click the "Fork" button in the top right corner to create your own copy of the repository.
 
-### 2. Clone the Repository
+### 3. Clone the Repository
 
 ```bash
 # Clone your forked repository
@@ -39,13 +46,6 @@ cd compoder
 # Install dependencies
 pnpm install
 ```
-
-### 3. Environment Dependencies
-
-- [Node.js](https://nodejs.org/) v18.x or higher
-- [pnpm](https://pnpm.io/) v9.x or higher
-- [Docker](https://www.docker.com/products/docker-desktop/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
 
 ### 4. Start Docker Containers
 
@@ -144,20 +144,16 @@ When you're ready:
    - Use ESLint and Prettier to maintain code style
    - Follow TypeScript type standards
 2. Add necessary test cases
-
    - For new features, add corresponding unit or integration tests
    - Ensure existing tests pass
-
 3. Update relevant documentation
-
    - If you modified APIs or added new features, ensure documentation is updated
    - For major changes, provide a detailed explanation in the PR description
-
 4. Open a PR to the main branch
    - PR title should concisely describe the changes
    - PR description should include detailed change information, related issue links, etc.
 
-Major features will first be merged into the develop branch for testing before being merged into main. After your PR is merged, you'll be honored in the project's [contributors list](https://github.com/IamLiuLv/compoder/graphs/contributors).
+After your PR is merged, you'll be honored in the project's [contributors list](https://github.com/IamLiuLv/compoder/graphs/contributors).
 
 ## Code Generation Commands
 
