@@ -15,7 +15,17 @@ import {
 import { type NavMainItem } from "@/components/biz/AppSidebarLayout/interface"
 
 // create a internal component to use context
-function MainLayoutContent({ children }: { children: React.ReactNode }) {
+function MainLayoutContent({
+  children,
+  user,
+}: {
+  children: React.ReactNode
+  user: {
+    name: string
+    email: string
+    avatar: string
+  }
+}) {
   const routes = useRoutes()
   const { openModal } = useProviderModelModal() // now it's safe to call
 
@@ -37,7 +47,7 @@ function MainLayoutContent({ children }: { children: React.ReactNode }) {
   return (
     <AppSidebarLayout
       navMain={routes as NavMainItem[]}
-      user={mockData.user}
+      user={user}
       onLogout={signOut}
       onNavItemClick={handleNavItemClick}
     >
@@ -52,7 +62,13 @@ export default function MainLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { status } = useSession()
+  const { status, data, update } = useSession()
+
+  const user = {
+    name: data?.user?.name || "",
+    email: data?.user?.email || "",
+    avatar: data?.user?.image || "",
+  }
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -67,7 +83,7 @@ export default function MainLayout({
 
   return (
     <ProviderModelModalProvider>
-      <MainLayoutContent>{children}</MainLayoutContent>
+      <MainLayoutContent user={user}>{children}</MainLayoutContent>
     </ProviderModelModalProvider>
   )
 }

@@ -45,6 +45,17 @@
                     "apiKey": "sk-****"
                 }
             ]
+        },
+        {
+            "provider": "deepseek",
+            "models": [
+                {
+                    "model": "deepseek-chat",
+                    "title": "DeepSeek-V3 Chat (DeepSeek)",
+                    "baseURL": "https://api.deepseek.com/v1",
+                    "apiKey": "sk-****"
+                }
+            ]
         }
     ]
 }
