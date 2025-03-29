@@ -222,6 +222,11 @@ export async function generateComponentDesign(
     }
 
     try {
+      if (!accumulatedJson) {
+        throw new Error(
+          "No response from the AI, please check the providers configuration and the apiKey balance",
+        )
+      }
       // Try to extract JSON from the response
       const jsonMatch = accumulatedJson.match(/\{[\s\S]*\}/)
       if (!jsonMatch) {
