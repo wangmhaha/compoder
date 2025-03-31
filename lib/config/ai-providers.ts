@@ -2,7 +2,7 @@ import fs from "fs"
 import path from "path"
 
 // Define AI provider types
-export type AIProvider = "openai" | "anthropic" | "deepseek"
+export type AIProvider = "openai" | "anthropic" | "deepseek" | "ollama"
 
 // Model configuration
 export type AIModelConfig = {
@@ -29,6 +29,7 @@ export type ProcessedAIModelConfig = {
   title: string
   baseURL: string
   apiKey: string
+  headers?: Record<string, string>
 }
 
 // Processed provider configuration

@@ -1,5 +1,5 @@
-import { streamText, CoreMessage } from "ai"
-import { WorkflowContext } from "../../type"
+import { streamText, CoreMessage, LanguageModelV1 } from "ai"
+import { WorkflowContext, OllamaModel } from "../../type"
 import {
   getPrivateComponentDocs,
   getPrivateDocsDescription,
@@ -172,6 +172,73 @@ ${componentDescriptions.trim()}
   return templates.join("\n\n")
 }
 
+async function handleOllamaStream(
+  aiModel: OllamaModel,
+  systemPrompt: string,
+  messages: CoreMessage[],
+  stream: WorkflowContext["stream"],
+): Promise<string> {
+  console.log('aiModel', JSON.stringify(aiModel))
+  const response = await fetch(`${aiModel.config.baseURL}/api/chat`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: aiModel.modelId,
+      messages: [
+        {
+          role: "system",
+          content: systemPrompt,
+        },
+        ...messages.map(msg => ({
+          role: msg.role,
+          content: Array.isArray(msg.content)
+            ? msg.content
+                .map(c => {
+                  if (c.type === "text") return c.text
+                  return ""
+                })
+                .join("\n")
+            : msg.content,
+        })),
+      ],
+      stream: true,
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`)
+  }
+
+  const reader = response.body?.getReader()
+  const decoder = new TextDecoder()
+  let accumulatedJson = ""
+
+  while (true) {
+    const { done, value } = await reader!.read()
+    if (done) break
+
+    const chunk = decoder.decode(value)
+    const lines = chunk.split("\n")
+
+    for (const line of lines) {
+      if (line.trim() === "") continue
+
+      try {
+        const parsed = JSON.parse(line)
+        const content = parsed.message?.content || ""
+        stream.write(content)
+        accumulatedJson += content
+      } catch (e) {
+        console.error("Error parsing JSON:", e)
+      }
+    }
+  }
+
+  return accumulatedJson
+}
+
 export async function generateComponentDesign(
   req: WorkflowContext,
 ): Promise<ComponentDesign> {
@@ -208,17 +275,32 @@ export async function generateComponentDesign(
   ]
 
   try {
-    const stream = await streamText({
-      system: systemPrompt,
-      model: req.query.aiModel,
-      messages,
-    })
-
     let accumulatedJson = ""
 
-    for await (const part of stream.textStream) {
-      req.stream.write(part)
-      accumulatedJson += part
+    const isOllamaModel =
+      req.query.aiModel.specificationVersion === "v1" &&
+      "config" in req.query.aiModel &&
+      req.query.aiModel.config?.provider === "ollama.chat"
+
+    if (isOllamaModel) {
+      accumulatedJson = await handleOllamaStream(
+        req.query.aiModel as OllamaModel,
+        systemPrompt,
+        messages,
+        req.stream,
+      )
+    } else {
+      const languageModel = req.query.aiModel as LanguageModelV1
+      const stream = await streamText({
+        system: systemPrompt,
+        model: languageModel,
+        messages,
+      })
+
+      for await (const part of stream.textStream) {
+        req.stream.write(part)
+        accumulatedJson += part
+      }
     }
 
     try {
