@@ -10,7 +10,8 @@
     "post-update": "echo \"codesandbox preview only, need an update\" && pnpm update --latest",
     "pages:build": "npx @cloudflare/next-on-pages",
     "preview": "npm run pages:build && npx wrangler pages dev",
-    "deploy": "npm run pages:build && npx wrangler pages deploy"
+    "deploy": "npm run pages:build && npx wrangler pages deploy",
+    "build:docker": "docker build -t material-ui-renderer:latest ."
   },
   "dependencies": {
     "@emotion/react": "11.11.3",
