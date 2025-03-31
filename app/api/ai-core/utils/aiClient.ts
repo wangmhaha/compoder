@@ -1,6 +1,7 @@
 import { createOpenAI } from "@ai-sdk/openai"
 import { createAnthropic } from "@ai-sdk/anthropic"
 import { createDeepSeek } from "@ai-sdk/deepseek"
+import { createOllama } from "ollama-ai-provider"
 
 import { findModelConfig, type AIProvider } from "@/lib/config/ai-providers"
 
@@ -24,6 +25,11 @@ export const getAIClient = (provider: AIProvider, model: string) => {
         baseURL: modelConfig.baseURL,
         apiKey: modelConfig.apiKey,
       })(modelConfig.model)
+    case "ollama":
+      return createOllama({
+        baseURL: modelConfig.baseURL,
+        headers: modelConfig.headers || {},
+      })(modelConfig.model)
     default:
       throw new Error(`Unsupported AI provider: ${provider}`)
   }
@@ -34,3 +40,5 @@ export const getOpenaiClient = (model: string) => getAIClient("openai", model)
 
 export const getAnthropicClient = (model: string) =>
   getAIClient("anthropic", model)
+
+export const getOllamaClient = (model: string) => getAIClient("ollama", model)
