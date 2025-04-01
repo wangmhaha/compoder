@@ -1,6 +1,6 @@
 # Contributing Guide
 
-Welcome to the Compoder contributing guide! As an AI-driven component code generation engine, we're dedicated to providing the best component code generation experience for design engineers, supporting multiple tech stacks, component libraries, AI models, and various scenarios. Every contribution you make is valuable.
+Welcome to the Compoder contributing guide! As an AI-powered component code generation engine, we're dedicated to providing the best component code generation experience for frontend engineers, supporting multiple tech stacks, component libraries, AI models, and various scenarios. Every contribution you make is valuable.
 
 ## Issue Management
 

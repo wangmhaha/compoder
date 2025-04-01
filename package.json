@@ -2,7 +2,7 @@
   "name": "compoder",
   "version": "0.1.0",
   "private": true,
-  "description": "AI-Powered Component Code Generator For Every Design Engineer",
+  "description": "AI-Powered Component Code Generator For Every Frontend Engineer",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
