@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "typecheck": "vue-tsc --noEmit",
     "pages:preview": "npx wrangler pages dev dist",
-    "deploy": "npm run build && npx wrangler pages deploy dist"
+    "deploy": "npm run build && npx wrangler pages deploy dist",
+    "build:docker": "docker build -t element-ui-plus-renderer:latest ."
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",

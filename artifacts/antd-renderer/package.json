@@ -10,7 +10,8 @@
     "pages:build": "npx @cloudflare/next-on-pages",
     "preview": "npm run pages:build && npx wrangler pages dev",
     "deploy": "npm run pages:build && npx wrangler pages deploy",
-    "pages:deploy": "npx wrangler pages deploy"
+    "pages:deploy": "npx wrangler pages deploy",
+    "build:docker": "docker build -t antd-renderer:latest ."
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.18.2",

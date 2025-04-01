@@ -11,11 +11,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "migrate-codegen": "tsx lib/db/codegen/migrate.ts",
-    "dev:artifacts:element-ui-plus-renderer": "pnpm --filter element-ui-plus-renderer dev",
-    "dev:artifacts:shadcn-ui-renderer": "pnpm --filter shadcn-ui-renderer dev",
-    "dev:artifacts:antd-renderer": "pnpm --filter antd-renderer dev",
-    "dev:artifacts:html-renderer": "pnpm --filter html-renderer dev",
-    "dev:artifacts:material-ui-renderer": "pnpm --filter material-ui-renderer dev"
+    "build:docker": "docker build -t compoder:latest .",
+    "build:artifacts-docker": "bash script/build-artifacts-docker.sh"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.1.17",
@@ -24,6 +21,7 @@
     "@auth/mongodb-adapter": "^3.7.4",
     "@emotion/is-prop-valid": "^1.3.1",
     "@monaco-editor/react": "^4.6.0",
+    "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-aspect-ratio": "^1.1.0",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-collapsible": "^1.1.1",
