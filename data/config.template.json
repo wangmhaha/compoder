@@ -63,7 +63,7 @@
                 {
                     "model": "qwen2.5:14b",
                     "title": "qwen2.5 (Ollama)",
-                    "baseURL": "http://localhost:11434",
+                    "baseURL": "http://localhost:11434/api",
                     "apiKey": ""
                 }
             ]
