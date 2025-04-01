@@ -109,7 +109,7 @@ const LoginForm = ({
             <p className="leading-relaxed">
               Your Stack, Your UI - AI-Powered Component Code Generator for
               Every
-              <span className="text-primary"> Design Engineer</span>
+              <span className="text-primary"> Frontend Engineer</span>
             </p>
           </div>
 

@@ -1,4 +1,4 @@
-![compoder-cover](./assets/banner.gif)
+![compoder-cover](./assets/banner.png)
 
 <div align="center">
 
@@ -6,7 +6,7 @@
     <b>
         <a href="https://github.com/IamLiuLv/compoder">Compoder</a><br>
     </b>
-    AI-Powered Component Code Generator For Every Design Engineer<br>
+    AI-Powered Component Code Generator For Every Frontend Engineer<br>
 </h1>
 
 Compoder 是一个开源的 AI 驱动组件代码生成引擎，集成了现代前端技术栈和多种 AI 模型能力，你可以基于 Compoder 定制基于特定技术栈（如：React、Vue、Mui、Antd、Element-Plus、Tailwind CSS、Shadcn UI...），以及特定场景（如：Landing Page、邮件模版、后台表单组件）的 AI 驱动的组件代码生成器。

@@ -40,7 +40,7 @@ export const Default: Story = {
     title: "Compoder",
     subtitle: "AI-Powered Component Code Generator",
     description:
-      "Your Stack, Your UI - Component Code Generator for Every Design Engineer",
+      "Your Stack, Your UI - AI-Powered Component Code Generator for Every Frontend Engineer",
     showGithubStar: true,
     githubUrl: "https://github.com/yourusername/compoder",
     tagline: "Generate component code in seconds",
