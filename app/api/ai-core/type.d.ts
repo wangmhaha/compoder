@@ -2,25 +2,10 @@ import { CodegenRule } from "@/lib/db/codegen/types"
 import { LanguageModel } from "ai"
 import { Prompt } from "@/lib/db/componentCode/types"
 
-type LanguageModelV1ObjectGenerationMode = "json" | "markdown" | "text"
-
-// 扩展 LanguageModel 类型以支持 Ollama
-interface OllamaModel {
-  modelId: string
-  settings: Record<string, any>
-  config: {
-    baseURL: string
-    provider: string
-  }
-  specificationVersion: "v1"
-  defaultObjectGenerationMode: LanguageModelV1ObjectGenerationMode
-  supportsImageUrls: boolean
-}
-
 // 基础的查询类型
 type WorkflowQuery = {
   prompt: Prompt[]
-  aiModel: LanguageModel | OllamaModel
+  aiModel: LanguageModel
   rules: CodegenRule[]
   userId: string
   codegenId?: string
