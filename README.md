@@ -1,4 +1,4 @@
-![compoder-cover](./assets/banner.gif)
+![compoder-cover](./assets/banner.png)
 
 <div align="center">
 
@@ -6,10 +6,10 @@
     <b>
         <a href="https://github.com/IamLiuLv/compoder">Compoder</a><br>
     </b>
-    AI-Powered Component Code Generator For Every Design Engineer<br>
+    AI-Powered Component Code Generator For Every Frontend Engineer<br>
 </h1>
 
-Compoder is an open-source AI-driven component code generation engine that integrates modern frontend tech stacks with various AI model capabilities. You can customize Compoder to create AI-powered component code generators based on specific technology stacks (such as React, Vue, Mui, Antd, Element-Plus, Tailwind CSS, Shadcn UI...) and specific scenarios (such as Landing Pages, Email Templates, Admin Dashboard Forms).
+Compoder is an open-source AI-powered component code generation engine that integrates modern frontend tech stacks with various AI model capabilities. You can customize Compoder to create AI-powered component code generators based on specific technology stacks (such as React, Vue, Mui, Antd, Element-Plus, Tailwind CSS, Shadcn UI...) and specific scenarios (such as Landing Pages, Email Templates, Admin Dashboard Forms).
 
 <p align="center">
     <a href="https://github.com/IamLiuLv/compoder" target="_blank">
