@@ -27,6 +27,7 @@ const LLMSelector: React.FC<LLMSelectorProps> = ({
       openai: [],
       anthropic: [],
       deepseek: [],
+      ollama: [],
     }
 
     initialData.forEach(option => {
@@ -64,7 +65,10 @@ const LLMSelector: React.FC<LLMSelectorProps> = ({
 
   // Handle full LLM selection (provider:model format)
   const handleValueChange = (value: string) => {
-    const [provider, model] = value.split(":") as [AIProvider, string]
+    // 只按第一个冒号分割
+    const firstColonIndex = value.indexOf(":")
+    const provider = value.substring(0, firstColonIndex) as AIProvider
+    const model = value.substring(firstColonIndex + 1)
 
     if (provider && model) {
       if (provider !== selectedProvider) {
