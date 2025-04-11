@@ -12,4 +12,6 @@ export interface ComponentCodeVersionsContainerProps {
   onVersionChange: (version: string) => void
   /** Container content */
   children: React.ReactNode
+  /** Whether the component is disabled */
+  disabled?: boolean
 }

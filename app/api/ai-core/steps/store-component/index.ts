@@ -1,6 +1,7 @@
 import {
   createComponentCode,
-  updateComponentCode,
+  initComponentCode,
+  updateComponentCodeVersion,
 } from "@/lib/db/componentCode/mutations"
 import { GenerateProcessingWorkflowContext } from "../../type"
 import { transformComponentArtifactFromXml } from "@/lib/xml-message-parser/parser"
@@ -52,33 +53,47 @@ function mergeComponentFiles(originalXml: string, newXml: string): string {
   return mergedXml
 }
 
-export const storeComponent = async (
+export const updateComponent = async (
   context: GenerateProcessingWorkflowContext,
 ): Promise<GenerateProcessingWorkflowContext> => {
-  if (context.query.component) {
-    // 获取原始代码和新生成的代码
-    const originalCode = context.query.component.code
-    const newCode = context.state.generatedCode
-
-    // 合并组件文件
-    const mergedCode = mergeComponentFiles(originalCode, newCode)
-
-    await updateComponentCode({
-      id: context.query.component.id,
-      prompt: context.query.prompt,
-      code: mergedCode,
-    })
-  } else {
-    const newComponent = await createComponentCode({
-      userId: context.query.userId,
-      codegenId: context.query.codegenId!,
-      name: context.state.designTask.componentName,
-      description: context.state.designTask.componentDescription,
-      prompt: context.query.prompt,
-      code: context.state.generatedCode,
-    })
-    context.stream.write(`<NewComponentId>${newComponent._id}</NewComponentId>`)
+  if (!context.query.component) {
+    throw new Error("Component not found")
   }
+  // 获取原始代码和新生成的代码
+  const originalCode = context.query.component.code
+  const newCode = context.state.generatedCode
+
+  // 合并组件文件
+  const mergedCode = mergeComponentFiles(originalCode, newCode)
+
+  await updateComponentCodeVersion({
+    id: context.query.component.id,
+    prompt: context.query.prompt,
+    code: mergedCode,
+  })
+
+  context.stream.close()
+
+  return context
+}
+
+export const initComponent = async (
+  context: GenerateProcessingWorkflowContext,
+): Promise<GenerateProcessingWorkflowContext> => {
+  if (!context.query.component) {
+    throw new Error("Component not found")
+  }
+  const originalCode = context.query.component.code
+  if (originalCode) {
+    throw new Error("Component already initialized")
+  }
+
+  await initComponentCode({
+    id: context.query.component.id,
+    code: context.state.generatedCode,
+    name: context.state.designTask.componentName,
+    description: context.state.designTask.componentDescription,
+  })
 
   context.stream.close()
 

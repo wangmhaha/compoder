@@ -6,7 +6,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { CodeIDEProps, FileNode } from "./interface"
+import { CodeIDEProps, FileNode, StreamCodeIDEProps } from "./interface"
 import { Editor, Monaco } from "@monaco-editor/react"
 import { FileProvider, useFile } from "./context/FileContext"
 import { useEffect, useState, useRef, memo } from "react"
@@ -19,6 +19,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { StreamCodeHandler } from "./StreamCodeHandler"
 
 // Helper function to get language from file extension
 function getLanguageFromFileName(fileName: string): string | undefined {
@@ -299,6 +300,18 @@ export function CodeIDE(props: CodeIDEProps) {
     <div className="h-full min-h-[100px]">
       <FileProvider initialFiles={props.data}>
         <CodeIDEContent {...props} />
+      </FileProvider>
+    </div>
+  )
+}
+
+export function StreamCodeIDE(props: StreamCodeIDEProps) {
+  return (
+    <div className="h-full min-h-[100px]">
+      <FileProvider initialFiles={props.data}>
+        <StreamCodeHandler {...props}>
+          <CodeIDEContent {...props} />
+        </StreamCodeHandler>
       </FileProvider>
     </div>
   )

@@ -43,9 +43,26 @@ export const getComponentCodeDetail = async (
 
 export const createComponentCode = async (
   params: ComponentCodeApi.createRequest,
-): Promise<ComponentCodeApi.createResponse> => {
+): Promise<ComponentCodeApi.detailResponse> => {
   try {
     const response = await request("/componentCode/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(params),
+    })
+    return await response.json()
+  } catch (error) {
+    throw error
+  }
+}
+
+export const initComponentCode = async (
+  params: ComponentCodeApi.createRequest,
+): Promise<ComponentCodeApi.createResponse> => {
+  try {
+    const response = await request("/componentCode/init", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
