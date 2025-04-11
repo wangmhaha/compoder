@@ -21,8 +21,8 @@ import {
 } from "../server-store/selectors"
 import { useState } from "react"
 import {
-  useCreateComponentCode,
   useDeleteComponentCode,
+  useCreateComponentCode,
 } from "../server-store/mutations"
 import { Prompt, PromptImage } from "@/lib/db/componentCode/types"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -67,10 +67,9 @@ export default function CodegenDetailPage({
   const [chatValue, setChatValue] = useState("")
   const [images, setImages] = useState<string[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [streamingContent, setStreamingContent] = useState("")
   const [provider, setProvider] = useState<AIProvider>()
   const [model, setModel] = useState<string>()
-  const createComponentMutation = useCreateComponentCode()
+  const initComponentMutation = useCreateComponentCode()
   const deleteComponentMutation = useDeleteComponentCode()
 
   const shouldShowList = useShowOnFirstData(componentCodeData?.items)
@@ -118,41 +117,15 @@ export default function CodegenDetailPage({
     }
 
     try {
-      const res = await createComponentMutation.mutateAsync(requestParams)
-
-      const reader = res?.getReader()
-      const decoder = new TextDecoder()
-      let content = ""
-
-      while (true) {
-        const { done, value } = await reader?.read()
-        if (done) break
-        content += decoder.decode(value)
-        setStreamingContent(content)
-      }
-
-      const errorMessage = transformTryCatchErrorFromXml(content)
-      if (errorMessage) {
-        toast({
-          title: "Error",
-          description: errorMessage,
-          variant: "destructive",
-        })
-        return
-      }
-
-      const componentId = transformNewComponentIdFromXml(content)
+      const { data } = await initComponentMutation.mutateAsync(requestParams)
+      const componentId = data._id
       if (componentId) {
         router.push(`/main/codegen/${params.codegenId}/${componentId}`)
       }
-
-      setChatValue("")
-      setImages([])
     } catch (error) {
       console.error("Failed to create component:", error)
     } finally {
       setIsSubmitting(false)
-      setStreamingContent("")
     }
   }
 
@@ -231,17 +204,6 @@ export default function CodegenDetailPage({
                   images={images}
                   onImageRemove={handleImageRemove}
                   loading={isSubmitting}
-                  loadingSlot={
-                    isSubmitting ? (
-                      <CompoderThinkingLoading
-                        text={
-                          streamingContent
-                            ? "Compoder is coding..."
-                            : "Compoder is thinking..."
-                        }
-                      />
-                    ) : undefined
-                  }
                 />
               </>
             )}
@@ -270,11 +232,6 @@ export default function CodegenDetailPage({
                 </div>
               ) : (
                 <ComponentCodeList
-                  newItem={
-                    isSubmitting ? (
-                      <CodingBox className="h-full" code={streamingContent} />
-                    ) : undefined
-                  }
                   items={componentCodeData?.items ?? []}
                   codeRendererServer={codegenDetail?.codeRendererUrl || ""}
                   // onEditClick={id => console.log("Edit clicked:", id)}

@@ -1,5 +1,6 @@
 import { ComponentProps } from "react"
 import { Sidebar } from "@/components/ui/sidebar"
+import { Artifact } from "@/lib/xml-message-parser/artifact-stream-parser"
 
 // 定义树节点可能的类型
 export type TreeNodeContent = string | TreeNode
@@ -34,6 +35,12 @@ export interface CodeIDEProps {
   readOnly?: boolean
   onSave: (files: FileNode[]) => Promise<void> | void
   codeRenderer?: React.ReactNode
+}
+
+export type StreamCodeIDEProps = CodeIDEProps & {
+  readableStream?: ReadableStream
+  isStreaming?: boolean
+  onCompoderThinkingProcess?: (content: string) => void
 }
 
 export interface AppSidebarProps extends ComponentProps<typeof Sidebar> {

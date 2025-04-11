@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { run, updateComponentWorkflow } from "@/app/api/ai-core/workflow"
+import { run, initComponentWorkflow } from "@/app/api/ai-core/workflow"
 import { ComponentCodeApi } from "../type"
 import { findCodegenById } from "@/lib/db/codegen/selectors"
 import { getAIClient } from "@/app/api/ai-core/utils/aiClient"
@@ -24,35 +24,29 @@ export async function POST(request: NextRequest) {
     const stream = new TransformStream()
     const writer = stream.writable.getWriter()
 
-    const params: ComponentCodeApi.editRequest = await request.json()
+    const body = (await request.json()) as ComponentCodeApi.initRequest
+    const codegenDetail = await findCodegenById(body.codegenId)
 
-    const aiModel = getAIClient(params.provider as AIProvider, params.model)
+    const aiModel = getAIClient(body.provider as AIProvider, body.model)
 
-    // validate parameters
-    if (!params.codegenId || !params.prompt || !params.component) {
-      return NextResponse.json(
-        { error: "Missing required parameters" },
-        { status: 400 },
-      )
-    }
+    const response = new Response(stream.readable)
 
-    const codegenDetail = await findCodegenById(params.codegenId)
-
-    run(updateComponentWorkflow, {
+    run(initComponentWorkflow, {
       stream: {
         write: (chunk: string) => writer.write(encoder.encode(chunk)),
         close: () => writer.close(),
       },
       query: {
-        prompt: params.prompt,
+        prompt: body.prompt,
         aiModel: aiModel as LanguageModel,
         rules: codegenDetail.rules,
         userId: userId!,
-        component: params.component,
+        codegenId: body.codegenId,
+        component: body.component,
       },
     })
 
-    return new Response(stream.readable)
+    return response
   } catch (error) {
     console.error("Failed to get component code detail:", error)
     return NextResponse.json(
