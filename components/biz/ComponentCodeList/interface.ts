@@ -14,6 +14,5 @@ export interface ComponentCodeListProps {
   onEditClick?: (id: string) => void
   onDeleteClick?: (id: string) => void
   className?: string
-  newItem?: React.ReactNode
   codeRendererServer: string
 }

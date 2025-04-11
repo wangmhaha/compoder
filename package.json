@@ -10,7 +10,8 @@
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "migrate-codegen": "tsx lib/db/codegen/migrate.ts"
+    "migrate-codegen": "tsx lib/db/codegen/migrate.ts",
+    "test": "jest"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.1.17",
@@ -75,8 +76,12 @@
     "@storybook/react": "^8.3.6",
     "@storybook/test": "^8.3.6",
     "@storybook/theming": "^8.4.7",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
     "@types/autosize": "^4.0.3",
     "@types/canvas-size": "^1.2.2",
+    "@types/jest": "^29.5.14",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -85,9 +90,13 @@
     "dotenv": "^16.4.5",
     "eslint": "^8",
     "eslint-config-next": "14.2.16",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8",
     "storybook": "^8.3.6",
     "tailwindcss": "^3.4.1",
+    "ts-jest": "^29.3.1",
+    "ts-node": "^10.9.2",
     "tsx": "^4.15.7",
     "typescript": "^5"
   }
