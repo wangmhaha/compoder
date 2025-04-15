@@ -17,6 +17,7 @@ const ComponentCodeVersionsContainer = ({
   activeVersion,
   onVersionChange,
   children,
+  disabled = false,
 }: ComponentCodeVersionsContainerProps) => {
   const [hoveredVersion, setHoveredVersion] = useState<number | null>(null)
   const dotsContainerRef = useRef<HTMLDivElement>(null)
@@ -87,19 +88,22 @@ const ComponentCodeVersionsContainer = ({
                 <TooltipTrigger asChild>
                   <div
                     className={cn(
-                      "w-2 h-2 rounded-full cursor-pointer transition-all duration-300",
+                      "w-2 h-2 rounded-full transition-all duration-300",
                       "bg-gray-300 dark:bg-gray-600",
                       "hover:scale-150 hover:bg-gray-400 dark:hover:bg-gray-500",
                       activeVersion === version.id &&
                         "scale-150 bg-gray-500 dark:bg-gray-300",
                       hoveredVersion === versions.length - 1 - index &&
                         "scale-150 bg-gray-400 dark:bg-gray-500",
+                      disabled &&
+                        "opacity-50 cursor-not-allowed hover:scale-100 hover:bg-gray-300 dark:hover:bg-gray-600",
                     )}
-                    onClick={() => onVersionChange(version.id)}
+                    onClick={() => !disabled && onVersionChange(version.id)}
                     onMouseEnter={() =>
+                      !disabled &&
                       setHoveredVersion(versions.length - 1 - index)
                     }
-                    onMouseLeave={() => setHoveredVersion(null)}
+                    onMouseLeave={() => !disabled && setHoveredVersion(null)}
                   />
                 </TooltipTrigger>
                 <TooltipContent side="right" sideOffset={12}>

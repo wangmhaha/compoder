@@ -4,6 +4,7 @@ import {
   editComponentCode,
   saveComponentCode,
   deleteComponentCode,
+  initComponentCode,
 } from "@/app/services/componentCode/componentCode.service"
 import { ComponentCodeApi } from "@/app/api/componentCode/type"
 import { useToast } from "@/hooks/use-toast"
@@ -13,11 +14,36 @@ export const useCreateComponentCode = () => {
   const { toast } = useToast()
 
   return useMutation<
-    ComponentCodeApi.createResponse,
+    ComponentCodeApi.detailResponse,
     Error,
     ComponentCodeApi.createRequest
   >({
     mutationFn: params => createComponentCode(params),
+    onSuccess: () => {
+      // Invalidate the component list query to trigger a refresh
+      queryClient.invalidateQueries({ queryKey: ["componentCodeList"] })
+    },
+    onError: error => {
+      console.error("initComponentCode error", error)
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      })
+    },
+  })
+}
+
+export const useInitComponentCode = () => {
+  const queryClient = useQueryClient()
+  const { toast } = useToast()
+
+  return useMutation<
+    ComponentCodeApi.initResponse,
+    Error,
+    ComponentCodeApi.initRequest
+  >({
+    mutationFn: params => initComponentCode(params),
     onSuccess: () => {
       // Invalidate the component list query to trigger a refresh
       queryClient.invalidateQueries({ queryKey: ["componentCodeList"] })
