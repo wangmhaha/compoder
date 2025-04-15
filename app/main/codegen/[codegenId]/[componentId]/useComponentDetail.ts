@@ -57,15 +57,16 @@ export function useComponentDetail() {
 
       const requestParams = {
         codegenId,
-        prompt: [],
         component: {
           id: componentDetail._id.toString(),
           name: componentDetail.name,
           code: "",
           prompt: lastVersionPrompt,
+          isInitialized: true,
         },
         model,
         provider,
+        prompt: lastVersionPrompt,
       }
 
       const result = await startStreaming<string>(async () =>
@@ -159,7 +160,7 @@ export function useComponentDetail() {
   }, [activeVersionId])
 
   useEffect(() => {
-    if (!componentDetail) return
+    if (!componentDetail || !provider || !model) return
 
     if (!componentDetail.versions.length) {
       toast({
@@ -184,7 +185,7 @@ export function useComponentDetail() {
       // initial component, need to call LLM to generate code
       handleInit(lastVersion.prompt)
     }
-  }, [componentDetail, activeVersionId, handleEdit])
+  }, [componentDetail, activeVersionId, handleEdit, provider, model])
 
   return {
     componentDetail,

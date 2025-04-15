@@ -112,6 +112,7 @@ export const ComponentDetailContainer = () => {
               onCompoderThinkingProcess={content => {
                 setCompoderThinkingProcess(content)
               }}
+              readOnly={isStreaming}
               data={artifact.files}
               onSave={async (files: FileNode[]) => {
                 await handleSave(files)

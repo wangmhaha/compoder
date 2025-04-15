@@ -39,9 +39,9 @@ export const useInitComponentCode = () => {
   const { toast } = useToast()
 
   return useMutation<
-    ComponentCodeApi.createResponse,
+    ComponentCodeApi.initResponse,
     Error,
-    ComponentCodeApi.createRequest
+    ComponentCodeApi.initRequest
   >({
     mutationFn: params => initComponentCode(params),
     onSuccess: () => {
