@@ -35,9 +35,11 @@ import {
   LLMSelectorProvider,
   LLMSelectorButton,
 } from "@/app/commons/LLMSelectorProvider"
+import { useLLMOptions } from "@/app/commons/LLMSelectorProvider/useLLMOptions"
 
 export default function ComponentPage() {
   const params = useParams()
+  const { options } = useLLMOptions()
   const [activeVersion, setActiveVersion] = useState("0")
   const [images, setImages] = useState<string[]>([])
   const { setOpen } = useSidebar()
@@ -45,6 +47,10 @@ export default function ComponentPage() {
   const [streamingContent, setStreamingContent] = useState("")
   const [provider, setProvider] = useState<AIProvider>()
   const [model, setModel] = useState<string>()
+  const modelConfig = useMemo(() => {
+    return options.find(opt => opt.modelId === model)
+  }, [model, options])
+  const supportVision = modelConfig?.features.includes("vision")
 
   // Fetch component code detail
   const {
@@ -99,7 +105,7 @@ export default function ComponentPage() {
     }
 
     const prompt: Prompt[] = [
-      ...(images.length > 0
+      ...(supportVision && images.length > 0
         ? images.map(image => ({ type: "image" as const, image }))
         : []),
       {
@@ -285,26 +291,28 @@ export default function ComponentPage() {
           onChange={setChatInput}
           onSubmit={handleChatSubmit}
           actions={[
-            <TooltipProvider key="draw-image">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <TldrawEdit
-                      disabled={isSubmitting}
-                      onSubmit={imageData => {
-                        setImages(prev => [...prev, imageData])
-                      }}
-                    />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Draw An Image</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>,
+            supportVision && (
+              <TooltipProvider key="draw-image">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <TldrawEdit
+                        disabled={isSubmitting}
+                        onSubmit={imageData => {
+                          setImages(prev => [...prev, imageData])
+                        }}
+                      />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Draw An Image</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ),
             <LLMSelectorButton key="llm-selector" />,
-          ]}
-          images={images}
+          ].filter(Boolean)}
+          images={supportVision ? images : []}
           onImageRemove={handleImageRemove}
           loading={isSubmitting}
           loadingSlot={loadingSlot}
