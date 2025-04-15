@@ -59,8 +59,8 @@ export const createComponentCode = async (
 }
 
 export const initComponentCode = async (
-  params: ComponentCodeApi.createRequest,
-): Promise<ComponentCodeApi.createResponse> => {
+  params: ComponentCodeApi.initRequest,
+): Promise<ComponentCodeApi.initResponse> => {
   try {
     const response = await request("/componentCode/init", {
       method: "POST",
