@@ -25,7 +25,7 @@ const findEntryFile = (nodes: FileNode[]): FileNode | null => {
   return null
 }
 
-interface FileContextType {
+export interface FileContextType {
   files: FileNode[]
   currentFile: FileNode | null
   setFiles: (files: FileNode[]) => void
@@ -54,6 +54,7 @@ export function FileProvider({
   const [currentFile, setCurrentFile] = useState<FileNode | null>(
     findEntryFile(initialFiles) || null,
   )
+
   const [originalFiles, setOriginalFiles] = useState<FileNode[]>(initialFiles)
   const [unsavedFiles, setUnsavedFiles] = useState<Set<string>>(new Set())
 

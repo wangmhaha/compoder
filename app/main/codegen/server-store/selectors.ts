@@ -1,4 +1,10 @@
-import { useInfiniteQuery, QueryKey, useQuery } from "@tanstack/react-query"
+import {
+  useInfiniteQuery,
+  QueryKey,
+  useQuery,
+  useSuspenseQuery,
+  keepPreviousData,
+} from "@tanstack/react-query"
 import {
   getCodegenList,
   getCodegenDetail,
@@ -120,5 +126,20 @@ export const useComponentCodeDetail = (id: string, codegenId: string) => {
     queryFn: () => getComponentCodeDetail({ id, codegenId }),
     select: response => response.data,
     staleTime: 0,
+  })
+}
+
+export const useSuspenseComponentCodeDetail = (
+  id: string,
+  codegenId: string,
+) => {
+  return useSuspenseQuery<
+    ComponentCodeApi.detailResponse,
+    Error,
+    ComponentCodeApi.detailResponse["data"]
+  >({
+    queryKey: ["componentCodeDetail", id],
+    queryFn: () => getComponentCodeDetail({ id, codegenId }),
+    select: response => response.data,
   })
 }
