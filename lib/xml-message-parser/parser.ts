@@ -1,7 +1,8 @@
 import { FileNode } from "@/components/biz/CodeIDE/interface"
+import { Artifact } from "./artifact-stream-parser"
 
 // Parse ComponentArtifact XML string, return component name and component file list
-export function transformComponentArtifactFromXml(xmlString: string) {
+export function transformComponentArtifactFromXml(xmlString: string): Artifact {
   try {
     const nameMatch = xmlString.match(/<ComponentArtifact\s+name="([^"]+)">/)
     const componentName = nameMatch ? nameMatch[1] : null
@@ -27,23 +28,26 @@ export function transformComponentArtifactFromXml(xmlString: string) {
       isEntryFile: file.isEntryFile,
     }))
 
-    const codes = fileNodes.reduce((acc, file) => {
-      if (file.content) {
-        acc[file.name] = file.content
-      }
-      return acc
-    }, {} as Record<string, string>)
-
     return {
       componentName,
       entryFile: componentFiles.find(file => file.isEntryFile)?.fileName,
       files: fileNodes,
-      codes,
+      codes: getCodesFromFileNodes(fileNodes),
     }
   } catch (error) {
     console.error("Error processing Component Artifact XML:", error)
     throw error
   }
+}
+
+export type Codes = Record<string, string>
+export function getCodesFromFileNodes(fileNodes: FileNode[]) {
+  return fileNodes.reduce((acc, file) => {
+    if (file.content) {
+      acc[file.name] = file.content
+    }
+    return acc
+  }, {} as Codes)
 }
 
 // transform file node to xml string

@@ -17,17 +17,19 @@ export async function createComponentCode({
   code: string
 }) {
   try {
+    const versions = []
+    if (prompt) {
+      versions.push({
+        code,
+        prompt,
+      })
+    }
     const componentCode = await ComponentCodeModel.create({
       userId,
       codegenId,
       name,
       description,
-      versions: [
-        {
-          code,
-          prompt,
-        },
-      ],
+      versions,
     })
 
     return {
@@ -40,7 +42,46 @@ export async function createComponentCode({
   }
 }
 
-export async function updateComponentCode({
+export async function initComponentCode({
+  id,
+  code,
+  name,
+  description,
+}: {
+  id: string
+  code: string
+  name?: string
+  description?: string
+}) {
+  try {
+    const componentCode = await ComponentCodeModel.findById(id)
+    if (!componentCode) {
+      throw new Error("Component code not found")
+    }
+    const lastVersion =
+      componentCode.versions[componentCode.versions.length - 1]
+    if (!lastVersion) {
+      throw new Error("Version not found")
+    }
+    lastVersion.code = code
+    if (name && componentCode.name !== name) {
+      componentCode.name = name
+    }
+    if (description && componentCode.description !== description) {
+      componentCode.description = description
+    }
+    await componentCode.save()
+    return {
+      _id: componentCode._id,
+      ...componentCode.toObject(),
+    }
+  } catch (error) {
+    console.error("Error updating component code:", error)
+    throw error
+  }
+}
+
+export async function updateComponentCodeVersion({
   id,
   prompt,
   code,

@@ -19,7 +19,6 @@ export function ComponentCodeList({
   onItemClick,
   onDeleteClick,
   className,
-  newItem,
   codeRendererServer,
 }: ComponentCodeListProps) {
   const [clickPosition, setClickPosition] = useState<{
@@ -77,42 +76,6 @@ export function ComponentCodeList({
         }`}
       >
         <AnimatePresence mode="popLayout" initial={false}>
-          {newItem && (
-            <motion.div
-              layout
-              initial={
-                clickPosition
-                  ? {
-                      opacity: 1,
-                      scale: 0.5,
-                      x: clickPosition.x,
-                      y: clickPosition.y,
-                    }
-                  : {
-                      opacity: 0,
-                      scale: 0.8,
-                    }
-              }
-              animate={{
-                opacity: 1,
-                scale: 1,
-                x: 0,
-                y: 0,
-              }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{
-                type: "spring",
-                stiffness: 50,
-                damping: 20,
-                mass: 1.2,
-                duration: 15,
-              }}
-            >
-              <div className="h-full w-full aspect-[1.5] overflow-hidden">
-                {newItem}
-              </div>
-            </motion.div>
-          )}
           {items?.map(item => (
             <motion.div
               key={item.id}

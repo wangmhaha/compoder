@@ -1,17 +1,36 @@
 import { pipe } from "./utils/pipe"
 import { withErrorHandling } from "./utils/errorHandling"
-import { designComponent, generateComponent, storeComponent } from "./steps"
+import {
+  designComponent,
+  generateComponent,
+  updateComponent,
+  initComponent,
+} from "./steps"
 import { InitialWorkflowContext, WorkflowContext } from "./type"
 
-export const componentWorkflow = pipe<InitialWorkflowContext, WorkflowContext>(
+type Workflow = (context: InitialWorkflowContext) => Promise<WorkflowContext>
+
+export const updateComponentWorkflow = pipe<
+  InitialWorkflowContext,
+  WorkflowContext
+>(
   withErrorHandling(designComponent),
   withErrorHandling(generateComponent),
-  withErrorHandling(storeComponent),
+  withErrorHandling(updateComponent),
 )
 
-export async function run(context: InitialWorkflowContext) {
+export const initComponentWorkflow = pipe<
+  InitialWorkflowContext,
+  WorkflowContext
+>(
+  withErrorHandling(designComponent),
+  withErrorHandling(generateComponent),
+  withErrorHandling(initComponent),
+)
+
+export async function run(workflow: Workflow, context: InitialWorkflowContext) {
   try {
-    const result = await componentWorkflow(context)
+    const result = await workflow(context)
     return {
       success: true,
       data: result.state,

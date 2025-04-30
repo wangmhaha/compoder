@@ -94,7 +94,7 @@ Please note: You should not provide example code and any other text in your resp
 const buildCurrentComponentMessage = (
   component: WorkflowContext["query"]["component"],
 ): Array<CoreMessage> => {
-  return component
+  return component && !component.isInitialized
     ? [
         {
           role: "user",

@@ -6,7 +6,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { CodeIDEProps, FileNode } from "./interface"
+import { CodeIDEProps, FileNode, StreamCodeIDEProps } from "./interface"
 import { Editor, Monaco } from "@monaco-editor/react"
 import { FileProvider, useFile } from "./context/FileContext"
 import { useEffect, useState, useRef, memo } from "react"
@@ -19,6 +19,8 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { StreamCodeHandler } from "./StreamCodeHandler"
+import { useEditorScroll } from "./hooks/useEditorScroll"
 
 // Helper function to get language from file extension
 function getLanguageFromFileName(fileName: string): string | undefined {
@@ -94,7 +96,14 @@ function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
   } = useFile()
   const [showToast, setShowToast] = useState(false)
   const editorContainerRef = useRef<HTMLDivElement>(null)
+  const editorRef = useRef<any>(null)
   const [isSaving, setIsSaving] = useState(false)
+
+  // Use the custom scroll hook for editor scrolling logic
+  const { handleEditorDidMount: handleEditorScrollMount } = useEditorScroll(
+    editorRef,
+    currentFile?.content,
+  )
 
   // Compute current file path for breadcrumb navigation
   const currentFilePath = currentFile
@@ -124,7 +133,7 @@ function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
 
   // Handle editor content changes
   const handleEditorChange = (value: string | undefined) => {
-    if (currentFile && value !== undefined) {
+    if (currentFile && value !== undefined && !readOnly) {
       updateFileContent(currentFile.id, value)
 
       // Check for unsaved changes
@@ -136,6 +145,12 @@ function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
         removeUnsavedFile(currentFile.id)
       }
     }
+  }
+
+  // Handle editor mount - combine with scroll handler
+  const handleEditorDidMount = (editor: any, monaco: Monaco) => {
+    editorRef.current = editor
+    handleEditorScrollMount(editor, monaco)
   }
 
   // Show/hide toast when unsaved changes exist
@@ -256,6 +271,7 @@ function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
                     scrollBeyondLastLine: false,
                   }}
                   beforeMount={handleEditorWillMount}
+                  onMount={handleEditorDidMount}
                   onChange={handleEditorChange}
                 />
               </div>
@@ -299,6 +315,18 @@ export function CodeIDE(props: CodeIDEProps) {
     <div className="h-full min-h-[100px]">
       <FileProvider initialFiles={props.data}>
         <CodeIDEContent {...props} />
+      </FileProvider>
+    </div>
+  )
+}
+
+export function StreamCodeIDE(props: StreamCodeIDEProps) {
+  return (
+    <div className="h-full min-h-[100px]">
+      <FileProvider initialFiles={props.data}>
+        <StreamCodeHandler {...props}>
+          <CodeIDEContent {...props} />
+        </StreamCodeHandler>
       </FileProvider>
     </div>
   )

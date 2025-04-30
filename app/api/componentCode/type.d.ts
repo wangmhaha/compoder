@@ -18,6 +18,15 @@ declare namespace ComponentCodeApi {
     >
     total: number
   }
+
+  export interface component {
+    id: string
+    name: string
+    code: string
+    prompt: Prompt[]
+    isInitialized?: boolean
+  }
+
   // detail request
   export interface detailRequest {
     id: string
@@ -38,19 +47,24 @@ declare namespace ComponentCodeApi {
     provider: string
   }
 
+  export interface initRequest {
+    codegenId: string
+    component: component
+    prompt: Prompt[]
+    model: string
+    provider: string
+  }
+
   // create response
   export type createResponse = ReadableStream
+
+  export type initResponse = ReadableStream
 
   // edit request
   export interface editRequest {
     codegenId: string
     prompt: Prompt[]
-    component: {
-      id: string
-      name: string
-      code: string
-      prompt: Prompt[]
-    }
+    component: component
     model: string
     provider: string
   }

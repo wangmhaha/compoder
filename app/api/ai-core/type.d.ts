@@ -14,6 +14,7 @@ type WorkflowQuery = {
     name: string
     code: string
     prompt: Prompt[]
+    isInitialized?: boolean
   }
 }
 

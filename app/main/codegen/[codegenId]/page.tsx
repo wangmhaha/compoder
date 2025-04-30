@@ -19,10 +19,10 @@ import {
   useCodegenDetail,
   useComponentCodeList,
 } from "../server-store/selectors"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import {
-  useCreateComponentCode,
   useDeleteComponentCode,
+  useCreateComponentCode,
 } from "../server-store/mutations"
 import { Prompt, PromptImage } from "@/lib/db/componentCode/types"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -40,6 +40,7 @@ import {
   LLMSelectorProvider,
   LLMSelectorButton,
 } from "@/app/commons/LLMSelectorProvider"
+import { useLLMOptions } from "@/app/commons/LLMSelectorProvider/useLLMOptions"
 
 export default function CodegenDetailPage({
   params,
@@ -67,10 +68,15 @@ export default function CodegenDetailPage({
   const [chatValue, setChatValue] = useState("")
   const [images, setImages] = useState<string[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [streamingContent, setStreamingContent] = useState("")
   const [provider, setProvider] = useState<AIProvider>()
   const [model, setModel] = useState<string>()
+  const { options } = useLLMOptions()
+  const modelConfig = useMemo(() => {
+    return options.find(opt => opt.modelId === model)
+  }, [model, options])
+  const supportVision = modelConfig?.features.includes("vision")
   const createComponentMutation = useCreateComponentCode()
+  const initComponentMutation = useCreateComponentCode()
   const deleteComponentMutation = useDeleteComponentCode()
 
   const shouldShowList = useShowOnFirstData(componentCodeData?.items)
@@ -100,13 +106,15 @@ export default function CodegenDetailPage({
     setIsSubmitting(true)
     const prompts: Prompt[] = [
       { text: chatValue, type: "text" },
-      ...images.map(
-        image =>
-          ({
-            image,
-            type: "image",
-          } as PromptImage),
-      ),
+      ...(supportVision && images.length > 0
+        ? images.map(
+            image =>
+              ({
+                image,
+                type: "image",
+              } as PromptImage),
+          )
+        : []),
     ]
 
     // if model is selected, add it to the request parameters
@@ -118,41 +126,15 @@ export default function CodegenDetailPage({
     }
 
     try {
-      const res = await createComponentMutation.mutateAsync(requestParams)
-
-      const reader = res?.getReader()
-      const decoder = new TextDecoder()
-      let content = ""
-
-      while (true) {
-        const { done, value } = await reader?.read()
-        if (done) break
-        content += decoder.decode(value)
-        setStreamingContent(content)
-      }
-
-      const errorMessage = transformTryCatchErrorFromXml(content)
-      if (errorMessage) {
-        toast({
-          title: "Error",
-          description: errorMessage,
-          variant: "destructive",
-        })
-        return
-      }
-
-      const componentId = transformNewComponentIdFromXml(content)
+      const { data } = await initComponentMutation.mutateAsync(requestParams)
+      const componentId = data._id
       if (componentId) {
         router.push(`/main/codegen/${params.codegenId}/${componentId}`)
       }
-
-      setChatValue("")
-      setImages([])
     } catch (error) {
       console.error("Failed to create component:", error)
     } finally {
       setIsSubmitting(false)
-      setStreamingContent("")
     }
   }
 
@@ -209,39 +191,30 @@ export default function CodegenDetailPage({
                   onChange={setChatValue}
                   onSubmit={handleChatSubmit}
                   actions={[
-                    <TooltipProvider key="draw-image">
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <TldrawEdit
-                              disabled={isSubmitting}
-                              onSubmit={imageData => {
-                                setImages(prev => [...prev, imageData])
-                              }}
-                            />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Draw An Image</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>,
+                    supportVision && (
+                      <TooltipProvider key="draw-image">
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <TldrawEdit
+                                disabled={isSubmitting}
+                                onSubmit={imageData => {
+                                  setImages(prev => [...prev, imageData])
+                                }}
+                              />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Draw An Image</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    ),
                     <LLMSelectorButton key="llm-selector" />,
-                  ]}
-                  images={images}
+                  ].filter(Boolean)}
+                  images={supportVision ? images : []}
                   onImageRemove={handleImageRemove}
                   loading={isSubmitting}
-                  loadingSlot={
-                    isSubmitting ? (
-                      <CompoderThinkingLoading
-                        text={
-                          streamingContent
-                            ? "Compoder is coding..."
-                            : "Compoder is thinking..."
-                        }
-                      />
-                    ) : undefined
-                  }
                 />
               </>
             )}
@@ -249,7 +222,7 @@ export default function CodegenDetailPage({
           <div
             className={cn(
               isSubmitting || shouldShowList ? "opacity-100" : "opacity-0",
-              "w-full mx-auto px-6",
+              "w-full max-w-[1920px] mx-auto px-6",
             )}
           >
             <p className="text-lg font-bold mb-4">Component List</p>
@@ -270,11 +243,6 @@ export default function CodegenDetailPage({
                 </div>
               ) : (
                 <ComponentCodeList
-                  newItem={
-                    isSubmitting ? (
-                      <CodingBox className="h-full" code={streamingContent} />
-                    ) : undefined
-                  }
                   items={componentCodeData?.items ?? []}
                   codeRendererServer={codegenDetail?.codeRendererUrl || ""}
                   // onEditClick={id => console.log("Edit clicked:", id)}
