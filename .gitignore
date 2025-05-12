@@ -45,3 +45,6 @@ database
 # data
 data/codegens.json
 data/config.json
+
+# arco-design-web-vue-render
+artifacts/arco-design-web-vue-render/public/npm

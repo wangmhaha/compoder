@@ -40,6 +40,29 @@ const handleMessage = (event: any) => {
 onMounted(() => {
   window.addEventListener("message", handleMessage);
   window.parent.postMessage("IFRAME_LOADED", "*");
+
+  // 创建 MutationObserver 实例来监听 DOM 变化
+  const observer = new MutationObserver((mutations) => {
+    // 检查是否有错误消息元素
+    const errorNodes = document.querySelectorAll(".msg.err");
+    if (errorNodes.length > 0) {
+      // 获取错误信息
+      const errorMessages = Array.from(errorNodes).map(node => node.textContent).join('\n');
+      // 通知父窗口错误信息
+      window.parent.postMessage(
+        {
+          type: "artifacts-error",
+          errorMessage: errorMessages
+        },
+        "*"
+      );
+    }
+  });
+
+  // 配置观察选项
+  const config = { childList: true, subtree: true };
+  // 开始观察整个文档
+  observer.observe(document.body, config);
 });
 
 
