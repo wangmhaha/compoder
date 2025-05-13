@@ -1,6 +1,5 @@
 import { ComponentProps } from "react"
 import { Sidebar } from "@/components/ui/sidebar"
-import { Artifact } from "@/lib/xml-message-parser/artifact-stream-parser"
 
 // 定义树节点可能的类型
 export type TreeNodeContent = string | TreeNode

@@ -1,8 +1,5 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react"
-import {
-  useComponentCodeDetail,
-  useSuspenseComponentCodeDetail,
-} from "../../server-store/selectors"
+import { useSuspenseComponentCodeDetail } from "../../server-store/selectors"
 import {
   useEditComponentCode,
   useInitComponentCode,
@@ -10,13 +7,11 @@ import {
 } from "../../server-store/mutations"
 import {
   transformComponentArtifactFromXml,
-  transformTryCatchErrorFromXml,
   transformFileNodeToXml,
 } from "@/lib/xml-message-parser/parser"
 import { toast } from "@/hooks/use-toast"
 import { FileNode } from "@/components/biz/CodeIDE"
 import { Prompt } from "@/lib/db/componentCode/types"
-import { AIProvider } from "@/lib/config/ai-providers"
 import { useStreamingContent } from "@/hooks/useStreaming"
 import { useLLMSelectorContext } from "@/app/commons/LLMSelectorProvider"
 import { useParams } from "next/navigation"

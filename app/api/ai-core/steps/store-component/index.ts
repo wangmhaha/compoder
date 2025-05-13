@@ -1,5 +1,4 @@
 import {
-  createComponentCode,
   initComponentCode,
   updateComponentCodeVersion,
 } from "@/lib/db/componentCode/mutations"

@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { ComponentCodeList } from "./ComponentCodeList"
 import { ComponentItem } from "./interface"
 import { useState, useEffect } from "react"
-import { CodingBox } from "../CodingBox"
 
 const meta = {
   title: "Biz/ComponentCodeList",
@@ -141,17 +140,6 @@ export const AnimatedAddition: Story = {
 
 export const ClickToAddCodingBox: Story = {
   render: function ClickToAddCodingBoxStory() {
-    const [showNewItem, setShowNewItem] = useState(false)
-
-    useEffect(() => {
-      const handleClick = () => {
-        setShowNewItem(true)
-      }
-
-      window.addEventListener("click", handleClick)
-      return () => window.removeEventListener("click", handleClick)
-    }, [])
-
     return (
       <div className="space-y-4">
         <div className="flex justify-center gap-4 items-center mb-96">
@@ -164,43 +152,6 @@ export const ClickToAddCodingBox: Story = {
           items={mockItems}
           onEditClick={id => console.log("Edit clicked:", id)}
           onDeleteClick={id => console.log("Delete clicked:", id)}
-          newItem={
-            showNewItem ? (
-              <div className="h-full cursor-pointer">
-                <CodingBox
-                  code={`$ Adding new component...
-> Initializing...
-✨ Component ready to be added!
-$ Adding new component...
-> Initializing...
-✨ Component ready to be added!
-$ Adding new component...
-> Initializing...
-✨ Component ready to be added!
-$ Adding new component...
-> Initializing...
-✨ Component ready to be added!
-$ Adding new component...
-> Initializing...
-✨ Component ready to be added!
-$ Adding new component...
-> Initializing...
-✨ Component ready to be added!
-$ Adding new component...
-> Initializing...
-✨ Component ready to be added!
-$ Adding new component...
-> Initializing...
-✨ Component ready to be added!
-
-                  
-Click to confirm`}
-                  showMacControls={true}
-                  className="h-full"
-                />
-              </div>
-            ) : undefined
-          }
         />
       </div>
     )

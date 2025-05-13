@@ -148,9 +148,9 @@ function CodeIDEContent({ readOnly, onSave, codeRenderer }: CodeIDEProps) {
   }
 
   // Handle editor mount - combine with scroll handler
-  const handleEditorDidMount = (editor: any, monaco: Monaco) => {
+  const handleEditorDidMount = (editor: any) => {
     editorRef.current = editor
-    handleEditorScrollMount(editor, monaco)
+    handleEditorScrollMount()
   }
 
   // Show/hide toast when unsaved changes exist

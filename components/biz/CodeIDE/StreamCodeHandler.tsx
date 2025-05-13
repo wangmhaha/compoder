@@ -51,7 +51,7 @@ export const StreamCodeHandler = ({
         parseStatusRef.current.content += chunk
         currentOnThinkingProcess.current?.(parseStatusRef.current.content)
       },
-      onArtifactStart(artifact) {
+      onArtifactStart() {
         parseStatusRef.current.status = "artifactStart"
         currentOnThinkingProcess.current?.("")
       },
@@ -70,7 +70,7 @@ export const StreamCodeHandler = ({
           currentUpdateFileContentRef.current?.(file.id, content),
         )
       },
-      onError(error) {
+      onError() {
         handleFlagRef.current = false
         parseStatusRef.current = {
           content: "",
