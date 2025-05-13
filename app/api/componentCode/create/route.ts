@@ -5,8 +5,8 @@ import { connectToDatabase } from "@/lib/db/mongo"
 import { validateSession } from "@/lib/auth/middleware"
 import { createComponentCode } from "@/lib/db/componentCode/mutations"
 
-export const UNINITIALIZED_COMPONENT_NAME = "uninitialized component"
-export const UNINITIALIZED_COMPONENT_DESCRIPTION =
+const UNINITIALIZED_COMPONENT_NAME = "uninitialized component"
+const UNINITIALIZED_COMPONENT_DESCRIPTION =
   "This component is not initialized yet"
 
 export async function POST(request: NextRequest) {

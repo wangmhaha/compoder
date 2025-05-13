@@ -22,26 +22,31 @@ const mockLLMOptions: LLMOption[] = [
     provider: "openai",
     modelId: "gpt-4o",
     title: "GPT-4o",
+    features: ["vision"],
   },
   {
     provider: "openai",
     modelId: "anthropic/claude-3.7-sonnet",
     title: "Claude 3.7 Sonnet (OpenRouter)",
+    features: ["vision"],
   },
   {
     provider: "openai",
     modelId: "anthropic/claude-3.5-sonnet",
     title: "Claude 3.5 Sonnet (OpenRouter)",
+    features: ["vision"],
   },
   {
     provider: "anthropic",
     modelId: "claude-3-7-sonnet-latest",
     title: "Claude 3.7 Sonnet",
+    features: ["vision"],
   },
   {
     provider: "anthropic",
     modelId: "claude-3-5-sonnet-latest",
     title: "Claude 3.5 Sonnet",
+    features: ["vision"],
   },
 ]
 

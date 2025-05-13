@@ -3,7 +3,6 @@ import {
   QueryKey,
   useQuery,
   useSuspenseQuery,
-  keepPreviousData,
 } from "@tanstack/react-query"
 import {
   getCodegenList,

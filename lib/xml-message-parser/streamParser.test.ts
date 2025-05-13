@@ -65,13 +65,11 @@ describe("StreamParser", () => {
 
       const openTagCalls: Array<[string, Record<string, string>]> = []
       const closeTagCalls: Array<[string]> = []
-      let endCalled = false
       let errorCalled = false
 
       strictParser.onOpenTag = tagData =>
         openTagCalls.push([tagData.name, tagData.attrs])
       strictParser.onCloseTag = tagData => closeTagCalls.push([tagData.name])
-      strictParser.onEnd = () => (endCalled = true)
       strictParser.onError = err => {
         console.error("err是：", err)
         errorCalled = true

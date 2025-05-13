@@ -26,13 +26,7 @@ import {
 } from "../server-store/mutations"
 import { Prompt, PromptImage } from "@/lib/db/componentCode/types"
 import { Skeleton } from "@/components/ui/skeleton"
-import { CompoderThinkingLoading } from "@/components/biz/CompoderThinkingLoading"
 import { useShowOnFirstData } from "@/hooks/use-show-on-first-data"
-import { CodingBox } from "@/components/biz/CodingBox"
-import {
-  transformNewComponentIdFromXml,
-  transformTryCatchErrorFromXml,
-} from "@/lib/xml-message-parser/parser"
 import { useRouter } from "next/navigation"
 import { toast } from "@/hooks/use-toast"
 import { AIProvider } from "@/lib/config/ai-providers"
@@ -75,7 +69,6 @@ export default function CodegenDetailPage({
     return options.find(opt => opt.modelId === model)
   }, [model, options])
   const supportVision = modelConfig?.features.includes("vision")
-  const createComponentMutation = useCreateComponentCode()
   const initComponentMutation = useCreateComponentCode()
   const deleteComponentMutation = useDeleteComponentCode()
 

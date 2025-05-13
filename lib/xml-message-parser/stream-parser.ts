@@ -337,7 +337,7 @@ export class StreamParser {
           break
 
         case ParserState.TAG_ENDING:
-          this.handleTagEndingState(char)
+          this.handleTagEndingState()
           break
       }
 
@@ -560,7 +560,7 @@ export class StreamParser {
   }
 
   // 处理标签结束状态
-  private handleTagEndingState(char: string): void {
+  private handleTagEndingState(): void {
     // 这个状态主要是为了处理>字符，通常会立即转换到TEXT状态
     this.state = ParserState.TEXT
   }
