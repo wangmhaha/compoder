@@ -1,0 +1,89 @@
+---
+description: compoder storybook-test
+globs:
+alwaysApply: false
+---
+
+# Storybook Generation and Testing Orchestration Rules
+
+When the user references this rule document, the system will execute component story and test generation according to the following workflow:
+
+1. Generate component feature specification (Feature file)
+2. Generate Storybook Stories based on the Feature
+3. Run Storybook tests
+4. Optimize tests to improve robustness and coverage
+
+Note:
+
+- The required rule files must be read completely step by step, and only after one step is completed can the next rule file be read
+- Even if the component code provided by the user already includes stories, the code should be regenerated according to the workflow defined in this rule
+
+## State Management and Execution Mechanism
+
+The system will maintain the following state variables:
+
+- `current_step`: The current execution step (1-4)
+- `component_code`: Component code provided by the user
+- `feature_file_path`: Path to the generated Feature file
+- `stories_file_path`: Path to the generated Stories file
+
+### Complete Rule File Reading Mechanism
+
+Since rule files may exceed the single reading limit (250 lines), the system will:
+
+1. **Use multi-segment reading**: Read each rule file completely in multiple times, without omitting any content
+2. **Verify completeness**: Ensure the rule file has been completely read by checking the end of file content
+3. **Maintain context**: Maintain the overall context and coherence of the rule file when reading multiple segments
+
+## Step Details
+
+### Step 1: Generate Component Feature Specification
+
+**Trigger condition**: `current_step = 1` and the user has provided component code
+
+**Actions**:
+
+1. Completely read the `.cursor/rules/storybook-test/FeatureTemplate.md` file content
+2. Apply this rule to generate the Feature file
+3. Update `feature_file_path` and proceed to the next step
+
+### Step 2: Generate Storybook Stories
+
+**Trigger condition**: `current_step = 2` and `feature_file_path` is not empty
+
+**Actions**:
+
+1. Completely read the `.cursor/rules/storybook-test/StorybookStoriesRules.md` file content
+2. Apply this rule to generate the Stories file
+3. Update `stories_file_path` and proceed to the next step
+
+### Step 3: Run Storybook Tests
+
+**Trigger condition**: `current_step = 3` and `stories_file_path` is not empty
+
+**Actions**:
+
+1. Completely read the `.cursor/rules/storybook-test/StorybookTestingRules.md` file content
+2. Run the generated Stories tests and record results
+3. Provide fix solutions (if needed) or proceed to the next step
+
+### Step 4: Optimize Tests
+
+**Trigger condition**: `current_step = 4` and step 3 has been completed
+
+**Actions**:
+
+1. Completely read the `.cursor/rules/storybook-test/StorybookTestOptimizationRules.md` file content
+2. Check test coverage and optimize test robustness
+3. Generate final coverage and optimization report
+
+## Notes
+
+1. The system will load rule files as needed, and will not load all rule contents at once
+2. Each rule file will be read completely, without omitting content due to line number limitations
+3. State variables are continuously maintained throughout the workflow to ensure coherence between steps
+4. After each step is completed, the value of current_step should be printed, and the user should be informed of what the next step will be
+
+---
+
+When using this rule, please provide the component code first, and the system will automatically start executing from step 1.
