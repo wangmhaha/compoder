@@ -14,7 +14,8 @@
     "build-storybook": "storybook build",
     "migrate-codegen": "tsx lib/db/codegen/migrate.ts",
     "build:docker": "docker build -t compoder:latest .",
-    "build:artifacts-docker": "bash script/build-artifacts-docker.sh"
+    "build:artifacts-docker": "bash script/build-artifacts-docker.sh",
+    "postinstall": "playwright install chromium"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.1.17",
@@ -107,6 +108,7 @@
     "ts-jest": "^29.3.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.15.7",
-    "typescript": "^5"
+    "typescript": "^5",
+    "playwright": "^1.51.1"
   }
 }
