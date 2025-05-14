@@ -255,6 +255,9 @@ importers:
       jest-environment-jsdom:
         specifier: ^29.7.0
         version: 29.7.0
+      playwright:
+        specifier: ^1.51.1
+        version: 1.52.0
       postcss:
         specifier: ^8
         version: 8.4.49

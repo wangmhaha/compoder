@@ -1,14 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { expect, userEvent, within } from "@storybook/test"
+import { expect, within } from "@storybook/test"
 import StorybookExample from "./StorybookExample"
-
-// Helper function to find elements in the DOM, more flexible
-const findElementByText = (text: string, partial = true) => {
-  const allElements = Array.from(document.querySelectorAll("*"))
-  return allElements.find(el =>
-    partial ? el.textContent?.includes(text) : el.textContent === text,
-  )
-}
 
 // Helper function to find button elements with specific text
 const findButtonByText = (text: string) => {
@@ -57,7 +49,7 @@ export const DefaultTitle: Story = {
       // Check that button uses default variant style
       expect(button.className).toContain("variant-default")
     } catch (e) {
-      console.log("Testing with canvas failed, trying alternative selector")
+      console.log("Testing with canvas failed, trying alternative selector", e)
 
       // Alternative approach using the helper function
       const button = findButtonByText("storybook example")
@@ -85,7 +77,7 @@ export const CustomTitle: Story = {
       expect(button).toBeInTheDocument()
       expect(button).toHaveTextContent("new title")
     } catch (e) {
-      console.log("Testing with canvas failed, trying alternative selector")
+      console.log("Testing with canvas failed, trying alternative selector", e)
 
       // Alternative approach using the helper function
       const button = findButtonByText("new title")
@@ -113,7 +105,7 @@ export const ShortTitle: Story = {
       expect(button).toBeInTheDocument()
       expect(button).toHaveTextContent("Short")
     } catch (e) {
-      console.log("Testing with canvas failed, trying alternative selector")
+      console.log("Testing with canvas failed, trying alternative selector", e)
 
       // Alternative approach using the helper function
       const button = findButtonByText("Short")
@@ -143,7 +135,7 @@ export const MediumTitle: Story = {
       expect(button).toBeInTheDocument()
       expect(button).toHaveTextContent("Medium length title")
     } catch (e) {
-      console.log("Testing with canvas failed, trying alternative selector")
+      console.log("Testing with canvas failed, trying alternative selector", e)
 
       // Alternative approach using the helper function
       const button = findButtonByText("Medium length title")
@@ -175,7 +167,7 @@ export const LongTitle: Story = {
         "This is a very long title for testing purposes",
       )
     } catch (e) {
-      console.log("Testing with canvas failed, trying alternative selector")
+      console.log("Testing with canvas failed, trying alternative selector", e)
 
       // Alternative approach using the helper function
       const button = findButtonByText(
