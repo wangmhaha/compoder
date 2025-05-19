@@ -1,6 +1,10 @@
 {
   "packages": [
     {
+      "name": "@tailwindcss/browser",
+      "path": "@tailwindcss/browser@4.1.4/dist/index.global.min.js"
+    },
+    {
       "name": "vue",
       "path": "@vue/runtime-dom@3.2.0/dist/runtime-dom.esm-browser.js"
     },

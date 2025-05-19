@@ -12,7 +12,7 @@ function addScript(src: string) {
 }
 
 // 添加 @arco-design/web-vue 组件库的样式文件
-addCss("#CURRENT_ORIGIN#/npm/vant@4/lib/index.css")
+addCss("#CURRENT_ORIGIN#/npm/vant@4.9.19/lib/index.css")
 
 // 添加 tainwindcss 的样式文件
 addScript(
