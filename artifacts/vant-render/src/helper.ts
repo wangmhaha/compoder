@@ -15,10 +15,10 @@ export const importsMap = {
   imports: Object.fromEntries(
     npmConfig.packages.map(pkg => [
       pkg.name,
-      `${CURRENT_ORIGIN}/npm/${pkg.path}`
-    ])
+      `${CURRENT_ORIGIN}/npm/${pkg.path}`,
+    ]),
   ),
-  scopes: {}
+  scopes: {},
 }
 
 const files: Record<string, string> = {

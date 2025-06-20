@@ -1,9 +1,9 @@
 <script setup>
-import { ref, reactive } from "vue";
-import { tryOnMounted } from '@vueuse/core'
-const msg = ref('Hello World');
+import { ref, reactive } from "vue"
+import { tryOnMounted } from "@vueuse/core"
+const msg = ref("Hello World")
 tryOnMounted(() => {
-  console.log('mounted');
+  console.log("mounted")
 })
 </script>
 

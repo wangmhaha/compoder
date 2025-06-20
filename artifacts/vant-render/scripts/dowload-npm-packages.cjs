@@ -1,7 +1,7 @@
 const fs = require("fs")
 const path = require("path")
 const https = require("https")
-const { HttpsProxyAgent } = require('https-proxy-agent')
+const { HttpsProxyAgent } = require("https-proxy-agent")
 
 // 读取配置文件
 const configPath = path.resolve(__dirname, "../npm-packages.json")
@@ -10,13 +10,13 @@ const npmConfig = JSON.parse(fs.readFileSync(configPath, "utf-8"))
 // 合并所有包路径
 const npmPackages = [
   ...npmConfig.packages.map(pkg => pkg.path),
-  ...npmConfig.css.map(pkg => pkg.path)
+  ...npmConfig.css.map(pkg => pkg.path),
 ]
 
 // 定义目标目录
 const targetDir = path.resolve(__dirname, "../public/npm")
 
-const proxy = 'http://127.0.0.1:7890'
+const proxy = "http://127.0.0.1:7890"
 const agent = new HttpsProxyAgent(proxy)
 
 // 从jsdelivr下载文件的函数
@@ -33,10 +33,7 @@ async function downloadFile(packagePath, targetPath) {
 
     // 发起HTTPS请求
     https
-      .get(
-        jsdelivrUrl,
-        { agent },
-        response => {
+      .get(jsdelivrUrl, { agent }, response => {
         if (response.statusCode === 404) {
           fileStream.close()
           reject(new Error(`文件未找到: ${jsdelivrUrl}`))

@@ -13,9 +13,7 @@
       {
         "type": "public-components",
         "description": "Define which public components to use",
-        "dataSet": [
-          "shadcn/ui"
-        ]
+        "dataSet": ["shadcn/ui"]
       },
       {
         "type": "styles",
@@ -43,10 +41,7 @@
       {
         "type": "public-components",
         "description": "Define which public components to use",
-        "dataSet": [
-          "antd",
-          "@ant-design/icons"
-        ]
+        "dataSet": ["antd", "@ant-design/icons"]
       },
       {
         "type": "styles",
@@ -79,10 +74,7 @@
       {
         "type": "public-components",
         "description": "Define which public components to use",
-        "dataSet": [
-          "@mui/material",
-          "@mui/icons-material"
-        ]
+        "dataSet": ["@mui/material", "@mui/icons-material"]
       },
       {
         "type": "styles",
@@ -110,9 +102,7 @@
       {
         "type": "public-components",
         "description": "Define which public components to use",
-        "dataSet": [
-          "element-plus"
-        ]
+        "dataSet": ["element-plus"]
       },
       {
         "type": "file-structure",
@@ -424,9 +414,7 @@
       {
         "type": "public-components",
         "description": "Define which public components to use",
-        "dataSet": [
-          "@arco-design/web-vue"
-        ]
+        "dataSet": ["@arco-design/web-vue"]
       },
       {
         "type": "file-structure",
@@ -460,9 +448,7 @@
       {
         "type": "public-components",
         "description": "Define which public components to use",
-        "dataSet": [
-          "vant"
-        ]
+        "dataSet": ["vant"]
       },
       {
         "type": "file-structure",
