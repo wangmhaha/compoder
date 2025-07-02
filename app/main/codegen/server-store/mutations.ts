@@ -10,7 +10,6 @@ import { ComponentCodeApi } from "@/app/api/componentCode/type"
 import { useToast } from "@/hooks/use-toast"
 
 export const useCreateComponentCode = () => {
-  const queryClient = useQueryClient()
   const { toast } = useToast()
 
   return useMutation<
@@ -19,6 +18,27 @@ export const useCreateComponentCode = () => {
     ComponentCodeApi.createRequest
   >({
     mutationFn: params => createComponentCode(params),
+    onError: error => {
+      console.error("initComponentCode error", error)
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      })
+    },
+  })
+}
+
+export const useInitComponentCode = () => {
+  const queryClient = useQueryClient()
+  const { toast } = useToast()
+
+  return useMutation<
+    ComponentCodeApi.initResponse,
+    Error,
+    ComponentCodeApi.initRequest
+  >({
+    mutationFn: params => initComponentCode(params),
     onSuccess: () => {
       // Invalidate the component list query to trigger a refresh
       queryClient.invalidateQueries({ queryKey: ["componentCodeList"] })

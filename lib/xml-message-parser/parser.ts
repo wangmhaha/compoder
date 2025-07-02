@@ -79,3 +79,97 @@ export function transformNewComponentIdFromXml(xmlString: string) {
   )
   return componentId ? componentId[1] : null
 }
+
+// Interface for component design data structure
+export interface ComponentDesign {
+  componentName: string
+  componentDescription: string
+  library: Array<{
+    name: string
+    components: string[]
+    description: string
+  }>
+  retrievedAugmentationContent?: string
+}
+
+// Parse XML string with format:
+// <ComponentDesign>
+//   <ComponentName>name</ComponentName>
+//   <ComponentDescription>description</ComponentDescription>
+//   <Libraries>
+//     <Library>
+//       <Name>library name</Name> OR <n>library name</n>
+//       <Components>
+//         <Component>component1</Component>
+//         <Component>component2</Component>
+//         ...
+//       </Components>
+//       <Description>description text</Description>
+//     </Library>
+//     ...
+//   </Libraries>
+// </ComponentDesign>
+export function transformComponentDesignFromXml(
+  xmlString: string,
+): ComponentDesign {
+  try {
+    // Extract component name
+    const nameMatch = xmlString.match(
+      /<ComponentName>([\s\S]*?)<\/ComponentName>/,
+    )
+    const componentName = nameMatch ? nameMatch[1].trim() : "componentName"
+
+    // Extract component description
+    const descMatch = xmlString.match(
+      /<ComponentDescription>([\s\S]*?)<\/ComponentDescription>/,
+    )
+    const componentDescription = descMatch
+      ? descMatch[1].trim()
+      : "componentDescription"
+
+    // Extract libraries
+    const libraries = []
+
+    // Find all Library tags content
+    const libraryRegex = /<Library>([\s\S]*?)<\/Library>/g
+    let libraryMatch
+
+    while ((libraryMatch = libraryRegex.exec(xmlString)) !== null) {
+      const libraryContent = libraryMatch[1]
+
+      // Extract library name - support both <Name> and <n> tags
+      let libNameMatch = libraryContent.match(/<Name>([\s\S]*?)<\/Name>/)
+      if (!libNameMatch) {
+        // Try alternative tag <n>
+        libNameMatch = libraryContent.match(/<n>([\s\S]*?)<\/n>/)
+      }
+      const name = libNameMatch ? libNameMatch[1].trim() : ""
+
+      // Extract components
+      const components = []
+      const componentRegex = /<Component>([\s\S]*?)<\/Component>/g
+      let componentMatch
+
+      while ((componentMatch = componentRegex.exec(libraryContent)) !== null) {
+        components.push(componentMatch[1].trim())
+      }
+
+      // Extract description
+      const libDescMatch = libraryContent.match(
+        /<Description>([\s\S]*?)<\/Description>/,
+      )
+      const description = libDescMatch ? libDescMatch[1].trim() : ""
+
+      libraries.push({ name, components, description })
+    }
+
+    return {
+      componentName,
+      componentDescription,
+      library: libraries,
+    }
+  } catch (error) {
+    console.error("Error processing Component Design XML:", error)
+    throw new Error(`Failed to parse Component Design XML: ${error}`)
+  }
+}

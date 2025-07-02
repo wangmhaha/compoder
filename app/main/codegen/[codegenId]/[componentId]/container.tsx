@@ -1,7 +1,7 @@
-import { useState, useEffect, useMemo } from "react"
+import { useState, useMemo } from "react"
 import { AppHeader } from "@/components/biz/AppHeader"
 import { ComponentCodeVersionsContainer } from "@/components/biz/ComponentCodeVersionsContainer"
-import { CodeIDE, FileNode } from "@/components/biz/CodeIDE"
+import { FileNode } from "@/components/biz/CodeIDE"
 import { ChatInput } from "@/components/biz/ChatInput"
 import { TldrawEdit } from "@/components/biz/TldrawEdit"
 import { Button } from "@/components/ui/button"
@@ -14,9 +14,7 @@ import { flushSync } from "react-dom"
 import { CodeRenderer as CodeRendererComponent } from "@/components/biz/CodeRenderer"
 import { useFile } from "@/components/biz/CodeIDE/context/FileContext"
 import { Prompt } from "@/lib/db/componentCode/types"
-import { CompoderThinkingLoading } from "@/components/biz/CompoderThinkingLoading"
 import { CodingBox } from "@/components/biz/CodingBox"
-import { AIProvider } from "@/lib/config/ai-providers"
 import { LLMSelectorButton } from "@/app/commons/LLMSelectorProvider"
 import { StreamCodeIDE } from "@/components/biz/CodeIDE/CodeIDE"
 
@@ -35,7 +33,10 @@ export const ComponentDetailContainer = () => {
     handleSave,
     artifact,
     codegenId,
+    modelConfig,
   } = useComponentDetail()
+
+  const supportVision = modelConfig?.features.includes("vision")
 
   const loadingSlot = useMemo(() => {
     if (!isStreaming || !compoderThinkingProcess) return null
@@ -52,7 +53,7 @@ export const ComponentDetailContainer = () => {
     if (!codegenId) return
 
     const prompt: Prompt[] = [
-      ...(images.length > 0
+      ...(supportVision && images.length > 0
         ? images.map(image => ({ type: "image" as const, image }))
         : []),
       {
@@ -138,26 +139,28 @@ export const ComponentDetailContainer = () => {
         onChange={setChatInput}
         onSubmit={handleChatSubmit}
         actions={[
-          <TooltipProvider key="draw-image">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <TldrawEdit
-                    disabled={isStreaming}
-                    onSubmit={imageData => {
-                      setImages(prev => [...prev, imageData])
-                    }}
-                  />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Draw An Image</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>,
+          supportVision && (
+            <TooltipProvider key="draw-image">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <TldrawEdit
+                      disabled={isStreaming}
+                      onSubmit={imageData => {
+                        setImages(prev => [...prev, imageData])
+                      }}
+                    />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Draw An Image</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          ),
           <LLMSelectorButton key="llm-selector" />,
-        ]}
-        images={images}
+        ].filter(Boolean)}
+        images={supportVision ? images : []}
         onImageRemove={handleImageRemove}
         loading={isStreaming}
         loadingSlot={loadingSlot}
@@ -176,19 +179,22 @@ const CodeRenderer = ({
   const { files } = useFile()
   const codes = useMemo(
     () =>
-      files.reduce((acc, file) => {
-        if (file.content) {
-          acc[file.name] = file.content
-        }
-        if (file.children) {
-          file.children.forEach(child => {
-            if (child.content) {
-              acc[child.name] = child.content
-            }
-          })
-        }
-        return acc
-      }, {} as Record<string, string>),
+      files.reduce(
+        (acc, file) => {
+          if (file.content) {
+            acc[file.name] = file.content
+          }
+          if (file.children) {
+            file.children.forEach(child => {
+              if (child.content) {
+                acc[child.name] = child.content
+              }
+            })
+          }
+          return acc
+        },
+        {} as Record<string, string>,
+      ),
     [files],
   )
   const entryFile = files.find(file => file.isEntryFile)?.name || "App.tsx"

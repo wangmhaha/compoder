@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Trash2 } from "lucide-react"
 import type { ComponentCodeListProps } from "./interface"
 import { motion, AnimatePresence } from "framer-motion"
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef } from "react"
 import { CodeRenderer } from "../CodeRenderer"
 import {
   Dialog,
@@ -21,35 +21,12 @@ export function ComponentCodeList({
   className,
   codeRendererServer,
 }: ComponentCodeListProps) {
-  const [clickPosition, setClickPosition] = useState<{
-    x: number
-    y: number
-  } | null>(null)
-
   // Add state for delete confirmation
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [itemToDelete, setItemToDelete] = useState<string | null>(null)
 
   // Create a ref for the container
   const containerRef = useRef<HTMLDivElement>(null)
-
-  // Listen for click events to record click position
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      // Use the ref to get container element position
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect()
-        // Calculate position relative to container
-        setClickPosition({
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top,
-        })
-      }
-    }
-
-    window.addEventListener("click", handleClick)
-    return () => window.removeEventListener("click", handleClick)
-  }, [])
 
   // Handle delete confirmation
   const handleDeleteConfirm = () => {

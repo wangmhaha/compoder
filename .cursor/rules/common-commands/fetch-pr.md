@@ -1,8 +1,17 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: wangmin
+ * @Date: 2025-07-02 16:20:51
+ * @LastEditors: wangmin
+ * @LastEditTime: 2025-07-02 16:27:58
+-->
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: false
 ---
+
 # Fetch PR Rules
 
 ## Description

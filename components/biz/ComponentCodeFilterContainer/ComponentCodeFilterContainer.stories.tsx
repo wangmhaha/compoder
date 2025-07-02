@@ -2,8 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { ComponentCodeFilterContainer } from "./index"
 import { ComponentCodeList } from "../ComponentCodeList/ComponentCodeList"
 import type { ComponentItem } from "../ComponentCodeList/interface"
-import { useState, useEffect } from "react"
-import { CodingBox } from "../CodingBox"
+import { useEffect } from "react"
 
 const meta: Meta<typeof ComponentCodeFilterContainer> = {
   title: "Biz/ComponentCodeFilterContainer",
@@ -19,56 +18,79 @@ const mockItems: ComponentItem[] = [
     id: "1",
     title: "CSS Theme Switch",
     description: "A beautiful theme switch component with smooth transitions",
-    code: { "App.tsx": "const ThemeSwitch = () => { return <div>ThemeSwitch</div> }" },
+    code: {
+      "App.tsx": "const ThemeSwitch = () => { return <div>ThemeSwitch</div> }",
+    },
     entryFile: "App.tsx",
   },
   {
     id: "2",
     title: "Dark Mode Toggle",
     description: "Simple and elegant dark mode toggle with system preference",
-    code: { "App.tsx": "const DarkModeToggle = () => { return <div>DarkModeToggle</div> }" },
+    code: {
+      "App.tsx":
+        "const DarkModeToggle = () => { return <div>DarkModeToggle</div> }",
+    },
     entryFile: "App.tsx",
   },
   {
     id: "3",
     title: "Color Scheme Picker",
     description: "Advanced color scheme picker with custom theme support",
-    code: { "App.tsx": "const ColorSchemePicker = () => { return <div>ColorSchemePicker</div> }" },
+    code: {
+      "App.tsx":
+        "const ColorSchemePicker = () => { return <div>ColorSchemePicker</div> }",
+    },
     entryFile: "App.tsx",
   },
   {
     id: "4",
     title: "Customizable Button",
     description: "A customizable button with various styles and sizes",
-    code: { "App.tsx": "const CustomizableButton = () => { return <div>CustomizableButton</div> }" },
+    code: {
+      "App.tsx":
+        "const CustomizableButton = () => { return <div>CustomizableButton</div> }",
+    },
     entryFile: "App.tsx",
   },
   {
     id: "5",
     title: "Responsive Layout",
     description: "A responsive layout with breakpoints and media queries",
-    code: { "App.tsx": "const ResponsiveLayout = () => { return <div>ResponsiveLayout</div> }" },
+    code: {
+      "App.tsx":
+        "const ResponsiveLayout = () => { return <div>ResponsiveLayout</div> }",
+    },
     entryFile: "App.tsx",
   },
   {
     id: "6",
     title: "Animated Loader",
     description: "A loader with smooth animations and customizable colors",
-    code: { "App.tsx": "const AnimatedLoader = () => { return <div>AnimatedLoader</div> }" },
+    code: {
+      "App.tsx":
+        "const AnimatedLoader = () => { return <div>AnimatedLoader</div> }",
+    },
     entryFile: "App.tsx",
   },
   {
     id: "7",
     title: "Customizable Button",
     description: "A customizable button with various styles and sizes",
-    code: { "App.tsx": "const CustomizableButton = () => { return <div>CustomizableButton</div> }" },
+    code: {
+      "App.tsx":
+        "const CustomizableButton = () => { return <div>CustomizableButton</div> }",
+    },
     entryFile: "App.tsx",
   },
   {
     id: "8",
     title: "Customizable Button",
     description: "A customizable button with various styles and sizes",
-    code: { "App.tsx": "const CustomizableButton = () => { return <div>CustomizableButton</div> }" },
+    code: {
+      "App.tsx":
+        "const CustomizableButton = () => { return <div>CustomizableButton</div> }",
+    },
     entryFile: "App.tsx",
   },
 ]
@@ -129,12 +151,8 @@ export const SinglePage: Story = {
 
 export const WithCodingBox: Story = {
   render: function WithCodingBoxStory() {
-    const [showNewItem, setShowNewItem] = useState(false)
-
     useEffect(() => {
-      const handleClick = () => {
-        setShowNewItem(true)
-      }
+      const handleClick = () => {}
 
       window.addEventListener("click", handleClick)
       return () => window.removeEventListener("click", handleClick)
@@ -161,42 +179,6 @@ export const WithCodingBox: Story = {
               onEditClick={id => console.log("Edit clicked:", id)}
               onDeleteClick={id => console.log("Delete clicked:", id)}
               codeRendererServer="https://shadcn-ui-renderer.pages.dev/artifacts"
-              newItem={
-                showNewItem ? (
-                  <div className="h-full cursor-pointer">
-                    <CodingBox
-                      code={`$ Adding new component...
-> Initializing...
-✨ Component ready to be added!
-$ Adding new component...
-> Initializing...
-✨ Component ready to be added!
-$ Adding new component...
-> Initializing...
-✨ Component ready to be added!
-$ Adding new component...
-> Initializing...
-✨ Component ready to be added!
-$ Adding new component...
-> Initializing...
-✨ Component ready to be added!
-$ Adding new component...
-> Initializing...
-✨ Component ready to be added!
-$ Adding new component...
-> Initializing...
-✨ Component ready to be added!
-$ Adding new component...
-> Initializing...
-✨ Component ready to be added!
-
-Click to confirm`}
-                      showMacControls={true}
-                      className="h-full"
-                    />
-                  </div>
-                ) : undefined
-              }
             />
           </div>
         </ComponentCodeFilterContainer>

@@ -45,4 +45,10 @@ database
 # data
 data/codegens.json
 data/config.json
-.history
+
+# arco-design-web-vue-render
+artifacts/arco-design-web-vue-render/public/npm
+
+# render npm packages
+artifacts/**/public/npm/*
+!artifacts/**/public/npm/.gitkeep

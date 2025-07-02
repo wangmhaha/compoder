@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: wangmin
+ * @Date: 2025-07-02 16:20:51
+ * @LastEditors: wangmin
+ * @LastEditTime: 2025-07-02 16:27:11
+ */
 import { startTransition, useEffect, useRef } from "react"
 import { FileContextType, useFile } from "./context/FileContext"
 import { parseStreamingArtifact } from "@/lib/xml-message-parser/artifact-stream-parser"
@@ -51,7 +59,7 @@ export const StreamCodeHandler = ({
         parseStatusRef.current.content += chunk
         currentOnThinkingProcess.current?.(parseStatusRef.current.content)
       },
-      onArtifactStart(artifact) {
+      onArtifactStart() {
         parseStatusRef.current.status = "artifactStart"
         currentOnThinkingProcess.current?.("")
       },
@@ -70,7 +78,7 @@ export const StreamCodeHandler = ({
           currentUpdateFileContentRef.current?.(file.id, content),
         )
       },
-      onError(error) {
+      onError() {
         handleFlagRef.current = false
         parseStatusRef.current = {
           content: "",

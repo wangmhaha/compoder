@@ -1,5 +1,12 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: wangmin
+ * @Date: 2025-07-02 16:20:51
+ * @LastEditors: wangmin
+ * @LastEditTime: 2025-07-02 16:26:58
+ */
 import { useEffect, useState, RefObject } from "react"
-import { Monaco } from "@monaco-editor/react"
 
 type EditorRef = RefObject<any>
 
@@ -57,7 +64,7 @@ export function useEditorScroll(editorRef: EditorRef, contentDependency?: any) {
     return undefined
   }, [editorRef.current])
 
-  const handleEditorDidMount = (editor: any, monaco: Monaco) => {
+  const handleEditorDidMount = () => {
     setIsScrolledToBottom(true) // Initially assume we're at the bottom
   }
 
