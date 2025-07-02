@@ -44,31 +44,6 @@ export const useInitComponentCode = () => {
       queryClient.invalidateQueries({ queryKey: ["componentCodeList"] })
     },
     onError: error => {
-      console.error("initComponentCode error", error)
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      })
-    },
-  })
-}
-
-export const useInitComponentCode = () => {
-  const queryClient = useQueryClient()
-  const { toast } = useToast()
-
-  return useMutation<
-    ComponentCodeApi.initResponse,
-    Error,
-    ComponentCodeApi.initRequest
-  >({
-    mutationFn: params => initComponentCode(params),
-    onSuccess: () => {
-      // Invalidate the component list query to trigger a refresh
-      queryClient.invalidateQueries({ queryKey: ["componentCodeList"] })
-    },
-    onError: error => {
       console.error("createComponentCode error", error)
       toast({
         title: "Error",
